@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
+import './auth_text.dart';
 import './gcu.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -21,7 +22,11 @@ class RegisterScreen extends StatelessWidget {
         ),
         backgroundColor: AppColor.jonquil,
       ),
-      // body: ,
+      body: const LoginNewRegisterText(
+        text: "Already registered?",
+        textBtn: 'Click here to login',
+        isCurrentlyLogin: false,
+      ),
     );
   }
 }

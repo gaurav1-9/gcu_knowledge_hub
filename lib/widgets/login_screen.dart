@@ -93,6 +93,7 @@ class LoginScreen extends StatelessWidget {
                   const LoginNewRegisterText(
                     text: "New user?",
                     textBtn: 'Click here',
+                    isCurrentlyLogin: true,
                   ),
                 ],
               ),
