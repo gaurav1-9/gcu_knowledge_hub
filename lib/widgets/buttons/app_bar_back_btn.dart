@@ -10,7 +10,7 @@ class AppBarBackBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(
-        LucideIcons.arrowBigLeft,
+        LucideIcons.arrowLeft,
         size: 30,
       ),
       color: AppColor.marianBlue,
