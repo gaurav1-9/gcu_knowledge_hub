@@ -7,12 +7,14 @@ class AuthLogin extends StatelessWidget {
   final String btnType;
   final IconData iconType;
   final VoidCallback navigateTo;
+  final MainAxisAlignment alignment;
 
   const AuthLogin({
     super.key,
     required this.btnType,
     required this.iconType,
     required this.navigateTo,
+    required this.alignment,
   });
 
   @override
@@ -26,7 +28,7 @@ class AuthLogin extends StatelessWidget {
         ),
         onPressed: navigateTo,
         child: Row(
-          // mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: alignment,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(iconType),

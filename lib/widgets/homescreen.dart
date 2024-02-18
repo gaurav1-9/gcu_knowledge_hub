@@ -70,6 +70,7 @@ class Homescreen extends StatelessWidget {
             btnType: 'LOGIN',
             iconType: LucideIcons.logIn,
             navigateTo: () => navigateToLogin(context),
+            alignment: MainAxisAlignment.start,
           ),
           const SizedBox(
             height: 10,
@@ -80,6 +81,7 @@ class Homescreen extends StatelessWidget {
             navigateTo: () {
               navigateToRegister(context);
             },
+            alignment: MainAxisAlignment.start,
           ),
         ],
       ),

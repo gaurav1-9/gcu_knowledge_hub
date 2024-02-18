@@ -73,13 +73,46 @@ class LoginScreen extends StatelessWidget {
               fieldType: LucideIcons.lock,
               textController: passwordController,
             ),
-            AuthLogin(
-              btnType: "LOGIN",
-              iconType: LucideIcons.logIn,
-              navigateTo: () => checkCredentials(
-                context,
-                usernameController.text,
-                passwordController.text,
+            const SizedBox(
+              height: 30,
+            ),
+            Center(
+              child: Column(
+                children: [
+                  AuthLogin(
+                    btnType: "LOGIN",
+                    iconType: LucideIcons.logIn,
+                    navigateTo: () => checkCredentials(
+                      context,
+                      usernameController.text,
+                      passwordController.text,
+                    ),
+                    alignment: MainAxisAlignment.center,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'New user?',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColor.grey,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          "Click here",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.marianBlue,
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
               ),
             ),
           ],
