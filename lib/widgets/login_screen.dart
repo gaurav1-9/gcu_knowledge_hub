@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:gcu_knowledge_hub/widgets/buttons/auth_login_btns.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/textfields/txt_fields.dart';
+import '../widgets/buttons/auth_login_btns.dart';
+import './auth_text.dart';
 import './gcu.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -89,29 +90,10 @@ class LoginScreen extends StatelessWidget {
                     ),
                     alignment: MainAxisAlignment.center,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'New user?',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppColor.grey,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Click here",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.marianBlue,
-                          ),
-                        ),
-                      )
-                    ],
-                  )
+                  const LoginNewRegisterText(
+                    text: "New user?",
+                    textBtn: 'Click here',
+                  ),
                 ],
               ),
             ),
