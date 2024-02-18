@@ -5,19 +5,22 @@ import '../../properties/global_colors.dart';
 class InputTextField extends StatelessWidget {
   final String hintText;
   final IconData fieldType;
-  final bool isPaaword;
+  final bool isPassword;
+  final TextEditingController textController;
 
   const InputTextField({
     super.key,
     required this.hintText,
     required this.fieldType,
-    required this.isPaaword,
+    required this.isPassword,
+    required this.textController,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      obscureText: isPaaword,
+      controller: textController,
+      obscureText: isPassword,
       keyboardType: TextInputType.visiblePassword,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(

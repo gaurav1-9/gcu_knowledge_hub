@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: GoogleFonts.robotoTextTheme(),
+        textTheme: GoogleFonts.poppinsTextTheme(),
       ),
       home: const Homescreen(),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gcu_knowledge_hub/widgets/buttons/auth_login_btns.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../properties/global_colors.dart';
@@ -7,7 +8,20 @@ import '../widgets/textfields/txt_fields.dart';
 import './gcu.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void checkCredentials(ctx, username, password) {
+    if (username != '' && password != '') {
+      print(username);
+      print(password);
+      usernameController.text = '';
+      passwordController.text = '';
+      FocusScope.of(ctx).unfocus();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,32 +44,44 @@ class LoginScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
         ),
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Welcome back,',
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
+                color: AppColor.marianBlue,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             InputTextField(
               hintText: 'Username',
-              isPaaword: false,
+              isPassword: false,
               fieldType: LucideIcons.user,
+              textController: usernameController,
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             InputTextField(
               hintText: 'Password',
-              isPaaword: true,
+              isPassword: true,
               fieldType: LucideIcons.lock,
-            )
+              textController: passwordController,
+            ),
+            AuthLogin(
+              btnType: "LOGIN",
+              iconType: LucideIcons.logIn,
+              navigateTo: () => checkCredentials(
+                context,
+                usernameController.text,
+                passwordController.text,
+              ),
+            ),
           ],
         ),
       ),
