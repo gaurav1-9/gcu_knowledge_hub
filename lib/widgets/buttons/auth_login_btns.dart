@@ -8,14 +8,18 @@ class AuthLogin extends StatelessWidget {
   final IconData iconType;
   final VoidCallback navigateTo;
   final MainAxisAlignment alignment;
+  final bool isLoggedIn;
 
-  const AuthLogin({
+  AuthLogin({
     super.key,
     required this.btnType,
     required this.iconType,
     required this.navigateTo,
     required this.alignment,
-  });
+    this.isLoggedIn = false,
+  }) {
+    print(isLoggedIn);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,33 +31,42 @@ class AuthLogin extends StatelessWidget {
           foregroundColor: AppColor.marianBlue,
         ),
         onPressed: navigateTo,
-        child: Row(
-          mainAxisAlignment: alignment,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(iconType),
-            const SizedBox(
-              width: 10,
-            ),
-            Container(
-              width: 2,
-              height: 30,
-              color: AppColor.marianBlue,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              btnType,
-              style: GoogleFonts.lato(
-                textStyle: const TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16,
+        child: (isLoggedIn)
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  color: AppColor.marianBlue,
+                  strokeWidth: 2.5,
                 ),
+              )
+            : Row(
+                mainAxisAlignment: alignment,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(iconType),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    width: 2,
+                    height: 30,
+                    color: AppColor.marianBlue,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    btnType,
+                    style: GoogleFonts.lato(
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

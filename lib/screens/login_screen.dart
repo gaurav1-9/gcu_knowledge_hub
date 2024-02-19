@@ -8,19 +8,29 @@ import '../widgets/buttons/auth_login_btns.dart';
 import '../widgets/auth_text.dart';
 import '../widgets/gcu.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  bool isLoggedIn = false;
 
   void checkCredentials(ctx, username, password) {
     if (username != '' && password != '') {
-      print(username);
-      print(password);
+      setState(() {
+        isLoggedIn = true;
+      });
       usernameController.text = '';
       passwordController.text = '';
       FocusScope.of(ctx).unfocus();
+      Future.delayed(const Duration(seconds: 2), () {
+        setState(() {
+          isLoggedIn = false;
+        });
+      });
     }
   }
 
@@ -88,6 +98,7 @@ class LoginScreen extends StatelessWidget {
                       usernameController.text,
                       passwordController.text,
                     ),
+                    isLoggedIn: isLoggedIn,
                     alignment: MainAxisAlignment.center,
                   ),
                   const LoginNewRegisterText(
