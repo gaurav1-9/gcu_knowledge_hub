@@ -3,10 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../properties/global_colors.dart';
-import './gcu.dart';
-import './login_screen.dart';
-import './register_screen.dart';
-import './buttons/auth_login_btns.dart';
+import '../widgets/gcu.dart';
+import 'login_screen.dart';
+import 'register_screen.dart';
+import '../widgets/buttons/auth_login_btns.dart';
 
 class Homescreen extends StatelessWidget {
   const Homescreen({super.key});

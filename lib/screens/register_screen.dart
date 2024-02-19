@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
-import './auth_text.dart';
-import './gcu.dart';
+import '../widgets/auth_text.dart';
+import '../widgets/gcu.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});

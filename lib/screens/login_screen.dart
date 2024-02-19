@@ -5,8 +5,8 @@ import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/textfields/txt_fields.dart';
 import '../widgets/buttons/auth_login_btns.dart';
-import './auth_text.dart';
-import './gcu.dart';
+import '../widgets/auth_text.dart';
+import '../widgets/gcu.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});

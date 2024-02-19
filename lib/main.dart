@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import './widgets/homescreen.dart';
-import './widgets/login_screen.dart';
-import './widgets/register_screen.dart';
+import 'screens/homescreen.dart';
+import 'screens/login_screen.dart';
+import 'screens/register_screen.dart';
 
 void main() {
   runApp(const MyApp());
