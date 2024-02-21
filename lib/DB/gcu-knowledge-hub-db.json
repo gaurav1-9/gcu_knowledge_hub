@@ -1,0 +1,82 @@
+{
+  "schools": {
+    "sch1": {
+      "branches": {
+        "branch1": {
+          "branchName": "Business Administration",
+          "subjects": {
+            "sub1": "BA_sub1"
+          }
+        },
+        "branch2": {
+          "branchName": "Commerce",
+          "subjects": {
+            "sub1": "C_sub1",
+            "sub2": "C_sub2"
+          }
+        }
+      },
+      "schName": "Management & Commerce"
+    },
+    "sch2": {
+      "branches": {
+        "branch1": {
+          "branchName": "Computer Science & Engineering",
+          "subjects": {
+            "sub1": "C Programming",
+            "sub2": "Data Structures & Algorithm",
+            "sub3": "Object Oriented Programming",
+            "sub4": "Digital Systems"
+          }
+        },
+        "branch2": {
+          "branchName": "Civil Engineering",
+          "subjects": {
+            "sub1": "CE_sub1"
+          }
+        },
+        "branch3": {
+          "branchName": "Electrical Engineering",
+          "subjects": {
+            "sub1": "EE_sub1",
+            "sub2": "EE_sub2"
+          }
+        },
+        "branch4": {
+          "branchName": "Electronics & Communication Engineering",
+          "subjects": {
+            "sub1": "ECE_sub1",
+            "sub2": "ECE_sub2",
+            "sub3": "ECE_Sub3"
+          }
+        },
+        "branch5": {
+          "branchName": "Mechanical Engineering",
+          "subjects": {
+            "sub1": "ME_sub1"
+          }
+        }
+      },
+      "schName": "Engineering & Tech"
+    },
+    "sch3": {
+      "branches": {
+        "branch1": {
+          "branchName": "Department of Physics",
+          "subjects": {
+            "sub1": "Kinematics",
+            "sub2": "Mechanics"
+          }
+        },
+        "branch2": {
+          "branchName": "Department of Mathematics",
+          "subjects": {
+            "sub1": "Calculus",
+            "sub2": "Algebra"
+          }
+        }
+      },
+      "schName": "Natural Sciences"
+    }
+  }
+}
