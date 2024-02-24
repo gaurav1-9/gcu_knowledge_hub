@@ -31,11 +31,13 @@ class LoginNewRegisterText extends StatelessWidget {
         TextButton(
           onPressed: () {
             if (isCurrentlyLogin) {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => RegisterScreen()));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const RegisterScreen()));
             } else {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()));
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
             }
           },
           child: Text(

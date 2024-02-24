@@ -9,6 +9,8 @@ import '../widgets/auth_text.dart';
 import '../widgets/gcu.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _LoginScreenState();
 }
