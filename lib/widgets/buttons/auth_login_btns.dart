@@ -8,18 +8,16 @@ class AuthLogin extends StatelessWidget {
   final IconData iconType;
   final VoidCallback navigateTo;
   final MainAxisAlignment alignment;
-  final bool isLoggedIn;
+  final bool isLoading;
 
-  AuthLogin({
+  const AuthLogin({
     super.key,
     required this.btnType,
     required this.iconType,
     required this.navigateTo,
     required this.alignment,
-    this.isLoggedIn = false,
-  }) {
-    print(isLoggedIn);
-  }
+    this.isLoading = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,7 @@ class AuthLogin extends StatelessWidget {
           foregroundColor: AppColor.marianBlue,
         ),
         onPressed: navigateTo,
-        child: (isLoggedIn)
+        child: (isLoading)
             ? const SizedBox(
                 height: 20,
                 width: 20,

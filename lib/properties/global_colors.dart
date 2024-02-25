@@ -5,5 +5,6 @@ class AppColor {
   static const Color marianBlue = Color(0xff27357f);
   static const Color jonquil = Color(0xfffdcf09);
   static const Color grey = Color(0xFF969696);
+  static const Color tomato = Color(0xFFff6347);
   static const Color white = Color(0xffffffff);
 }

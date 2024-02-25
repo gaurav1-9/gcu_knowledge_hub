@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:http/http.dart' as http;
 
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
@@ -18,19 +21,55 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
-  bool isLoggedIn = false;
+  bool isLoading = false;
+  int isLogginSuccess = -1;
 
-  void checkCredentials(ctx, username, password) {
-    if (username != '' && password != '') {
+  Future<void> checkCredentials(ctx, username, password) async {
+    const loginURL =
+        'https://gcu-knowledge-hub-default-rtdb.firebaseio.com/users.json';
+    if (username.isNotEmpty && password.isNotEmpty) {
       setState(() {
-        isLoggedIn = true;
+        isLoading = true;
       });
-      usernameController.text = '';
-      passwordController.text = '';
-      FocusScope.of(ctx).unfocus();
-      Future.delayed(const Duration(seconds: 2), () {
+      try {
+        final response = await http.get(Uri.parse(loginURL));
+        if (response.statusCode == 200) {
+          final Map<String, dynamic> users = jsonDecode(response.body);
+          users.forEach((key, value) {
+            if (value['username'] == username &&
+                value['password'] == password) {
+              print('Authentication successful');
+              setState(() {
+                isLogginSuccess = 1;
+              });
+            } else {
+              setState(() {
+                isLogginSuccess = 0;
+              });
+              Future.delayed(const Duration(seconds: 3), () {
+                setState(() {
+                  isLogginSuccess = -1;
+                });
+              });
+              print('Authentication failed');
+            }
+          });
+        }
+      } catch (e) {
+        // Handle network or server errors
+        print('Error fetching user data: $e');
+      } finally {
         setState(() {
-          isLoggedIn = false;
+          isLoading = false;
+        });
+      }
+    } else {
+      setState(() {
+        isLogginSuccess = -2;
+      });
+      Future.delayed(const Duration(seconds: 3), () {
+        setState(() {
+          isLogginSuccess = -1;
         });
       });
     }
@@ -50,68 +89,87 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         backgroundColor: AppColor.jonquil,
       ),
-      body: Container(
-        margin: const EdgeInsets.only(
-          top: 80,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Welcome back,',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: AppColor.marianBlue,
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.only(
+            top: 80,
+          ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Welcome back,',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: AppColor.marianBlue,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            InputTextField(
-              hintText: 'Username',
-              isPassword: false,
-              fieldType: LucideIcons.user,
-              textController: usernameController,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            InputTextField(
-              hintText: 'Password',
-              isPassword: true,
-              fieldType: LucideIcons.lock,
-              textController: passwordController,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Center(
-              child: Column(
-                children: [
-                  AuthLogin(
-                    btnType: "LOGIN",
-                    iconType: LucideIcons.logIn,
-                    navigateTo: () => checkCredentials(
-                      context,
-                      usernameController.text,
-                      passwordController.text,
+              const SizedBox(
+                height: 30,
+              ),
+              InputTextField(
+                hintText: 'Username',
+                isPassword: false,
+                fieldType: LucideIcons.user,
+                textController: usernameController,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              InputTextField(
+                hintText: 'Password',
+                isPassword: true,
+                fieldType: LucideIcons.lock,
+                textController: passwordController,
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              Center(
+                child: Column(
+                  children: [
+                    (isLogginSuccess == 0)
+                        ? const Text(
+                            "Invalid Credentials",
+                            style: TextStyle(
+                              color: AppColor.tomato,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        : (isLogginSuccess == -2)
+                            ? const Text(
+                                "All input fields are required",
+                                style: TextStyle(
+                                  color: AppColor.tomato,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : const Text(''),
+                    AuthLogin(
+                      btnType: "LOGIN",
+                      iconType: LucideIcons.logIn,
+                      navigateTo: () => checkCredentials(
+                        context,
+                        usernameController.text,
+                        passwordController.text,
+                      ),
+                      isLoading: isLoading,
+                      alignment: MainAxisAlignment.center,
                     ),
-                    isLoggedIn: isLoggedIn,
-                    alignment: MainAxisAlignment.center,
-                  ),
-                  const LoginNewRegisterText(
-                    text: "New user?",
-                    textBtn: 'Click here',
-                    isCurrentlyLogin: true,
-                  ),
-                ],
+                    const LoginNewRegisterText(
+                      text: "New user?",
+                      textBtn: 'Click here',
+                      isCurrentlyLogin: true,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
