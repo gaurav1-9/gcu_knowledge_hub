@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Map getUserData({String? name, String? username, String? userType}) {
     Map userData = {
       'name': name,
-      'username': userType,
+      'username': username,
       'userType': userType,
     };
     return userData;
@@ -79,7 +79,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               );
               pref.setBool('isLogin', true);
-              print(pref.getBool('isLogin'));
               loginvalue = 1;
               navigateToUserDashboard(ctx);
               break;

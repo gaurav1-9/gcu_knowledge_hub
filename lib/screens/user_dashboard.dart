@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,6 +17,7 @@ class UserDashboard extends StatefulWidget {
 class _UserDashboardState extends State<UserDashboard> {
   late SharedPreferences pref;
   bool isRetrieving = true;
+  Map<String, dynamic>? userData;
 
   @override
   void initState() {
@@ -37,8 +40,18 @@ class _UserDashboardState extends State<UserDashboard> {
           ),
           backgroundColor: AppColor.jonquil,
         ),
-        body: Text(
-          'Welcome ${pref.getString('userData')}',
+        body: Column(
+          children: [
+            Text(
+              'Welcome ${userData?['name']}',
+            ),
+            Text(
+              'User Type: ${userData?['userType']}',
+            ),
+            Text(
+              'USERNAME: ${userData?['username']}',
+            ),
+          ],
         ),
       );
     }
@@ -47,6 +60,11 @@ class _UserDashboardState extends State<UserDashboard> {
   void initPreferences() async {
     try {
       pref = await SharedPreferences.getInstance();
+      print(pref.getString('userData'));
+      String? userDataString = pref.getString('userData');
+      if (userDataString != null) {
+        userData = jsonDecode(userDataString);
+      }
     } finally {
       setState(() {
         isRetrieving = false;
