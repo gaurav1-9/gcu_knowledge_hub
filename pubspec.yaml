@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^6.1.0
   lucide_icons: ^0.257.0
   http: ^1.2.1
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

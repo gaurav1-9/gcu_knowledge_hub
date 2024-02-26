@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gcu_knowledge_hub/properties/save_login.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
@@ -24,6 +25,23 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
   bool isLoading = false;
   int isLogginSuccess = -1;
+
+  late SharedPreferences pref;
+
+  @override
+  void initState() {
+    initPreferences();
+    super.initState();
+  }
+
+  Map getUserData({String? name, String? username, String? userType}) {
+    Map userData = {
+      'name': name,
+      'username': userType,
+      'userType': userType,
+    };
+    return userData;
+  }
 
   Future<void> checkCredentials(ctx, username, password) async {
     const loginURL =
@@ -48,8 +66,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 userID: key,
                 name: value['name'],
                 username: value['username'],
+                userType: value['userType'],
               );
+              pref.setString(
+                'userData',
+                jsonEncode(
+                  getUserData(
+                    name: value['name'],
+                    userType: value['userType'],
+                    username: value['username'],
+                  ),
+                ),
+              );
+              pref.setBool('isLogin', true);
+              print(pref.getBool('isLogin'));
               loginvalue = 1;
+              navigateToUserDashboard(ctx);
               break;
             } else {
               loginvalue = 0;
@@ -83,6 +115,17 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       });
     }
+  }
+
+  void initPreferences() async {
+    pref = await SharedPreferences.getInstance();
+  }
+
+  void navigateToUserDashboard(BuildContext context) {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      '/userDashboard',
+      (route) => false,
+    );
   }
 
   @override

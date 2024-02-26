@@ -1,15 +1,18 @@
 class LoginCredentialsSave {
-  final String name;
-  final String username;
-  final String userID;
+  static String name = '';
+  static String username = '';
+  static String userID = '';
+  static String userType = '';
 
   LoginCredentialsSave({
-    required this.name,
-    required this.username,
-    required this.userID,
+    required String name,
+    required String username,
+    required String userID,
+    required String userType,
   }) {
-    print(name);
-    print(username);
-    print(userID);
+    LoginCredentialsSave.name = name;
+    LoginCredentialsSave.username = username;
+    LoginCredentialsSave.userID = userID;
+    LoginCredentialsSave.userType = userType;
   }
 }
