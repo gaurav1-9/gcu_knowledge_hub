@@ -1,11 +1,13 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import './circular_loading_screen.dart';
 import '../properties/global_colors.dart';
-import 'circular_loading_screen.dart';
 import '../widgets/gcu.dart';
+import '../widgets/buttons/auth_login_btns.dart';
 
 class UserDashboard extends StatefulWidget {
   const UserDashboard({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class UserDashboard extends StatefulWidget {
 class _UserDashboardState extends State<UserDashboard> {
   late SharedPreferences pref;
   bool isRetrieving = true;
+  bool isLoading = false;
   Map<String, dynamic>? userData;
 
   @override
@@ -25,33 +28,154 @@ class _UserDashboardState extends State<UserDashboard> {
     super.initState();
   }
 
+  void navigateToHome(BuildContext context) {
+    setState(() {
+      pref.setBool('isLogin', false);
+    });
+
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      '/home',
+      (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isRetrieving) {
       return const CircularLoadingScreen();
     } else {
       return Scaffold(
+        backgroundColor: AppColor.white,
         appBar: AppBar(
-          toolbarHeight: 80,
-          title: const GCUTextLogo(
-            size: 60,
-            fontSize: 16,
-            alignment: MainAxisAlignment.start,
+          backgroundColor: AppColor.white,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              AuthLogin(
+                btnType: "LOGOUT",
+                iconType: LucideIcons.logOut,
+                navigateTo: () => navigateToHome(context),
+                alignment: MainAxisAlignment.center,
+                fontSize: 10,
+                width: 136,
+              ),
+            ],
           ),
-          backgroundColor: AppColor.jonquil,
         ),
-        body: Column(
-          children: [
-            Text(
-              'Welcome ${userData?['name']}',
-            ),
-            Text(
-              'User Type: ${userData?['userType']}',
-            ),
-            Text(
-              'USERNAME: ${userData?['username']}',
-            ),
-          ],
+        body: SingleChildScrollView(
+          padding: EdgeInsets.only(top: 100),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Welcome, ${userData?['name'].toString().split(' ')[0]}...',
+                style: GoogleFonts.cormorantGaramond(
+                  textStyle: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w900,
+                    color: AppColor.marianBlue,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              const GCUTextLogo(
+                size: 120,
+                fontSize: 20,
+                alignment: MainAxisAlignment.center,
+              ),
+              Text(
+                'KNOWLEDGE HUB',
+                style: GoogleFonts.cormorantGaramond(
+                  textStyle: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w900,
+                    color: AppColor.marianBlue,
+                  ),
+                ),
+              ),
+              Text(
+                '"Boost your knowledge & ace your exams"',
+                style: GoogleFonts.lato(
+                  textStyle: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.grey,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 35,
+              ),
+              Text(
+                'Your personalized portal to academic success!\nPractice quizzes curated by faculties & gain\nmastery accross various subjects...',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.lato(
+                  textStyle: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
+                    color: AppColor.grey,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 80),
+                child: SizedBox(
+                  width: 230,
+                  height: 60,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColor.jonquil,
+                      foregroundColor: AppColor.marianBlue,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      Future.delayed(const Duration(seconds: 2), () {
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
+                    },
+                    child: (!isLoading)
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'GET STARTED',
+                                style: GoogleFonts.lato(
+                                  textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Icon(
+                                LucideIcons.arrowRight,
+                              ),
+                            ],
+                          )
+                        : const SizedBox(
+                            height: 35,
+                            width: 35,
+                            child: CircularProgressIndicator(
+                              color: AppColor.marianBlue,
+                              strokeWidth: 2.5,
+                            ),
+                          ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -60,7 +184,6 @@ class _UserDashboardState extends State<UserDashboard> {
   void initPreferences() async {
     try {
       pref = await SharedPreferences.getInstance();
-      print(pref.getString('userData'));
       String? userDataString = pref.getString('userData');
       if (userDataString != null) {
         userData = jsonDecode(userDataString);

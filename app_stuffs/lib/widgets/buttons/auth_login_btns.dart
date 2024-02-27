@@ -9,6 +9,8 @@ class AuthLogin extends StatelessWidget {
   final VoidCallback navigateTo;
   final MainAxisAlignment alignment;
   final bool isLoading;
+  final double width;
+  final double fontSize;
 
   const AuthLogin({
     super.key,
@@ -16,13 +18,15 @@ class AuthLogin extends StatelessWidget {
     required this.iconType,
     required this.navigateTo,
     required this.alignment,
+    this.width = 170,
+    this.fontSize = 16,
     this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 170,
+      width: width,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColor.jonquil,
@@ -57,9 +61,9 @@ class AuthLogin extends StatelessWidget {
                   Text(
                     btnType,
                     style: GoogleFonts.lato(
-                      textStyle: const TextStyle(
+                      textStyle: TextStyle(
                         fontWeight: FontWeight.w900,
-                        fontSize: 16,
+                        fontSize: fontSize,
                       ),
                     ),
                   ),
