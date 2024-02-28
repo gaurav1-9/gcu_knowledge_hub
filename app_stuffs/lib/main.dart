@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './screens/user_dashboard.dart';
 import './screens/homescreen.dart';
 import './screens/login_screen.dart';
+import './screens/school_of_studies_screen.dart';
 import './screens/register_screen.dart';
 
 void main() {
@@ -40,6 +41,7 @@ class _MyAppState extends State<MyApp> {
         '/register': (context) => const RegisterScreen(),
         '/home': (context) => const Homescreen(),
         '/userDashboard': (context) => const UserDashboard(),
+        '/schools': (context) => const SchoolOfStudies(),
       },
       home: Builder(
         builder: (context) {

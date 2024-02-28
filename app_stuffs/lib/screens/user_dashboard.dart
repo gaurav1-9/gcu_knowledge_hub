@@ -28,6 +28,14 @@ class _UserDashboardState extends State<UserDashboard> {
     super.initState();
   }
 
+  void navigateToSchools(BuildContext context) {
+    setState(() {
+      isLoading = false;
+    });
+
+    Navigator.of(context).pushNamed('/schools');
+  }
+
   void navigateToHome(BuildContext context) {
     setState(() {
       pref.setBool('isLogin', false);
@@ -63,7 +71,7 @@ class _UserDashboardState extends State<UserDashboard> {
           ),
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.only(top: 100),
+          padding: const EdgeInsets.only(top: 100),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -136,10 +144,8 @@ class _UserDashboardState extends State<UserDashboard> {
                       setState(() {
                         isLoading = true;
                       });
-                      Future.delayed(const Duration(seconds: 2), () {
-                        setState(() {
-                          isLoading = false;
-                        });
+                      Future.delayed(const Duration(milliseconds: 200), () {
+                        navigateToSchools(context);
                       });
                     },
                     child: (!isLoading)
