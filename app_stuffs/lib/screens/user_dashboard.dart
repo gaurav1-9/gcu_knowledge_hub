@@ -144,9 +144,7 @@ class _UserDashboardState extends State<UserDashboard> {
                       setState(() {
                         isLoading = true;
                       });
-                      Future.delayed(const Duration(milliseconds: 200), () {
-                        navigateToSchools(context);
-                      });
+                      navigateToSchools(context);
                     },
                     child: (!isLoading)
                         ? Row(

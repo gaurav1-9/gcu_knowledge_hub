@@ -10,8 +10,8 @@ class CircularLoadingScreen extends StatelessWidget {
     return const Scaffold(
       body: Center(
         child: SizedBox(
-          height: 150,
-          width: 150,
+          height: 50,
+          width: 50,
           child: CircularProgressIndicator(
             color: AppColor.marianBlue,
             strokeWidth: 2.5,

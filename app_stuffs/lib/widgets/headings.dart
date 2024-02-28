@@ -9,8 +9,8 @@ class Headings extends StatelessWidget {
   const Headings({
     super.key,
     required this.primaryText,
-    required this.secondaryText,
-    required this.secondaryTextFirst,
+    this.secondaryText = '',
+    this.secondaryTextFirst = '',
   });
 
   @override
