@@ -89,7 +89,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   isLogginSuccess = -1;
                 });
               });
-              print('Authentication failed');
             }
           }
           setState(() {
@@ -97,8 +96,14 @@ class _LoginScreenState extends State<LoginScreen> {
           });
         }
       } catch (e) {
-        // Handle network or server errors
-        print('Error fetching user data: $e');
+        setState(() {
+          isLogginSuccess = -3;
+        });
+        Future.delayed(const Duration(seconds: 5), () {
+          setState(() {
+            isLogginSuccess = -1;
+          });
+        });
       } finally {
         setState(() {
           isLoading = false;
@@ -200,7 +205,27 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               )
-                            : const Text(''),
+                            : (isLogginSuccess == -3)
+                                ? const Column(
+                                    children: [
+                                      Text(
+                                        "Oops...couldn't reach the server",
+                                        style: TextStyle(
+                                          color: AppColor.tomato,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Check your network connectivity",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: AppColor.tomato,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : const Text(''),
                     AuthLogin(
                       btnType: "LOGIN",
                       iconType: LucideIcons.logIn,
