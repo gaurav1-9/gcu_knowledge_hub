@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:gcu_knowledge_hub/widgets/headings.dart';
 import 'package:http/http.dart' as http;
 
 import '../properties/global_colors.dart';
+import '../widgets/headings.dart';
+import '../screens/branches_screen.dart';
 import './circular_loading_screen.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/gcu.dart';
@@ -26,7 +27,7 @@ class _SchoolOfStudiesState extends State<SchoolOfStudies> {
     final response = await http.get(Uri.parse(schoolURL));
     try {
       Map<String, dynamic> schoolsData = jsonDecode(response.body);
-      decomposeSchoolsData(schoolsData);
+      schoolNames.addAll(schoolsData);
     } finally {
       setState(() {
         isLoading = false;
@@ -34,11 +35,14 @@ class _SchoolOfStudiesState extends State<SchoolOfStudies> {
     }
   }
 
-  void decomposeSchoolsData(Map schoolData) {
-    schoolData.forEach((key, value) {
-      schoolNames.addAll({key: value['schName']});
-    });
-    print(schoolNames);
+  void navigateToBranches(String school) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) {
+          return BranchSchool(schName: school);
+        },
+      ),
+    );
   }
 
   @override
@@ -89,9 +93,17 @@ class _SchoolOfStudiesState extends State<SchoolOfStudies> {
                             foregroundColor: AppColor.marianBlue,
                           ),
                           onPressed: () {
-                            // Handle button press for the specific key-value pair
-                            print(
-                                'Button pressed for: ${entry.key} - ${entry.value}');
+                            switch (entry.value) {
+                              case "Engineering & Tech":
+                                navigateToBranches("engineering_tech");
+                                break;
+                              case "Management & Commerce":
+                                navigateToBranches("mgmnt_comm");
+                                break;
+                              case "Humanities & Social Science":
+                                navigateToBranches("arts");
+                                break;
+                            }
                           },
                           child: Text(
                             entry.value,
@@ -109,10 +121,6 @@ class _SchoolOfStudiesState extends State<SchoolOfStudies> {
                     );
                   }).toList(),
                 ),
-                // ElevatedButton(
-                //   onPressed: getSchools,
-                //   child: Text('sxlkasl'),
-                // ),
               ],
             ),
           ),
