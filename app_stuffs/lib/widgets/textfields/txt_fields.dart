@@ -18,7 +18,7 @@ class InputTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: textController,
       obscureText: isPassword,
       keyboardType: TextInputType.visiblePassword,
