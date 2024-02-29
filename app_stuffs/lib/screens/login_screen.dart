@@ -147,6 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: AppColor.jonquil,
       ),
       body: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Container(
           margin: const EdgeInsets.only(
             top: 80,
