@@ -6,6 +6,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/auth_text.dart';
+import '../widgets/buttons/auth_login_btns.dart';
 import '../widgets/gcu.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String _selectedOption = 'student';
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: AppColor.jonquil,
       ),
       body: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Container(
           margin: const EdgeInsets.only(
             top: 80,
@@ -170,11 +173,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
               ),
-              const LoginNewRegisterText(
-                text: "Already registered?",
-                textBtn: 'Click here to login',
-                isCurrentlyLogin: false,
-              ),
+              Center(
+                child: Column(
+                  children: [
+                    AuthLogin(
+                      btnType: "REGISTER",
+                      iconType: LucideIcons.userPlus,
+                      navigateTo: () {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        Future.delayed(const Duration(seconds: 3), () {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        });
+                      },
+                      isLoading: isLoading,
+                      alignment: MainAxisAlignment.center,
+                    ),
+                    const LoginNewRegisterText(
+                      text: "Already registered?",
+                      textBtn: 'Click here to login',
+                      isCurrentlyLogin: false,
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
