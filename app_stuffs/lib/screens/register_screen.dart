@@ -24,6 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   String _selectedOption = 'student';
   bool isLoading = false;
+  int isRegistrationSuccess = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -179,16 +180,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     AuthLogin(
                       btnType: "REGISTER",
                       iconType: LucideIcons.userPlus,
-                      navigateTo: () {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        Future.delayed(const Duration(seconds: 3), () {
-                          setState(() {
-                            isLoading = false;
-                          });
-                        });
-                      },
+                      navigateTo: () => addUser(_usernameController.text,
+                          _nameController.text, _passwordController.text),
                       isLoading: isLoading,
                       alignment: MainAxisAlignment.center,
                     ),
@@ -205,5 +198,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  void addUser(String username, String name, String password) async {
+    const userAddURL = "";
+    if (username.isNotEmpty && name.isNotEmpty && password.isNotEmpty) {
+      setState(() {
+        isLoading = true;
+      });
+      try {
+        await Future.delayed(const Duration(seconds: 3));
+        print(_selectedOption);
+      } finally {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } else {
+      print('hbhbh');
+    }
   }
 }
