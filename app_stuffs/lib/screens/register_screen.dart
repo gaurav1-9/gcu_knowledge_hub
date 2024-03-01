@@ -1,13 +1,23 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gcu_knowledge_hub/widgets/textfields/txt_fields.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:http/http.dart' as http;
 
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/auth_text.dart';
 import '../widgets/buttons/auth_login_btns.dart';
 import '../widgets/gcu.dart';
+
+enum RegigistrationStatus {
+  success,
+  serverError,
+  sameUsernameError,
+  neutral,
+  emptyFields,
+}
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -24,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   String _selectedOption = 'student';
   bool isLoading = false;
-  int isRegistrationSuccess = -1;
+  RegigistrationStatus isRegistrationSuccess = RegigistrationStatus.neutral;
 
   @override
   Widget build(BuildContext context) {
@@ -180,8 +190,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     AuthLogin(
                       btnType: "REGISTER",
                       iconType: LucideIcons.userPlus,
-                      navigateTo: () => addUser(_usernameController.text,
-                          _nameController.text, _passwordController.text),
+                      navigateTo: () => addUser(
+                          _usernameController.text,
+                          _nameController.text,
+                          _passwordController.text,
+                          _selectedOption),
                       isLoading: isLoading,
                       alignment: MainAxisAlignment.center,
                     ),
@@ -200,22 +213,74 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void addUser(String username, String name, String password) async {
-    const userAddURL = "";
+  void addUser(String username, String name, String password,
+      String selectedOption) async {
+    const userAddURL =
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/users.json";
+    RegigistrationStatus registrationSuccessValue =
+        RegigistrationStatus.neutral;
+
     if (username.isNotEmpty && name.isNotEmpty && password.isNotEmpty) {
       setState(() {
         isLoading = true;
       });
       try {
-        await Future.delayed(const Duration(seconds: 3));
-        print(_selectedOption);
+        final userNameResponse = await http.get(Uri.parse(userAddURL));
+
+        if (userNameResponse.statusCode == 200) {
+          final Map<String, dynamic> users = jsonDecode(userNameResponse.body);
+          bool isDuplicateUsername =
+              users.values.any((user) => user['username'] == username);
+
+          if (isDuplicateUsername) {
+            registrationSuccessValue = RegigistrationStatus.sameUsernameError;
+            print(registrationSuccessValue);
+          } else {
+            await http
+                .post(
+              Uri.parse(userAddURL),
+              body: json.encode({
+                "name": name,
+                "password": password,
+                "username": username,
+                "usertype": selectedOption,
+              }),
+            )
+                .then((value) {
+              _nameController.text = '';
+              _usernameController.text = '';
+              _passwordController.text = '';
+              registrationSuccessValue = RegigistrationStatus.success;
+            });
+          }
+        }
+
+        setState(() {
+          isRegistrationSuccess = registrationSuccessValue;
+        });
+      } catch (e) {
+        setState(() {
+          isRegistrationSuccess = RegigistrationStatus.serverError;
+        });
+        Future.delayed(const Duration(seconds: 3), () {
+          setState(() {
+            isRegistrationSuccess = RegigistrationStatus.neutral;
+          });
+        });
       } finally {
         setState(() {
           isLoading = false;
         });
       }
     } else {
-      print('hbhbh');
+      setState(() {
+        isRegistrationSuccess = RegigistrationStatus.emptyFields;
+      });
+      Future.delayed(const Duration(seconds: 3), () {
+        setState(() {
+          isRegistrationSuccess = RegigistrationStatus.neutral;
+        });
+      });
     }
   }
 }
