@@ -7,6 +7,7 @@ class InputTextField extends StatelessWidget {
   final IconData fieldType;
   final bool isPassword;
   final TextEditingController textController;
+  final TextCapitalization textCapitalization;
 
   const InputTextField({
     super.key,
@@ -14,11 +15,13 @@ class InputTextField extends StatelessWidget {
     required this.fieldType,
     required this.isPassword,
     required this.textController,
+    this.textCapitalization = TextCapitalization.none,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textCapitalization: textCapitalization,
       controller: textController,
       obscureText: isPassword,
       keyboardType: TextInputType.visiblePassword,

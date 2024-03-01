@@ -78,6 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   children: [
                     InputTextField(
+                      textCapitalization: TextCapitalization.words,
                       hintText: "Name",
                       fieldType: LucideIcons.edit,
                       isPassword: false,
@@ -187,6 +188,82 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Center(
                 child: Column(
                   children: [
+                    (isRegistrationSuccess == RegigistrationStatus.success)
+                        ? const Column(
+                            children: [
+                              Text(
+                                "Registered successfully",
+                                style: TextStyle(
+                                  color: AppColor.forestGreen,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Please wait...redirecting",
+                                    style: TextStyle(
+                                      color: AppColor.forestGreen,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                    width: 10,
+                                    child: CircularProgressIndicator(
+                                      color: AppColor.forestGreen,
+                                      strokeWidth: 1,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          )
+                        : (isRegistrationSuccess ==
+                                RegigistrationStatus.emptyFields)
+                            ? const Text(
+                                "All input fields are required",
+                                style: TextStyle(
+                                  color: AppColor.tomato,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : (isRegistrationSuccess ==
+                                    RegigistrationStatus.sameUsernameError)
+                                ? const Text(
+                                    "Username already taken",
+                                    style: TextStyle(
+                                      color: AppColor.tomato,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                : (isRegistrationSuccess ==
+                                        RegigistrationStatus.serverError)
+                                    ? const Column(
+                                        children: [
+                                          Text(
+                                            "Oops...couldn't reach the server",
+                                            style: TextStyle(
+                                              color: AppColor.tomato,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            "Check your network connectivity",
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              color: AppColor.tomato,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : const Text(''),
                     AuthLogin(
                       btnType: "REGISTER",
                       iconType: LucideIcons.userPlus,
@@ -234,7 +311,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
           if (isDuplicateUsername) {
             registrationSuccessValue = RegigistrationStatus.sameUsernameError;
-            print(registrationSuccessValue);
           } else {
             await http
                 .post(
@@ -243,7 +319,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 "name": name,
                 "password": password,
                 "username": username,
-                "usertype": selectedOption,
+                "userType": selectedOption,
               }),
             )
                 .then((value) {
@@ -251,12 +327,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
               _usernameController.text = '';
               _passwordController.text = '';
               registrationSuccessValue = RegigistrationStatus.success;
+              Future.delayed(const Duration(seconds: 3), () {
+                Navigator.of(context).pushReplacementNamed('/login');
+              });
             });
           }
         }
-
         setState(() {
           isRegistrationSuccess = registrationSuccessValue;
+        });
+        Future.delayed(const Duration(seconds: 3), () {
+          setState(() {
+            isRegistrationSuccess = RegigistrationStatus.neutral;
+          });
         });
       } catch (e) {
         setState(() {
