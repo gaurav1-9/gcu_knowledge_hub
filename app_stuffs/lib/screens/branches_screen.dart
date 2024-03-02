@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gcu_knowledge_hub/screens/subjects_screen.dart';
 import 'package:gcu_knowledge_hub/widgets/under_development.dart';
 import 'package:http/http.dart' as http;
 
@@ -91,9 +92,7 @@ class _BranchSchoolState extends State<BranchSchool> {
                                 foregroundColor: AppColor.marianBlue,
                               ),
                               onPressed: () {
-                                print(
-                                  "Button pressed(${entry.key}): ${entry.value}",
-                                );
+                                navigateToSubjects(entry.value);
                               },
                               child: Text(
                                 entry.value,
@@ -116,5 +115,17 @@ class _BranchSchoolState extends State<BranchSchool> {
         )),
       );
     }
+  }
+
+  void navigateToSubjects(String branchName) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) {
+          return Subjects(
+            branchName: branchName,
+          );
+        },
+      ),
+    );
   }
 }
