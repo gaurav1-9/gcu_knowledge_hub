@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gcu_knowledge_hub/widgets/headings.dart';
 import 'package:gcu_knowledge_hub/widgets/subjects_heading.dart';
 
 import '../properties/global_colors.dart';
