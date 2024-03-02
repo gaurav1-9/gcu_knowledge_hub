@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gcu_knowledge_hub/screens/quizes_screen.dart';
 import 'package:gcu_knowledge_hub/widgets/under_development.dart';
 import 'package:http/http.dart' as http;
 
@@ -99,7 +100,14 @@ class _SubjectsState extends State<Subjects> {
                                   subQuestions.clear();
                                   subQuestions.addAll(entry.value['questions']);
                                   print(
-                                      "QUESTIONS IN ${entry.value['subName']}: ${subQuestions.length}");
+                                    "QUESTIONS IN ${entry.value['subName']}: ${subQuestions.length}",
+                                  );
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => QuizesScreen(
+                                      subName: entry.value['subName'],
+                                      quizQuestions: subQuestions,
+                                    ),
+                                  ));
                                 },
                                 child: Text(
                                   entry.value['subName'],
