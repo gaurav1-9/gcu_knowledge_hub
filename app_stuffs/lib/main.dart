@@ -7,6 +7,7 @@ import './screens/homescreen.dart';
 import './screens/login_screen.dart';
 import './screens/school_of_studies_screen.dart';
 import './screens/register_screen.dart';
+import './screens/add_quiz_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,6 +43,7 @@ class _MyAppState extends State<MyApp> {
         '/home': (context) => const Homescreen(),
         '/userDashboard': (context) => const UserDashboard(),
         '/schools': (context) => const SchoolOfStudies(),
+        '/addQuiz': (context) => const AddQuiz(),
       },
       home: Builder(
         builder: (context) {

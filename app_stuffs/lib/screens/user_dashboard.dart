@@ -28,6 +28,13 @@ class _UserDashboardState extends State<UserDashboard> {
     super.initState();
   }
 
+  void navigateToAddQuiz(BuildContext context) {
+    setState(() {
+      isLoading = false;
+    });
+    Navigator.of(context).pushNamed('/addQuiz');
+  }
+
   void navigateToSchools(BuildContext context) {
     setState(() {
       isLoading = false;
@@ -72,114 +79,141 @@ class _UserDashboardState extends State<UserDashboard> {
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.only(top: 100),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Welcome, ${userData?['name'].toString().split(' ')[0]}...',
-                style: GoogleFonts.cormorantGaramond(
-                  textStyle: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w900,
-                    color: AppColor.marianBlue,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              const GCUTextLogo(
-                size: 120,
-                fontSize: 20,
-                alignment: MainAxisAlignment.center,
-              ),
-              Text(
-                'KNOWLEDGE HUB',
-                style: GoogleFonts.cormorantGaramond(
-                  textStyle: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w900,
-                    color: AppColor.marianBlue,
-                  ),
-                ),
-              ),
-              Text(
-                '"Boost your knowledge & ace your exams"',
-                style: GoogleFonts.lato(
-                  textStyle: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: AppColor.grey,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 35,
-              ),
-              Text(
-                'Your personalized portal to academic success!\nPractice quizzes curated by faculties & gain\nmastery accross various subjects...',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.lato(
-                  textStyle: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.normal,
-                    color: AppColor.grey,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 80),
-                child: SizedBox(
-                  width: 230,
-                  height: 60,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.jonquil,
-                      foregroundColor: AppColor.marianBlue,
+          child: (!isLoading)
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Welcome, ${userData?['name'].toString().split(' ')[0]}...',
+                      style: GoogleFonts.cormorantGaramond(
+                        textStyle: const TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w900,
+                          color: AppColor.marianBlue,
+                        ),
+                      ),
                     ),
-                    onPressed: () {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      navigateToSchools(context);
-                    },
-                    child: (!isLoading)
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'GET STARTED',
-                                style: GoogleFonts.lato(
-                                  textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              const Icon(
-                                LucideIcons.arrowRight,
-                              ),
-                            ],
-                          )
-                        : const SizedBox(
-                            height: 35,
-                            width: 35,
-                            child: CircularProgressIndicator(
-                              color: AppColor.marianBlue,
-                              strokeWidth: 2.5,
-                            ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const GCUTextLogo(
+                      size: 120,
+                      fontSize: 20,
+                      alignment: MainAxisAlignment.center,
+                    ),
+                    Text(
+                      'KNOWLEDGE HUB',
+                      style: GoogleFonts.cormorantGaramond(
+                        textStyle: const TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w900,
+                          color: AppColor.marianBlue,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '"Boost your knowledge & ace your exams"',
+                      style: GoogleFonts.lato(
+                        textStyle: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: AppColor.grey,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 35,
+                    ),
+                    Text(
+                      'Your personalized portal to academic success!\nPractice quizzes curated by faculties & gain\nmastery accross various subjects...',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.lato(
+                        textStyle: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          color: AppColor.grey,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 80),
+                      child: SizedBox(
+                        width: (userData?['userType'] == 'student') ? 230 : 270,
+                        height: 60,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColor.jonquil,
+                            foregroundColor: AppColor.marianBlue,
                           ),
+                          onPressed: () {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            if (userData?['userType'] == 'student') {
+                              navigateToSchools(context);
+                            } else {
+                              navigateToAddQuiz(context);
+                            }
+                          },
+                          child: (userData?['userType'] == 'student')
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'GET STARTED',
+                                      style: GoogleFonts.lato(
+                                        textStyle: const TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    const Icon(
+                                      LucideIcons.arrowRight,
+                                    ),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "ADD QUIZ QUESTION",
+                                      style: GoogleFonts.lato(
+                                        textStyle: const TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    const Icon(
+                                      LucideIcons.arrowRight,
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : const Center(
+                  child: SizedBox(
+                    height: 35,
+                    width: 35,
+                    child: CircularProgressIndicator(
+                      color: AppColor.marianBlue,
+                      strokeWidth: 2.5,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
         ),
       );
     }

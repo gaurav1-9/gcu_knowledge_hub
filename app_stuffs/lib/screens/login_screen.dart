@@ -55,7 +55,6 @@ class _LoginScreenState extends State<LoginScreen> {
         if (response.statusCode == 200) {
           final Map<String, dynamic> users = jsonDecode(response.body);
           int loginvalue = 0;
-
           for (var entry in users.entries) {
             var key = entry.key;
             var value = entry.value;

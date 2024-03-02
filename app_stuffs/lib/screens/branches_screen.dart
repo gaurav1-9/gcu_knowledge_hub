@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gcu_knowledge_hub/widgets/under_development.dart';
 import 'package:http/http.dart' as http;
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -79,24 +80,7 @@ class _BranchSchoolState extends State<BranchSchool> {
                 height: 40,
               ),
               (branchNames.isEmpty)
-                  ? const Center(
-                      child: Column(
-                        children: [
-                          Icon(
-                            LucideIcons.rocket,
-                            color: AppColor.marianBlue,
-                            size: 50,
-                          ),
-                          Text(
-                            "Under Development\nWill be available soon",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: AppColor.marianBlue,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
+                  ? const UnderDevelopment()
                   : Column(
                       children: branchNames.entries.map((entry) {
                         return Column(
