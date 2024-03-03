@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../widgets/add_quiz_input_fields.dart';
+import '../widgets/add_quiz_radiobtn.dart';
 import '../widgets/headings.dart';
-import '../widgets/textfields/txt_fields.dart';
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/gcu.dart';
@@ -55,52 +55,12 @@ class _AddQuizState extends State<AddQuiz> {
               const SizedBox(
                 height: 40,
               ),
-              InputTextField(
-                hintText: "Question",
-                fieldType: LucideIcons.fileQuestion,
-                isPassword: false,
-                textCapitalization: TextCapitalization.sentences,
-                textController: _questionController,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              InputTextField(
-                hintText: "Option A",
-                fieldType: LucideIcons.circleDot,
-                isPassword: false,
-                textCapitalization: TextCapitalization.sentences,
-                textController: _optionAController,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              InputTextField(
-                hintText: "Option B",
-                fieldType: LucideIcons.circleDot,
-                isPassword: false,
-                textCapitalization: TextCapitalization.sentences,
-                textController: _optionBController,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              InputTextField(
-                hintText: "Option C",
-                fieldType: LucideIcons.circleDot,
-                isPassword: false,
-                textCapitalization: TextCapitalization.sentences,
-                textController: _optionCController,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              InputTextField(
-                hintText: "Option D",
-                fieldType: LucideIcons.circleDot,
-                isPassword: false,
-                textCapitalization: TextCapitalization.sentences,
-                textController: _optionDController,
+              QuizAddQuestionChoice(
+                question: _questionController,
+                optA: _optionAController,
+                optB: _optionBController,
+                optC: _optionCController,
+                optD: _optionDController,
               ),
               const SizedBox(
                 height: 10,
@@ -120,98 +80,45 @@ class _AddQuizState extends State<AddQuiz> {
                 children: [
                   Row(
                     children: [
-                      Expanded(
-                        child: RadioListTile(
-                          contentPadding: EdgeInsets.zero,
-                          activeColor: AppColor.marianBlue,
-                          value: "A",
-                          groupValue: _correctOption,
-                          onChanged: (value) {
-                            setState(() {
-                              _correctOption = value!;
-                            });
-                          },
-                          title: Text(
-                            textAlign: TextAlign.start,
-                            "Option A",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: (_correctOption == "A")
-                                  ? AppColor.marianBlue
-                                  : AppColor.grey,
-                            ),
-                          ),
-                        ),
+                      QuizAddRadio(
+                        selctionFunction: (value) {
+                          setState(() {
+                            _correctOption = value!;
+                          });
+                        },
+                        value: "A",
+                        correctOption: _correctOption,
                       ),
-                      Expanded(
-                        child: RadioListTile(
-                          contentPadding: EdgeInsets.zero,
-                          activeColor: AppColor.marianBlue,
-                          value: "B",
-                          groupValue: _correctOption,
-                          onChanged: (value) {
-                            setState(() {
-                              _correctOption = value!;
-                            });
-                          },
-                          title: Text(
-                            "Option B",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: (_correctOption == "B")
-                                  ? AppColor.marianBlue
-                                  : AppColor.grey,
-                            ),
-                          ),
-                        ),
+                      QuizAddRadio(
+                        selctionFunction: (value) {
+                          setState(() {
+                            _correctOption = value!;
+                          });
+                        },
+                        value: "B",
+                        correctOption: _correctOption,
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      Expanded(
-                        child: RadioListTile(
-                          contentPadding: EdgeInsets.zero,
-                          activeColor: AppColor.marianBlue,
-                          value: "C",
-                          groupValue: _correctOption,
-                          onChanged: (value) {
-                            setState(() {
-                              _correctOption = value!;
-                            });
-                          },
-                          title: Text(
-                            "Option C",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: (_correctOption == "C")
-                                  ? AppColor.marianBlue
-                                  : AppColor.grey,
-                            ),
-                          ),
-                        ),
+                      QuizAddRadio(
+                        selctionFunction: (value) {
+                          setState(() {
+                            _correctOption = value!;
+                          });
+                        },
+                        value: "C",
+                        correctOption: _correctOption,
                       ),
-                      Expanded(
-                        child: RadioListTile(
-                          contentPadding: EdgeInsets.zero,
-                          activeColor: AppColor.marianBlue,
-                          value: "D",
-                          groupValue: _correctOption,
-                          onChanged: (value) {
-                            setState(() {
-                              _correctOption = value!;
-                            });
-                          },
-                          title: Text(
-                            "Option D",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: (_correctOption == "D")
-                                  ? AppColor.marianBlue
-                                  : AppColor.grey,
-                            ),
-                          ),
-                        ),
+                      QuizAddRadio(
+                        selctionFunction: (value) {
+                          setState(() {
+                            _correctOption = value!;
+                          });
+                        },
+                        value: "D",
+                        correctOption: _correctOption,
                       ),
                     ],
                   ),
