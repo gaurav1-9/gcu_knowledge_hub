@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gcu_knowledge_hub/screens/add_quiz_subjects.dart';
 import 'package:http/http.dart' as http;
 
 import '../properties/global_colors.dart';
@@ -109,7 +110,7 @@ class _AddQuizDeptState extends State<AddQuizDept> {
                                 foregroundColor: AppColor.marianBlue,
                               ),
                               onPressed: () {
-                                print("Button pressed: ${entry.value}");
+                                navigateToAddQuizSubjects(entry.value);
                               },
                               child: Text(
                                 entry.value,
@@ -132,5 +133,15 @@ class _AddQuizDeptState extends State<AddQuizDept> {
         )),
       );
     }
+  }
+
+  void navigateToAddQuizSubjects(String branchName) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) {
+          return AddQuizSubjects(deptname: branchName);
+        },
+      ),
+    );
   }
 }
