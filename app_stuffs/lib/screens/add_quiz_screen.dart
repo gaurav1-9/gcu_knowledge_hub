@@ -10,7 +10,15 @@ import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/gcu.dart';
 
 class AddQuiz extends StatefulWidget {
-  const AddQuiz({super.key});
+  final String subName;
+  final String courseID;
+  final String subID;
+  const AddQuiz({
+    super.key,
+    required this.subName,
+    required this.courseID,
+    required this.subID,
+  });
 
   @override
   State<AddQuiz> createState() => _AddQuizState();
@@ -53,7 +61,47 @@ class _AddQuizState extends State<AddQuiz> {
                 secondaryText: "uestion",
               ),
               const SizedBox(
-                height: 40,
+                height: 30,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 2,
+                    color: AppColor.marianBlue,
+                  ),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                width: MediaQuery.of(context).size.width,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Subject Name",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: AppColor.marianBlue,
+                        height: 1,
+                      ),
+                    ),
+                    Text(
+                      widget.subName,
+                      style: const TextStyle(
+                        height: 1.3,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15,
+                        color: AppColor.marianBlue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 30,
               ),
               QuizAddQuestionChoice(
                 question: _questionController,
