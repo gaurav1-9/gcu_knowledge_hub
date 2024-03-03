@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './screens/user_dashboard.dart';
+import './screens/add_quiz_dept.dart';
 import './screens/homescreen.dart';
 import './screens/login_screen.dart';
 import './screens/school_of_studies_screen.dart';
@@ -44,6 +45,7 @@ class _MyAppState extends State<MyApp> {
         '/userDashboard': (context) => const UserDashboard(),
         '/schools': (context) => const SchoolOfStudies(),
         '/addQuiz': (context) => const AddQuiz(),
+        '/addQuizDept': (context) => const AddQuizDept(),
       },
       home: Builder(
         builder: (context) {

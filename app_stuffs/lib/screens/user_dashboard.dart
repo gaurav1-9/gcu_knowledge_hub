@@ -32,7 +32,7 @@ class _UserDashboardState extends State<UserDashboard> {
     setState(() {
       isLoading = false;
     });
-    Navigator.of(context).pushNamed('/addQuiz');
+    Navigator.of(context).pushNamed('/addQuizDept');
   }
 
   void navigateToSchools(BuildContext context) {

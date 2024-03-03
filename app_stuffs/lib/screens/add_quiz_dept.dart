@@ -1,39 +1,45 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:gcu_knowledge_hub/screens/subjects_screen.dart';
-import 'package:gcu_knowledge_hub/widgets/under_development.dart';
 import 'package:http/http.dart' as http;
 
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/gcu.dart';
 import '../widgets/headings.dart';
-import 'circular_loading_screen.dart';
+import '../widgets/under_development.dart';
+import './circular_loading_screen.dart';
 
-class BranchSchool extends StatefulWidget {
-  final String schName;
-  const BranchSchool({super.key, required this.schName});
+class AddQuizDept extends StatefulWidget {
+  const AddQuizDept({super.key});
 
   @override
-  State<BranchSchool> createState() => _BranchSchoolState();
+  State<AddQuizDept> createState() => _AddQuizDeptState();
 }
 
-class _BranchSchoolState extends State<BranchSchool> {
+class _AddQuizDeptState extends State<AddQuizDept> {
   bool isLoading = true;
   late Map routeArgs;
   Map<String, dynamic> branchNames = {};
 
-  void getBranch() async {
+  void getAllBranch() async {
     String branchURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/branches/${widget.schName}.json";
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/branches.json";
     final response = await http
         .get(Uri.parse(branchURL))
         .timeout(const Duration(seconds: 10));
+
     try {
       if (jsonDecode(response.body) != null) {
-        Map<String, dynamic> branchData = jsonDecode(response.body);
-        branchNames.addAll(branchData);
+        int i = 0;
+        Map<String, dynamic> allBranchData = jsonDecode(response.body);
+
+        for (var entry in allBranchData.values) {
+          for (var innerEntry in entry.values) {
+            branchNames["$i"] = innerEntry;
+            i++;
+          }
+        }
       }
     } finally {
       setState(() {
@@ -44,7 +50,7 @@ class _BranchSchoolState extends State<BranchSchool> {
 
   @override
   void initState() {
-    getBranch();
+    getAllBranch();
     super.initState();
   }
 
@@ -72,12 +78,23 @@ class _BranchSchoolState extends State<BranchSchool> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Headings(
-                primaryText: "Department",
-                secondaryTextFirst: "S",
-                secondaryText: "election",
+                primaryText: "Add Quiz",
+                secondaryTextFirst: "Q",
+                secondaryText: "uestion",
               ),
               const SizedBox(
                 height: 40,
+              ),
+              const Text(
+                "Select Department",
+                style: TextStyle(
+                  color: AppColor.marianBlue,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 20,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               (branchNames.isEmpty)
                   ? const UnderDevelopment()
@@ -92,7 +109,7 @@ class _BranchSchoolState extends State<BranchSchool> {
                                 foregroundColor: AppColor.marianBlue,
                               ),
                               onPressed: () {
-                                navigateToSubjects(entry.value);
+                                print("Button pressed: ${entry.value}");
                               },
                               child: Text(
                                 entry.value,
@@ -115,17 +132,5 @@ class _BranchSchoolState extends State<BranchSchool> {
         )),
       );
     }
-  }
-
-  void navigateToSubjects(String branchName) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) {
-          return Subjects(
-            branchName: branchName,
-          );
-        },
-      ),
-    );
   }
 }
