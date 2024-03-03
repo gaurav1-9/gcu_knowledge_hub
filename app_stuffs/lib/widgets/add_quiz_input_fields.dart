@@ -29,7 +29,7 @@ class QuizAddQuestionChoice extends StatelessWidget {
           textController: question,
         ),
         const SizedBox(
-          height: 15,
+          height: 20,
         ),
         InputTextField(
           hintText: "Option A",
@@ -39,7 +39,7 @@ class QuizAddQuestionChoice extends StatelessWidget {
           textController: optA,
         ),
         const SizedBox(
-          height: 15,
+          height: 20,
         ),
         InputTextField(
           hintText: "Option B",
@@ -49,7 +49,7 @@ class QuizAddQuestionChoice extends StatelessWidget {
           textController: optB,
         ),
         const SizedBox(
-          height: 15,
+          height: 20,
         ),
         InputTextField(
           hintText: "Option C",
@@ -59,7 +59,7 @@ class QuizAddQuestionChoice extends StatelessWidget {
           textController: optC,
         ),
         const SizedBox(
-          height: 15,
+          height: 20,
         ),
         InputTextField(
           hintText: "Option D",

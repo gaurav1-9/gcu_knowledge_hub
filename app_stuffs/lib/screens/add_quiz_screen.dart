@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:http/http.dart' as http;
 
 import '../widgets/add_quiz_input_fields.dart';
 import '../widgets/add_quiz_radiobtn.dart';
@@ -8,6 +11,13 @@ import '../widgets/headings.dart';
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/gcu.dart';
+
+enum AddQuizStatus {
+  success,
+  serverError,
+  neutral,
+  emptyFields,
+}
 
 class AddQuiz extends StatefulWidget {
   final String subName;
@@ -32,6 +42,18 @@ class _AddQuizState extends State<AddQuiz> {
   final TextEditingController _optionDController = TextEditingController();
   String _correctOption = '';
   bool isLoading = false;
+  late String courseID;
+  late String subID;
+  late String subName;
+  AddQuizStatus isAddQuizSuccess = AddQuizStatus.neutral;
+
+  @override
+  void initState() {
+    super.initState();
+    courseID = widget.courseID;
+    subID = widget.subID;
+    subName = widget.subName;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,47 +83,37 @@ class _AddQuizState extends State<AddQuiz> {
                 secondaryText: "uestion",
               ),
               const SizedBox(
-                height: 30,
+                height: 40,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 2,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Subject Name",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: AppColor.marianBlue,
+                      height: 1,
+                    ),
+                  ),
+                  Text(
+                    widget.subName,
+                    style: const TextStyle(
+                      height: 1.3,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15,
+                      color: AppColor.marianBlue,
+                    ),
+                  ),
+                  const Divider(
                     color: AppColor.marianBlue,
                   ),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                width: MediaQuery.of(context).size.width,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Subject Name",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: AppColor.marianBlue,
-                        height: 1,
-                      ),
-                    ),
-                    Text(
-                      widget.subName,
-                      style: const TextStyle(
-                        height: 1.3,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                        color: AppColor.marianBlue,
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
               QuizAddQuestionChoice(
                 question: _questionController,
@@ -172,6 +184,52 @@ class _AddQuizState extends State<AddQuiz> {
                   ),
                 ],
               ),
+              Center(
+                child: Column(
+                  children: [
+                    (isAddQuizSuccess == AddQuizStatus.success)
+                        ? const Text(
+                            "Question added successfully",
+                            style: TextStyle(
+                              color: AppColor.forestGreen,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        : (isAddQuizSuccess == AddQuizStatus.emptyFields)
+                            ? const Text(
+                                "All input fields are required",
+                                style: TextStyle(
+                                  color: AppColor.tomato,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : (isAddQuizSuccess == AddQuizStatus.serverError)
+                                ? const Column(
+                                    children: [
+                                      Text(
+                                        "Oops...there was some error",
+                                        style: TextStyle(
+                                          color: AppColor.tomato,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Check your network connectivity",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: AppColor.tomato,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : const Text("")
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: SizedBox(
@@ -183,20 +241,14 @@ class _AddQuizState extends State<AddQuiz> {
                       foregroundColor: AppColor.marianBlue,
                     ),
                     onPressed: () {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      print("Q: ${_questionController.text}");
-                      print("A: ${_optionAController.text}");
-                      print("B: ${_optionBController.text}");
-                      print("C: ${_optionCController.text}");
-                      print("D: ${_optionDController.text}");
-                      print("Ans: $_correctOption");
-                      Future.delayed(const Duration(seconds: 3), () {
-                        setState(() {
-                          isLoading = false;
-                        });
-                      });
+                      addQuizQuestion(
+                        _questionController.text,
+                        _optionAController.text,
+                        _optionBController.text,
+                        _optionCController.text,
+                        _optionDController.text,
+                        _correctOption,
+                      );
                     },
                     child: (isLoading)
                         ? const SizedBox(
@@ -235,5 +287,63 @@ class _AddQuizState extends State<AddQuiz> {
         ),
       ),
     );
+  }
+
+  void addQuizQuestion(
+    String question,
+    String optionA,
+    String optionB,
+    String optionC,
+    String optionD,
+    String answer,
+  ) async {
+    setState(() {
+      isLoading = true;
+    });
+    String addQuizURL =
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/question/$courseID/subjects/$subID/questions.json";
+    try {
+      if (question.isNotEmpty &&
+          optionA.isNotEmpty &&
+          optionB.isNotEmpty &&
+          optionC.isNotEmpty &&
+          optionD.isNotEmpty &&
+          answer.isNotEmpty) {
+        Map<String, dynamic> questionDetails = {
+          "ans": answer,
+          "qName": question,
+          "choice": {
+            "A": optionA,
+            "B": optionB,
+            "C": optionC,
+            "D": optionD,
+          }
+        };
+        await http.post(
+          Uri.parse(addQuizURL),
+          body: jsonEncode(questionDetails),
+        );
+        isAddQuizSuccess = AddQuizStatus.success;
+        _questionController.text = '';
+        _optionAController.text = '';
+        _optionBController.text = '';
+        _optionCController.text = '';
+        _optionDController.text = '';
+        _correctOption = '';
+      } else {
+        isAddQuizSuccess = AddQuizStatus.emptyFields;
+      }
+    } catch (e) {
+      isAddQuizSuccess = AddQuizStatus.serverError;
+    } finally {
+      Future.delayed(const Duration(seconds: 3), () {
+        setState(() {
+          isAddQuizSuccess = AddQuizStatus.neutral;
+        });
+      });
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 }
