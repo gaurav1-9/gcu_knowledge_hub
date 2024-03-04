@@ -72,7 +72,7 @@ class _UserDashboardState extends State<UserDashboard> {
                 navigateTo: () => navigateToHome(context),
                 alignment: MainAxisAlignment.center,
                 fontSize: 10,
-                width: 136,
+                width: 0.4,
               ),
             ],
           ),

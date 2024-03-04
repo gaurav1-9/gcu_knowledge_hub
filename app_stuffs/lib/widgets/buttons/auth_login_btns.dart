@@ -18,7 +18,7 @@ class AuthLogin extends StatelessWidget {
     required this.iconType,
     required this.navigateTo,
     required this.alignment,
-    this.width = 170,
+    this.width = 0.50,
     this.fontSize = 16,
     this.isLoading = false,
   });
@@ -26,7 +26,7 @@ class AuthLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width,
+      width: MediaQuery.of(context).size.width * width,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColor.jonquil,
