@@ -99,6 +99,7 @@ class _SubjectsState extends State<Subjects> {
                                 ),
                                 onPressed: () {
                                   if (entry.value['questions'] != null) {
+                                    isUnderDevelopment = false;
                                     subQuestions.clear();
                                     subQuestions
                                         .addAll(entry.value['questions']);
