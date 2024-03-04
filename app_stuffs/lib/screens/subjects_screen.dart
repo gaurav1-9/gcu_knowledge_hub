@@ -21,6 +21,7 @@ class Subjects extends StatefulWidget {
 
 class _SubjectsState extends State<Subjects> {
   bool isLoading = true;
+  bool isUnderDevelopment = false;
   Map<String, dynamic> questionSub = {};
   Map<String, dynamic> subValues = {};
   Map<String, dynamic> subQuestions = {};
@@ -97,13 +98,16 @@ class _SubjectsState extends State<Subjects> {
                                   foregroundColor: AppColor.marianBlue,
                                 ),
                                 onPressed: () {
-                                  subQuestions.clear();
-                                  subQuestions.addAll(entry.value['questions']);
-                                  print(
-                                    "QUESTIONS IN ${entry.value['subName']}: ${subQuestions.length}",
-                                  );
+                                  if (entry.value['questions'] != null) {
+                                    subQuestions.clear();
+                                    subQuestions
+                                        .addAll(entry.value['questions']);
+                                  } else {
+                                    isUnderDevelopment = true;
+                                  }
                                   Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => QuizesScreen(
+                                      isUnderDevelopment: isUnderDevelopment,
                                       subName: entry.value['subName'],
                                       quizQuestions: subQuestions,
                                     ),
