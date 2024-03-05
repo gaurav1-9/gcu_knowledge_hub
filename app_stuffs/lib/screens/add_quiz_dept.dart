@@ -40,6 +40,8 @@ class _AddQuizDeptState extends State<AddQuizDept> {
             branchNames["$i"] = innerEntry;
             i++;
           }
+          branchNames["$i"] = "gap";
+          i++;
         }
       }
     } finally {
@@ -101,31 +103,52 @@ class _AddQuizDeptState extends State<AddQuizDept> {
                   ? const UnderDevelopment()
                   : Column(
                       children: branchNames.entries.map((entry) {
-                        return Column(
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                fixedSize: const Size(250, 60),
-                                backgroundColor: AppColor.jonquil,
-                                foregroundColor: AppColor.marianBlue,
-                              ),
-                              onPressed: () {
-                                navigateToAddQuizSubjects(entry.value);
-                              },
-                              child: Text(
-                                entry.value,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                        return (entry.value == 'gap')
+                            ? Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.2,
                                 ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            )
-                          ],
-                        );
+                                child: const Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Divider(),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      fixedSize: Size(
+                                        MediaQuery.of(context).size.width * .7,
+                                        MediaQuery.of(context).size.width * .18,
+                                      ),
+                                      backgroundColor: AppColor.jonquil,
+                                      foregroundColor: AppColor.marianBlue,
+                                    ),
+                                    onPressed: () {
+                                      navigateToAddQuizSubjects(entry.value);
+                                    },
+                                    child: Text(
+                                      entry.value,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  )
+                                ],
+                              );
                       }).toList(),
                     ),
             ],

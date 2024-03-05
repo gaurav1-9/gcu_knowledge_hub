@@ -87,7 +87,10 @@ class _BranchSchoolState extends State<BranchSchool> {
                           children: [
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                fixedSize: const Size(250, 60),
+                                fixedSize: Size(
+                                  MediaQuery.of(context).size.width * .7,
+                                  MediaQuery.of(context).size.width * .18,
+                                ),
                                 backgroundColor: AppColor.jonquil,
                                 foregroundColor: AppColor.marianBlue,
                               ),
