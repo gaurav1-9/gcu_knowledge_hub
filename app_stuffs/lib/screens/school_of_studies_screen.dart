@@ -93,15 +93,21 @@ class _SchoolOfStudiesState extends State<SchoolOfStudies> {
                             foregroundColor: AppColor.marianBlue,
                           ),
                           onPressed: () {
-                            switch (entry.value) {
-                              case "Engineering & Tech":
+                            switch (entry.key) {
+                              case "sch1":
                                 navigateToBranches("engineering_tech");
                                 break;
-                              case "Management & Commerce":
+                              case "sch2":
                                 navigateToBranches("mgmnt_comm");
                                 break;
-                              case "Humanities & Social Science":
+                              case "sch3":
                                 navigateToBranches("arts");
+                                break;
+                              case "sch4":
+                                navigateToBranches("nat_sci");
+                                break;
+                              case "sch5":
+                                navigateToBranches("ph_sci");
                                 break;
                             }
                           },
