@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gcu_knowledge_hub/widgets/quiz_info.dart';
 import 'package:gcu_knowledge_hub/widgets/under_development.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import '../widgets/subjects_heading.dart';
 import '../properties/global_colors.dart';
@@ -23,6 +25,7 @@ class QuizesScreen extends StatefulWidget {
 
 class _QuizesScreenState extends State<QuizesScreen> {
   int answered = 0;
+  int index = 0;
   late bool isUnderDevelopment;
   late int unanswered;
   late String subName;
@@ -70,8 +73,101 @@ class _QuizesScreenState extends State<QuizesScreen> {
                   unanswered: unanswered,
                   answered: answered,
                 ),
-          Column(
-            children: [Text(quizQuestions.values.toString())],
+          const SizedBox(
+            height: 20,
+          ),
+          (isUnderDevelopment)
+              ? const SizedBox(
+                  height: 0,
+                )
+              : SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * .53,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: RichText(
+                              text: TextSpan(
+                                text: "Question ",
+                                style: const TextStyle(
+                                  color: AppColor.marianBlue,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                                children: [
+                                  (index + 1 < 10)
+                                      ? TextSpan(text: "0${index + 1}")
+                                      : TextSpan(text: "${index + 1}"),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Divider(),
+                        Text(
+                          "${quizQuestions.values.elementAt(index)['qName']}\n\n",
+                          overflow: TextOverflow.clip,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.marianBlue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  foregroundColor: AppColor.marianBlue,
+                ),
+                onPressed: () {},
+                child: const Row(
+                  children: [
+                    Icon(
+                      LucideIcons.arrowLeftCircle,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Prev\nQuestion"),
+                  ],
+                ),
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  foregroundColor: AppColor.marianBlue,
+                ),
+                onPressed: () {},
+                child: const Row(
+                  children: [
+                    Text(
+                      "Next\nQuestion",
+                      textAlign: TextAlign.end,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(
+                      LucideIcons.arrowRightCircle,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           )
         ],
       ),
