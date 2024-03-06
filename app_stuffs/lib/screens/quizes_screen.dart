@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:gcu_knowledge_hub/widgets/prev_next_btns.dart';
 import 'package:gcu_knowledge_hub/widgets/quiz_info.dart';
 import 'package:gcu_knowledge_hub/widgets/under_development.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 
 import '../widgets/subjects_heading.dart';
 import '../properties/global_colors.dart';
@@ -82,7 +81,7 @@ class _QuizesScreenState extends State<QuizesScreen> {
                 )
               : SingleChildScrollView(
                   child: Container(
-                    height: MediaQuery.of(context).size.height * .53,
+                    height: MediaQuery.of(context).size.height * .5,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,68 +120,30 @@ class _QuizesScreenState extends State<QuizesScreen> {
                     ),
                   ),
                 ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  foregroundColor: AppColor.marianBlue,
-                ),
-                onPressed: () {
-                  if (index > 0) {
-                    setState(() {
-                      index -= 1;
-                    });
-                  }
-                },
-                child: const Row(
-                  children: [
-                    Icon(
-                      LucideIcons.arrowLeftCircle,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text("Prev\nQuestion"),
-                  ],
-                ),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  foregroundColor: AppColor.marianBlue,
-                ),
-                onPressed: () {
-                  if (index < quizQuestions.length - 1) {
-                    setState(() {
-                      index += 1;
-                    });
-                  }
-                },
-                child: const Row(
-                  children: [
-                    Text(
-                      "Next\nQuestion",
-                      textAlign: TextAlign.end,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(
-                      LucideIcons.arrowRightCircle,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )
+          PrevNextBtn(
+            totalQuestions: quizQuestions.length - 1,
+            index: index,
+            nextQuestion: nextQuestion,
+            prevQuestion: prevQuestion,
+          ),
         ],
       ),
     );
+  }
+
+  void nextQuestion() {
+    if (index < quizQuestions.length - 1) {
+      setState(() {
+        index += 1;
+      });
+    }
+  }
+
+  void prevQuestion() {
+    if (index > 0) {
+      setState(() {
+        index -= 1;
+      });
+    }
   }
 }
