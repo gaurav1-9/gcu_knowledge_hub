@@ -69,7 +69,10 @@ class _QuizesScreenState extends State<QuizesScreen> {
                   totalQuestions: quizQuestions.length,
                   unanswered: unanswered,
                   answered: answered,
-                )
+                ),
+          Column(
+            children: [Text(quizQuestions.values.toString())],
+          )
         ],
       ),
     );

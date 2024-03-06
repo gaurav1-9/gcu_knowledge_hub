@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:gcu_knowledge_hub/properties/save_login.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,17 +55,10 @@ class _LoginScreenState extends State<LoginScreen> {
           final Map<String, dynamic> users = jsonDecode(response.body);
           int loginvalue = 0;
           for (var entry in users.entries) {
-            var key = entry.key;
             var value = entry.value;
 
             if (value['username'] == username &&
                 value['password'] == password) {
-              LoginCredentialsSave(
-                userID: key,
-                name: value['name'],
-                username: value['username'],
-                userType: value['userType'],
-              );
               pref.setString(
                 'userData',
                 jsonEncode(
