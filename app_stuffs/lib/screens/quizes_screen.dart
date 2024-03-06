@@ -131,7 +131,13 @@ class _QuizesScreenState extends State<QuizesScreen> {
                   ),
                   foregroundColor: AppColor.marianBlue,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  if (index > 0) {
+                    setState(() {
+                      index -= 1;
+                    });
+                  }
+                },
                 child: const Row(
                   children: [
                     Icon(
@@ -151,7 +157,13 @@ class _QuizesScreenState extends State<QuizesScreen> {
                   ),
                   foregroundColor: AppColor.marianBlue,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  if (index < quizQuestions.length - 1) {
+                    setState(() {
+                      index += 1;
+                    });
+                  }
+                },
                 child: const Row(
                   children: [
                     Text(
