@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gcu_knowledge_hub/widgets/prev_next_btns.dart';
+import 'package:gcu_knowledge_hub/widgets/question_no_display.dart';
 import 'package:gcu_knowledge_hub/widgets/quiz_info.dart';
 import 'package:gcu_knowledge_hub/widgets/under_development.dart';
 
@@ -61,64 +63,49 @@ class _QuizesScreenState extends State<QuizesScreen> {
           SubjectHeadings(
             primaryText: "Quiz",
             subjectName: subName,
+            fontSize: 15,
           ),
           const SizedBox(
             height: 10,
           ),
           (isUnderDevelopment)
               ? const UnderDevelopment()
-              : Column(
-                  children: [
-                    QuizInfoBar(
-                      totalQuestions: quizQuestions.length,
-                      unanswered: unanswered,
-                      answered: answered,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SingleChildScrollView(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: Center(
-                                child: RichText(
-                                  text: TextSpan(
-                                    text: "Question ",
-                                    style: const TextStyle(
-                                      color: AppColor.marianBlue,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                    children: [
-                                      (index + 1 < 10)
-                                          ? TextSpan(text: "0${index + 1}")
-                                          : TextSpan(text: "${index + 1}"),
-                                    ],
+              : Expanded(
+                  child: Column(
+                    children: [
+                      QuizInfoBar(
+                        totalQuestions: quizQuestions.length,
+                        unanswered: unanswered,
+                        answered: answered,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      QuestionNumberDisplayer(qNo: index + 1),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${quizQuestions.values.elementAt(index)['qName']}\n\n",
+                                  overflow: TextOverflow.clip,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.marianBlue,
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                            const Divider(),
-                            Text(
-                              "${quizQuestions.values.elementAt(index)['qName']}\n\n",
-                              overflow: TextOverflow.clip,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.marianBlue,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                )
+                    ],
+                  ),
+                ),
         ],
       ),
       bottomNavigationBar: BottomAppBar(

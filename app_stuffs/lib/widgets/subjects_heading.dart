@@ -5,10 +5,12 @@ import '../properties/global_colors.dart';
 class SubjectHeadings extends StatelessWidget {
   final String primaryText;
   final String subjectName;
+  final double fontSize;
   const SubjectHeadings({
     super.key,
     required this.primaryText,
     required this.subjectName,
+    this.fontSize = 20,
   });
 
   @override
@@ -33,10 +35,10 @@ class SubjectHeadings extends StatelessWidget {
           width: MediaQuery.of(context).size.width - 50,
           child: Text(
             subjectName,
-            style: const TextStyle(
+            style: TextStyle(
               letterSpacing: 1,
               height: 1,
-              fontSize: 20,
+              fontSize: fontSize,
               fontWeight: FontWeight.w100,
               color: AppColor.marianBlue,
             ),
