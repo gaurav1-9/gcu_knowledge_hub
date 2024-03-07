@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gcu_knowledge_hub/widgets/prev_next_btns.dart';
 import 'package:gcu_knowledge_hub/widgets/question_no_display.dart';
 import 'package:gcu_knowledge_hub/widgets/quiz_info.dart';
