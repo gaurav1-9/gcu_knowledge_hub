@@ -63,7 +63,6 @@ class _QuizesScreenState extends State<QuizesScreen> {
           SubjectHeadings(
             primaryText: "Quiz",
             subjectName: subName,
-            fontSize: 15,
           ),
           const SizedBox(
             height: 10,
