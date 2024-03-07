@@ -67,66 +67,72 @@ class _QuizesScreenState extends State<QuizesScreen> {
           ),
           (isUnderDevelopment)
               ? const UnderDevelopment()
-              : QuizInfoBar(
-                  totalQuestions: quizQuestions.length,
-                  unanswered: unanswered,
-                  answered: answered,
-                ),
-          const SizedBox(
-            height: 20,
-          ),
-          (isUnderDevelopment)
-              ? const SizedBox(
-                  height: 0,
-                )
-              : SingleChildScrollView(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * .5,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: RichText(
-                              text: TextSpan(
-                                text: "Question ",
-                                style: const TextStyle(
-                                  color: AppColor.marianBlue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+              : Column(
+                  children: [
+                    QuizInfoBar(
+                      totalQuestions: quizQuestions.length,
+                      unanswered: unanswered,
+                      answered: answered,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SingleChildScrollView(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Center(
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: "Question ",
+                                    style: const TextStyle(
+                                      color: AppColor.marianBlue,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                    children: [
+                                      (index + 1 < 10)
+                                          ? TextSpan(text: "0${index + 1}")
+                                          : TextSpan(text: "${index + 1}"),
+                                    ],
+                                  ),
                                 ),
-                                children: [
-                                  (index + 1 < 10)
-                                      ? TextSpan(text: "0${index + 1}")
-                                      : TextSpan(text: "${index + 1}"),
-                                ],
                               ),
                             ),
-                          ),
+                            const Divider(),
+                            Text(
+                              "${quizQuestions.values.elementAt(index)['qName']}\n\n",
+                              overflow: TextOverflow.clip,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.marianBlue,
+                              ),
+                            ),
+                          ],
                         ),
-                        const Divider(),
-                        Text(
-                          "${quizQuestions.values.elementAt(index)['qName']}\n\n",
-                          overflow: TextOverflow.clip,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.marianBlue,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-          PrevNextBtn(
-            totalQuestions: quizQuestions.length - 1,
-            index: index,
-            nextQuestion: nextQuestion,
-            prevQuestion: prevQuestion,
-          ),
+                  ],
+                )
         ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        elevation: 0,
+        child: (isUnderDevelopment)
+            ? const SizedBox(
+                height: 0,
+              )
+            : PrevNextBtn(
+                totalQuestions: quizQuestions.length - 1,
+                index: index,
+                nextQuestion: nextQuestion,
+                prevQuestion: prevQuestion,
+              ),
       ),
     );
   }
