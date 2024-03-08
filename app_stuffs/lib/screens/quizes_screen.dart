@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gcu_knowledge_hub/widgets/options.dart';
 import 'package:gcu_knowledge_hub/widgets/prev_next_btns.dart';
 import 'package:gcu_knowledge_hub/widgets/question_no_display.dart';
 import 'package:gcu_knowledge_hub/widgets/quiz_info.dart';
@@ -67,7 +68,14 @@ class _QuizesScreenState extends State<QuizesScreen> {
             height: 10,
           ),
           (isUnderDevelopment)
-              ? const UnderDevelopment()
+              ? const Column(
+                  children: [
+                    SizedBox(
+                      height: 30,
+                    ),
+                    UnderDevelopment(),
+                  ],
+                )
               : Expanded(
                   child: Column(
                     children: [
@@ -88,13 +96,64 @@ class _QuizesScreenState extends State<QuizesScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${quizQuestions.values.elementAt(index)['qName']}\n\n",
+                                  "${quizQuestions.values.elementAt(index)['qName']}",
                                   overflow: TextOverflow.clip,
                                   style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     color: AppColor.marianBlue,
                                   ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                MCQOptions(
+                                  optionNo: quizQuestions.values
+                                      .elementAt(index)['choice']
+                                      .keys
+                                      .elementAt(0)
+                                      .toString(),
+                                  choiceDesc: quizQuestions.values
+                                      .elementAt(index)['choice']
+                                      .values
+                                      .elementAt(0)
+                                      .toString(),
+                                ),
+                                MCQOptions(
+                                  optionNo: quizQuestions.values
+                                      .elementAt(index)['choice']
+                                      .keys
+                                      .elementAt(1)
+                                      .toString(),
+                                  choiceDesc: quizQuestions.values
+                                      .elementAt(index)['choice']
+                                      .values
+                                      .elementAt(1)
+                                      .toString(),
+                                ),
+                                MCQOptions(
+                                  optionNo: quizQuestions.values
+                                      .elementAt(index)['choice']
+                                      .keys
+                                      .elementAt(2)
+                                      .toString(),
+                                  choiceDesc: quizQuestions.values
+                                      .elementAt(index)['choice']
+                                      .values
+                                      .elementAt(2)
+                                      .toString(),
+                                ),
+                                MCQOptions(
+                                  optionNo: quizQuestions.values
+                                      .elementAt(index)['choice']
+                                      .keys
+                                      .elementAt(3)
+                                      .toString(),
+                                  choiceDesc: quizQuestions.values
+                                      .elementAt(index)['choice']
+                                      .values
+                                      .elementAt(3)
+                                      .toString(),
                                 ),
                               ],
                             ),
