@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import '../properties/global_colors.dart';
 
 class QuizInfoBar extends StatelessWidget {
-  final int totalQuestions;
+  final int value;
+  final String desc;
   const QuizInfoBar({
     super.key,
-    required this.totalQuestions,
+    required this.value,
+    required this.desc,
   });
 
   @override
@@ -31,7 +33,7 @@ class QuizInfoBar extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                totalQuestions.toString(),
+                value.toString(),
                 style: const TextStyle(
                   color: AppColor.jonquil,
                   fontSize: 20,
@@ -52,10 +54,10 @@ class QuizInfoBar extends StatelessWidget {
                   topRight: Radius.circular(15),
                   bottomRight: Radius.circular(15)),
             ),
-            child: const Center(
+            child: Center(
               child: Text(
-                "Total Questions",
-                style: TextStyle(
+                desc,
+                style: const TextStyle(
                   color: AppColor.marianBlue,
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

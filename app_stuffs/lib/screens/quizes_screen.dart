@@ -67,6 +67,7 @@ class _QuizesScreenState extends State<QuizesScreen> {
       MaterialPageRoute(
         builder: (_) {
           return QuizScoreCard(
+            subName: subName,
             totalQuestions: quizQuestions.length,
             selectedQuestions: selectedOptions,
             correctAnswers: quizAnswers,
@@ -130,7 +131,8 @@ class _QuizesScreenState extends State<QuizesScreen> {
                   child: Column(
                     children: [
                       QuizInfoBar(
-                        totalQuestions: quizQuestions.length,
+                        value: quizQuestions.length,
+                        desc: "Total Questions",
                       ),
                       const SizedBox(
                         height: 20,
