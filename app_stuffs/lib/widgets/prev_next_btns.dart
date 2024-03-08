@@ -3,36 +3,22 @@ import 'package:lucide_icons/lucide_icons.dart';
 
 import '../properties/global_colors.dart';
 
-class PrevNextBtn extends StatefulWidget {
+class PrevNextBtn extends StatelessWidget {
   final int totalQuestions;
   final int index;
+  final bool isLastQuestion;
   final VoidCallback nextQuestion;
   final VoidCallback prevQuestion;
+  final VoidCallback quizSubmission;
   const PrevNextBtn({
     super.key,
     required this.totalQuestions,
     required this.index,
     required this.nextQuestion,
     required this.prevQuestion,
+    required this.isLastQuestion,
+    required this.quizSubmission,
   });
-
-  @override
-  State<PrevNextBtn> createState() => _PrevNextBtnState();
-}
-
-class _PrevNextBtnState extends State<PrevNextBtn> {
-  late int totalQuestion;
-  late int index;
-  late VoidCallback nextQuestion;
-  late VoidCallback prevQuestion;
-  @override
-  void initState() {
-    super.initState();
-    totalQuestion = widget.totalQuestions;
-    index = widget.index;
-    nextQuestion = widget.nextQuestion;
-    prevQuestion = widget.prevQuestion;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,31 +47,57 @@ class _PrevNextBtnState extends State<PrevNextBtn> {
             ],
           ),
         ),
-        TextButton(
-          style: TextButton.styleFrom(
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-            foregroundColor: AppColor.marianBlue,
-          ),
-          onPressed: () {
-            nextQuestion();
-          },
-          child: const Row(
-            children: [
-              Text(
-                "Next\nQuestion",
-                textAlign: TextAlign.end,
+        (isLastQuestion)
+            ? TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  foregroundColor: AppColor.marianBlue,
+                ),
+                onPressed: () {
+                  quizSubmission();
+                },
+                child: const Row(
+                  children: [
+                    Text(
+                      "Quiz\nSubmission",
+                      textAlign: TextAlign.end,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(
+                      LucideIcons.arrowRightCircle,
+                    ),
+                  ],
+                ),
+              )
+            : TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  foregroundColor: AppColor.marianBlue,
+                ),
+                onPressed: () {
+                  nextQuestion();
+                },
+                child: const Row(
+                  children: [
+                    Text(
+                      "Next\nQuestion",
+                      textAlign: TextAlign.end,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(
+                      LucideIcons.arrowRightCircle,
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(
-                width: 10,
-              ),
-              Icon(
-                LucideIcons.arrowRightCircle,
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gcu_knowledge_hub/widgets/prev_next_btns.dart';
-import 'package:gcu_knowledge_hub/widgets/question_no_display.dart';
-import 'package:gcu_knowledge_hub/widgets/quiz_info.dart';
-import 'package:gcu_knowledge_hub/widgets/under_development.dart';
 
+import '../screens/quiz_score_card.dart';
+import '../widgets/prev_next_btns.dart';
+import '../widgets/question_no_display.dart';
+import '../widgets/quiz_info.dart';
+import '../widgets/under_development.dart';
 import '../widgets/subjects_heading.dart';
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
@@ -29,7 +30,10 @@ class _QuizesScreenState extends State<QuizesScreen> {
   late String subName;
   late Map<String, dynamic> quizQuestions;
   List<String> selectedOptions = []; // Track selected options for each question
+  List<String> quizAnswers = [];
   int index = 0;
+
+  bool isLastQuestion = false;
 
   @override
   void initState() {
@@ -37,8 +41,54 @@ class _QuizesScreenState extends State<QuizesScreen> {
     subName = widget.subName;
     quizQuestions = widget.quizQuestions;
     isUnderDevelopment = widget.isUnderDevelopment;
-    // Initialize the list with empty strings for each question
     selectedOptions = List.filled(widget.quizQuestions.length, '');
+
+    for (var i = 0; i < quizQuestions.length; i++) {
+      quizAnswers.add(quizQuestions.values.elementAt(i)['ans']);
+    }
+  }
+
+  void nextQuestion() {
+    if (index < quizQuestions.length - 1) {
+      setState(() {
+        isLastQuestion = false;
+        index += 1;
+      });
+    }
+    if (index + 1 == quizQuestions.length) {
+      setState(() {
+        isLastQuestion = true;
+      });
+    }
+  }
+
+  void quizSubmission() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) {
+          return QuizScoreCard(
+            totalQuestions: quizQuestions.length,
+            selectedQuestions: selectedOptions,
+            correctAnswers: quizAnswers,
+          );
+        },
+      ),
+    );
+  }
+
+  void optionSelected(String optionNo) {
+    setState(() {
+      selectedOptions[index] = optionNo;
+    });
+  }
+
+  void prevQuestion() {
+    if (index > 0) {
+      setState(() {
+        isLastQuestion = false;
+        index -= 1;
+      });
+    }
   }
 
   @override
@@ -158,12 +208,13 @@ class _QuizesScreenState extends State<QuizesScreen> {
                 index: index,
                 nextQuestion: nextQuestion,
                 prevQuestion: prevQuestion,
+                isLastQuestion: isLastQuestion,
+                quizSubmission: quizSubmission,
               ),
       ),
     );
   }
 
-  // Function to create the option widget
   Widget buildOptionWidget(
       {required String optionNo, required String choiceDesc}) {
     return GestureDetector(
@@ -179,25 +230,16 @@ class _QuizesScreenState extends State<QuizesScreen> {
           horizontal: 10,
         ),
         decoration: BoxDecoration(
-          color: (selectedOptions[index] == optionNo &&
-                  quizQuestions.values.elementAt(index)['ans'] == optionNo)
-              ? AppColor.right
-              : (selectedOptions[index] == optionNo &&
-                      quizQuestions.values.elementAt(index)['ans'] != optionNo)
-                  ? AppColor.wrong
-                  : null,
+          color: (selectedOptions[index] == optionNo)
+              ? AppColor.marianBlue.withOpacity(0.1)
+              : null,
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           border: Border.fromBorderSide(
             BorderSide(
               width: (selectedOptions[index] == optionNo) ? 2 : 1,
-              color: (selectedOptions[index] == optionNo &&
-                      quizQuestions.values.elementAt(index)['ans'] == optionNo)
-                  ? AppColor.forestGreen
-                  : (selectedOptions[index] == optionNo &&
-                          quizQuestions.values.elementAt(index)['ans'] !=
-                              optionNo)
-                      ? AppColor.tomato
-                      : AppColor.grey,
+              color: (selectedOptions[index] == optionNo)
+                  ? AppColor.marianBlue
+                  : AppColor.grey,
             ),
           ),
         ),
@@ -229,30 +271,5 @@ class _QuizesScreenState extends State<QuizesScreen> {
         ),
       ),
     );
-  }
-
-  // Function to handle option selection
-  void optionSelected(String optionNo) {
-    setState(() {
-      selectedOptions[index] = optionNo;
-    });
-  }
-
-  // Function to move to the next question
-  void nextQuestion() {
-    if (index < quizQuestions.length - 1) {
-      setState(() {
-        index += 1;
-      });
-    }
-  }
-
-  // Function to move to the previous question
-  void prevQuestion() {
-    if (index > 0) {
-      setState(() {
-        index -= 1;
-      });
-    }
   }
 }
