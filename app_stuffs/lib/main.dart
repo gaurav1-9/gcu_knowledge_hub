@@ -8,6 +8,7 @@ import './screens/homescreen.dart';
 import './screens/login_screen.dart';
 import './screens/school_of_studies_screen.dart';
 import './screens/register_screen.dart';
+import 'screens/admin_homepage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,6 +23,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool? isLoggedIn = false;
+  bool? isAdmin = false;
   late SharedPreferences pref;
 
   @override
@@ -44,11 +46,14 @@ class _MyAppState extends State<MyApp> {
         '/userDashboard': (context) => const UserDashboard(),
         '/schools': (context) => const SchoolOfStudies(),
         '/addQuizDept': (context) => const AddQuizDept(),
+        '/adminHome': (context) => const AdminHomepage(),
       },
       home: Builder(
         builder: (context) {
           if (isLoggedIn == true) {
             return const UserDashboard();
+          } else if (isAdmin == true) {
+            return const AdminHomepage();
           } else {
             return const Homescreen();
           }
@@ -61,6 +66,7 @@ class _MyAppState extends State<MyApp> {
     pref = await SharedPreferences.getInstance();
     setState(() {
       isLoggedIn = pref.getBool('isLogin');
+      isAdmin = pref.getBool('isAdmin');
     });
   }
 }
