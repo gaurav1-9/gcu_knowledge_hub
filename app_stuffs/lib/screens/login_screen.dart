@@ -57,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
           if (username == 'admin' && password == 'gkh_2024') {
             pref.setBool("isAdmin", true);
+            navigateToAdmin(ctx);
           } else {
             for (var entry in users.entries) {
               var value = entry.value;
@@ -123,6 +124,13 @@ class _LoginScreenState extends State<LoginScreen> {
   void navigateToUserDashboard(BuildContext context) {
     Navigator.of(context).pushNamedAndRemoveUntil(
       '/userDashboard',
+      (route) => false,
+    );
+  }
+
+  void navigateToAdmin(BuildContext context) {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      '/adminHome',
       (route) => false,
     );
   }
