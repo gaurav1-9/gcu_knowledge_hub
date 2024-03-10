@@ -50,21 +50,33 @@ class _AdminHomepageState extends State<AdminHomepage> {
                 fontSize: 16,
                 alignment: MainAxisAlignment.start,
               ),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    pref.setBool('isAdmin', false);
-                  });
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/home',
-                    (route) => false,
-                  );
-                },
-                icon: const Icon(
-                  LucideIcons.logOut,
-                  color: AppColor.marianBlue,
-                  size: 30,
-                ),
+              Column(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        pref.setBool('isAdmin', false);
+                      });
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/home',
+                        (route) => false,
+                      );
+                    },
+                    icon: const Icon(
+                      LucideIcons.logOut,
+                      color: AppColor.marianBlue,
+                      size: 25,
+                    ),
+                  ),
+                  const Text(
+                    "LOGOUT",
+                    style: TextStyle(
+                      color: AppColor.marianBlue,
+                      fontSize: 8,
+                      height: 0.1,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
