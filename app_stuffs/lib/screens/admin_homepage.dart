@@ -1,8 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gcu_knowledge_hub/screens/circular_loading_screen.dart';
+import 'package:flutter/widgets.dart';
+import 'package:gcu_knowledge_hub/widgets/admin_home_menu.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../screens/circular_loading_screen.dart';
+import '../widgets/headings.dart';
 import '../properties/global_colors.dart';
 import '../widgets/gcu.dart';
 
@@ -81,6 +85,72 @@ class _AdminHomepageState extends State<AdminHomepage> {
             ],
           ),
           backgroundColor: AppColor.jonquil,
+        ),
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 30,
+              ),
+              const Headings(
+                primaryText: "Admin",
+                secondaryTextFirst: 'P',
+                secondaryText: "anel",
+              ),
+              const SizedBox(
+                height: 60,
+              ),
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        print("Dept Details Tapped");
+                      },
+                      child: const AdminHomeMenu(
+                        primaryText: "Department Details",
+                        secondaryText:
+                            "Add new departments or edit the existing departments",
+                        reverse: false,
+                        icon: LucideIcons.school,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        print("Subject Details Tapped");
+                      },
+                      child: const AdminHomeMenu(
+                        primaryText: "Subject Details",
+                        secondaryText:
+                            "Add new subjects, edit or delete the existing subjects",
+                        reverse: true,
+                        icon: LucideIcons.bookMarked,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        print("Question Details Tapped");
+                      },
+                      child: const AdminHomeMenu(
+                        primaryText: "Question Details",
+                        secondaryText:
+                            "Add new quiz questions, edit or delete the existing quiz questions",
+                        reverse: false,
+                        icon: LucideIcons.fileText,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       );
     }
