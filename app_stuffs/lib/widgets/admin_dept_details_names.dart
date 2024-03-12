@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gcu_knowledge_hub/properties/global_colors.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:http/http.dart' as http;
+
+import '../properties/global_colors.dart';
 
 class AdminDepartment extends StatelessWidget {
   final String firstHead;
@@ -78,8 +80,6 @@ class AdminDepartment extends StatelessWidget {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  print(
-                                      "Clicked delete btn of ${e.value}, key: ${schName + e.key}");
                                   _showAlertDialog(
                                     context,
                                     e.value,
@@ -120,20 +120,58 @@ class AdminDepartment extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          // backgroundColor: AppColor.,
-          title: const Text('Are you sure?'),
+          title: const Text(
+            'Are you sure?',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+              color: AppColor.marianBlue,
+            ),
+          ),
           content: Text(
-              'You want to delete $deptName department, $deptID, $schName'),
+            'You want to delete $deptName department, $deptID, $schName',
+            style: const TextStyle(
+              color: AppColor.marianBlue,
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the alert
+                Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text(
+                'CANCEL',
+                style: TextStyle(
+                  color: AppColor.marianBlue,
+                ),
+              ),
             ),
+            TextButton(
+              onPressed: () {
+                deleteDept(deptName, schName, deptID, context);
+              },
+              child: const Text(
+                'DELETE',
+                style: TextStyle(
+                  color: AppColor.tomato,
+                ),
+              ),
+            )
           ],
         );
       },
     );
+  }
+
+  void deleteDept(
+    String deptName,
+    String schName,
+    String deptID,
+    BuildContext ctx,
+  ) async {
+    String deleteURL =
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/branches/$schName/$deptID.json";
+    print(deleteURL);
+    Navigator.of(ctx).pop();
   }
 }
