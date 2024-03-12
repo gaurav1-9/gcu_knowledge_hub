@@ -50,7 +50,6 @@ class _QuizScoreCardState extends State<QuizScoreCard> {
 
   @override
   Widget build(BuildContext context) {
-    print(percentage.toInt());
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,

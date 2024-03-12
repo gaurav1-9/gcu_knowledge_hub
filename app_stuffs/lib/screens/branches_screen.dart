@@ -12,8 +12,8 @@ import '../widgets/headings.dart';
 import 'circular_loading_screen.dart';
 
 class BranchSchool extends StatefulWidget {
-  final String schName;
-  const BranchSchool({super.key, required this.schName});
+  final String schID;
+  const BranchSchool({super.key, required this.schID});
 
   @override
   State<BranchSchool> createState() => _BranchSchoolState();
@@ -21,19 +21,21 @@ class BranchSchool extends StatefulWidget {
 
 class _BranchSchoolState extends State<BranchSchool> {
   bool isLoading = true;
-  late Map routeArgs;
+  late String schID;
   Map<String, dynamic> branchNames = {};
 
   void getBranch() async {
     String branchURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/branches/${widget.schName}.json";
-    final response = await http
-        .get(Uri.parse(branchURL))
-        .timeout(const Duration(seconds: 10));
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames.json";
+    final response = await http.get(Uri.parse(branchURL));
     try {
       if (jsonDecode(response.body) != null) {
         Map<String, dynamic> branchData = jsonDecode(response.body);
-        branchNames.addAll(branchData);
+        for (var i = 0; i < branchData.length; i++) {
+          branchNames.addAll({
+            branchData.keys.elementAt(i): branchData.values.elementAt(i)['dept']
+          });
+        }
       }
     } finally {
       setState(() {
@@ -46,6 +48,7 @@ class _BranchSchoolState extends State<BranchSchool> {
   void initState() {
     getBranch();
     super.initState();
+    schID = widget.schID;
   }
 
   @override
@@ -95,7 +98,8 @@ class _BranchSchoolState extends State<BranchSchool> {
                                 foregroundColor: AppColor.marianBlue,
                               ),
                               onPressed: () {
-                                navigateToSubjects(entry.value);
+                                navigateToSubjects(
+                                    schID, entry.key, entry.value);
                               },
                               child: Text(
                                 entry.value,
@@ -120,11 +124,13 @@ class _BranchSchoolState extends State<BranchSchool> {
     }
   }
 
-  void navigateToSubjects(String branchName) {
+  void navigateToSubjects(String schID, String branchID, String branchName) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) {
           return Subjects(
+            branchID: branchID,
+            schID: schID,
             branchName: branchName,
           );
         },

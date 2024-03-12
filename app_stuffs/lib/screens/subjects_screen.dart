@@ -12,8 +12,15 @@ import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/gcu.dart';
 
 class Subjects extends StatefulWidget {
+  final String branchID;
   final String branchName;
-  const Subjects({super.key, required this.branchName});
+  final String schID;
+  const Subjects({
+    super.key,
+    required this.branchID,
+    required this.schID,
+    required this.branchName,
+  });
 
   @override
   State<Subjects> createState() => _SubjectsState();
@@ -27,19 +34,17 @@ class _SubjectsState extends State<Subjects> {
   Map<String, dynamic> subQuestions = {};
 
   void getSubjects() async {
-    String questionsURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/question.json";
-    final response = await http
-        .get(Uri.parse(questionsURL))
-        .timeout(const Duration(seconds: 10));
+    String subjectsURL =
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames/${widget.branchID}/subjects.json";
+    final response = await http.get(Uri.parse(subjectsURL));
     try {
-      Map<String, dynamic> apiQuestionData = jsonDecode(response.body);
-      questionSub.addAll(apiQuestionData);
-      for (var entry in questionSub.entries) {
-        if (entry.value['branch'] == widget.branchName) {
-          subValues.clear();
-          subValues.addAll(entry.value['subjects']);
-          break;
+      if (jsonDecode(response.body) != null) {
+        Map<String, dynamic> subjectData = jsonDecode(response.body);
+        for (var i = 0; i < subjectData.length; i++) {
+          subValues.addAll({
+            subjectData.keys.elementAt(i):
+                subjectData.values.elementAt(i)['subName']
+          });
         }
       }
     } finally {
@@ -101,24 +106,15 @@ class _SubjectsState extends State<Subjects> {
                                   foregroundColor: AppColor.marianBlue,
                                 ),
                                 onPressed: () {
-                                  if (entry.value['questions'] != null) {
-                                    isUnderDevelopment = false;
-                                    subQuestions.clear();
-                                    subQuestions
-                                        .addAll(entry.value['questions']);
-                                  } else {
-                                    isUnderDevelopment = true;
-                                  }
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => QuizesScreen(
-                                      isUnderDevelopment: isUnderDevelopment,
-                                      subName: entry.value['subName'],
-                                      quizQuestions: subQuestions,
-                                    ),
-                                  ));
+                                  navigateToQuestions(
+                                    branchID: widget.branchID,
+                                    schID: widget.schID,
+                                    subID: entry.key,
+                                    subName: entry.value,
+                                  );
                                 },
                                 child: Text(
-                                  entry.value['subName'],
+                                  entry.value.toString(),
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -139,5 +135,25 @@ class _SubjectsState extends State<Subjects> {
         ),
       );
     }
+  }
+
+  void navigateToQuestions({
+    required String schID,
+    required String branchID,
+    required String subID,
+    required String subName,
+  }) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) {
+          return QuizesScreen(
+            branchID: branchID,
+            schID: schID,
+            subID: subID,
+            subName: subName,
+          );
+        },
+      ),
+    );
   }
 }

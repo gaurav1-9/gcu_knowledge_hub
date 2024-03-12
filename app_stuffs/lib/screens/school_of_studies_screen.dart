@@ -18,7 +18,8 @@ class SchoolOfStudies extends StatefulWidget {
 }
 
 class _SchoolOfStudiesState extends State<SchoolOfStudies> {
-  late final Map<String, dynamic> schoolNames = {};
+  late Map<String, dynamic> schoolNames = {};
+  Map<String, dynamic> data = {};
   bool isLoading = true;
 
   void getSchools() async {
@@ -26,8 +27,11 @@ class _SchoolOfStudiesState extends State<SchoolOfStudies> {
         "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools.json";
     final response = await http.get(Uri.parse(schoolURL));
     try {
-      Map<String, dynamic> schoolsData = jsonDecode(response.body);
-      schoolNames.addAll(schoolsData);
+      data = jsonDecode(response.body);
+      for (var i = 0; i < data.length; i++) {
+        schoolNames.addAll(
+            {data.keys.elementAt(i): data.values.elementAt(i)['schName']});
+      }
     } finally {
       setState(() {
         isLoading = false;
@@ -35,11 +39,11 @@ class _SchoolOfStudiesState extends State<SchoolOfStudies> {
     }
   }
 
-  void navigateToBranches(String school) {
+  void navigateToBranches(String schoolID) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) {
-          return BranchSchool(schName: school);
+          return BranchSchool(schID: schoolID);
         },
       ),
     );
@@ -96,23 +100,7 @@ class _SchoolOfStudiesState extends State<SchoolOfStudies> {
                             foregroundColor: AppColor.marianBlue,
                           ),
                           onPressed: () {
-                            switch (entry.key) {
-                              case "sch1":
-                                navigateToBranches("engineering_tech");
-                                break;
-                              case "sch2":
-                                navigateToBranches("mgmnt_comm");
-                                break;
-                              case "sch3":
-                                navigateToBranches("arts");
-                                break;
-                              case "sch4":
-                                navigateToBranches("nat_sci");
-                                break;
-                              case "sch5":
-                                navigateToBranches("ph_sci");
-                                break;
-                            }
+                            navigateToBranches(entry.key);
                           },
                           child: Text(
                             entry.value,
