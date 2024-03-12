@@ -84,23 +84,23 @@ class _AdminHomepageState extends State<AdminHomepage> {
           ),
           backgroundColor: AppColor.jonquil,
         ),
-        body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 30,
-              ),
-              const Headings(
-                primaryText: "Admin",
-                secondaryTextFirst: 'P',
-                secondaryText: "anel",
-              ),
-              const SizedBox(
-                height: 60,
-              ),
-              SingleChildScrollView(
-                child: Column(
+        body: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 30,
+                ),
+                const Headings(
+                  primaryText: "Admin",
+                  secondaryTextFirst: 'P',
+                  secondaryText: "anel",
+                ),
+                const SizedBox(
+                  height: 60,
+                ),
+                Column(
                   children: [
                     GestureDetector(
                       onTap: () {
@@ -146,9 +146,9 @@ class _AdminHomepageState extends State<AdminHomepage> {
                       ),
                     ),
                   ],
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       );

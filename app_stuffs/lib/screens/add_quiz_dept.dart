@@ -20,7 +20,6 @@ class AddQuizDept extends StatefulWidget {
 
 class _AddQuizDeptState extends State<AddQuizDept> {
   bool isLoading = true;
-  late Map routeArgs;
   Map<String, dynamic> branchNames = {};
 
   void getAllBranch() async {
