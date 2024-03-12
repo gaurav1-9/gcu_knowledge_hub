@@ -12,8 +12,15 @@ import '../widgets/gcu.dart';
 import './add_quiz_screen.dart';
 
 class AddQuizSubjects extends StatefulWidget {
-  final String deptname;
-  const AddQuizSubjects({super.key, required this.deptname});
+  final String deptID;
+  final String schID;
+  final String deptName;
+  const AddQuizSubjects({
+    super.key,
+    required this.deptID,
+    required this.schID,
+    required this.deptName,
+  });
 
   @override
   State<AddQuizSubjects> createState() => _AddQuizSubjectsState();
@@ -24,26 +31,23 @@ class _AddQuizSubjectsState extends State<AddQuizSubjects> {
   Map<String, dynamic> questionSub = {};
   Map<String, dynamic> subValues = {};
   Map<String, dynamic> subQuestions = {};
-  late String courseID;
   late String subID;
+  late String schID;
+  late String deptID;
   late String subName;
 
   void getSubjects() async {
     String questionsURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/question.json";
-    final response = await http
-        .get(Uri.parse(questionsURL))
-        .timeout(const Duration(seconds: 10));
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames/${widget.deptID}/subjects.json";
+    final response = await http.get(Uri.parse(questionsURL));
     try {
       Map<String, dynamic> apiQuestionData = jsonDecode(response.body);
       questionSub.addAll(apiQuestionData);
-      for (var entry in questionSub.entries) {
-        if (entry.value['branch'] == widget.deptname) {
-          courseID = entry.key;
-          subValues.clear();
-          subValues.addAll(entry.value['subjects']);
-          break;
-        }
+      for (int i = 0; i < questionSub.length; i++) {
+        subValues.addAll({
+          questionSub.keys.elementAt(i):
+              questionSub.values.elementAt(i)['subName']
+        });
       }
     } finally {
       setState(() {
@@ -56,6 +60,9 @@ class _AddQuizSubjectsState extends State<AddQuizSubjects> {
   void initState() {
     getSubjects();
     super.initState();
+    deptID = widget.deptID;
+    schID = widget.schID;
+    subName = widget.deptName;
   }
 
   @override
@@ -77,7 +84,7 @@ class _AddQuizSubjectsState extends State<AddQuizSubjects> {
         ),
         body: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.only(top: 30),
+            padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -90,7 +97,7 @@ class _AddQuizSubjectsState extends State<AddQuizSubjects> {
                   height: 20,
                 ),
                 Text(
-                  "Subjects of ${widget.deptname} Department",
+                  "Subjects of $subName Department",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: AppColor.marianBlue,
@@ -117,18 +124,22 @@ class _AddQuizSubjectsState extends State<AddQuizSubjects> {
                                 ),
                                 onPressed: () {
                                   subID = entry.key;
-                                  subName = entry.value['subName'];
-                                  Navigator.of(context)
-                                      .push(MaterialPageRoute(builder: (_) {
-                                    return AddQuiz(
-                                      courseID: courseID,
-                                      subID: subID,
-                                      subName: subName,
-                                    );
-                                  }));
+                                  subName = entry.value;
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) {
+                                        return AddQuiz(
+                                          schID: schID,
+                                          courseID: deptID,
+                                          subID: subID,
+                                          subName: subName,
+                                        );
+                                      },
+                                    ),
+                                  );
                                 },
                                 child: Text(
-                                  entry.value['subName'],
+                                  entry.value,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,

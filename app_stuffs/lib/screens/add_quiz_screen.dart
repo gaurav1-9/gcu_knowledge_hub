@@ -23,11 +23,13 @@ class AddQuiz extends StatefulWidget {
   final String subName;
   final String courseID;
   final String subID;
+  final String schID;
   const AddQuiz({
     super.key,
     required this.subName,
     required this.courseID,
     required this.subID,
+    required this.schID,
   });
 
   @override
@@ -44,6 +46,7 @@ class _AddQuizState extends State<AddQuiz> {
   bool isLoading = false;
   late String courseID;
   late String subID;
+  late String schID;
   late String subName;
   AddQuizStatus isAddQuizSuccess = AddQuizStatus.neutral;
 
@@ -52,6 +55,7 @@ class _AddQuizState extends State<AddQuiz> {
     super.initState();
     courseID = widget.courseID;
     subID = widget.subID;
+    schID = widget.schID;
     subName = widget.subName;
   }
 
@@ -301,7 +305,7 @@ class _AddQuizState extends State<AddQuiz> {
       isLoading = true;
     });
     String addQuizURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/question/$courseID/subjects/$subID/questions.json";
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$courseID/subjects/$subID/questions.json";
     try {
       if (question.isNotEmpty &&
           optionA.isNotEmpty &&

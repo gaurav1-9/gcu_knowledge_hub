@@ -24,23 +24,26 @@ class _AddQuizDeptState extends State<AddQuizDept> {
 
   void getAllBranch() async {
     String branchURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/branches.json";
-    final response = await http
-        .get(Uri.parse(branchURL))
-        .timeout(const Duration(seconds: 10));
-
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools.json";
+    final response = await http.get(Uri.parse(branchURL));
     try {
       if (jsonDecode(response.body) != null) {
-        int i = 0;
+        int k = 0;
         Map<String, dynamic> allBranchData = jsonDecode(response.body);
-
-        for (var entry in allBranchData.values) {
-          for (var innerEntry in entry.values) {
-            branchNames["$i"] = innerEntry;
-            i++;
+        for (int i = 0; i < allBranchData.length; i++) {
+          for (var j = 0;
+              j < allBranchData.values.elementAt(i)['branchNames'].length;
+              j++) {
+            branchNames[
+                    "${allBranchData.keys.elementAt(i)}_${allBranchData.values.elementAt(i)['branchNames'].keys.elementAt(j)}"] =
+                allBranchData.values
+                    .elementAt(i)['branchNames']
+                    .values
+                    .elementAt(j)['dept'];
+            k++;
           }
-          branchNames["$i"] = "gap";
-          i++;
+          branchNames["$k"] = 'gap';
+          k++;
         }
       }
     } finally {
@@ -132,7 +135,10 @@ class _AddQuizDeptState extends State<AddQuizDept> {
                                       foregroundColor: AppColor.marianBlue,
                                     ),
                                     onPressed: () {
-                                      navigateToAddQuizSubjects(entry.value);
+                                      navigateToAddQuizSubjects(
+                                        entry.key,
+                                        entry.value,
+                                      );
                                     },
                                     child: Text(
                                       entry.value,
@@ -157,11 +163,15 @@ class _AddQuizDeptState extends State<AddQuizDept> {
     }
   }
 
-  void navigateToAddQuizSubjects(String branchName) {
+  void navigateToAddQuizSubjects(String branchMetaData, String branchName) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) {
-          return AddQuizSubjects(deptname: branchName);
+          return AddQuizSubjects(
+            deptID: branchMetaData.split('_')[1],
+            schID: branchMetaData.split('_')[0],
+            deptName: branchName,
+          );
         },
       ),
     );
