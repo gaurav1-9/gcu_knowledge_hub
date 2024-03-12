@@ -17,18 +17,32 @@ class AdminDeptDetails extends StatefulWidget {
 
 class _AdminDeptDetailsState extends State<AdminDeptDetails> {
   bool isLoading = true;
-  Map<String, dynamic> branchNames = {};
+  Map<String, dynamic> schoolNames = {};
 
   void getAllBranch() async {
     String branchURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/branches.json";
-    final response = await http
-        .get(Uri.parse(branchURL))
-        .timeout(const Duration(seconds: 10));
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools.json";
+    final response = await http.get(Uri.parse(branchURL));
 
     try {
       if (jsonDecode(response.body) != null) {
-        branchNames = jsonDecode(response.body);
+        Map<String, dynamic> rawData = jsonDecode(response.body);
+        for (int i = 0; i < rawData.length; i++) {
+          Map<String, dynamic> deptTemp = {};
+          for (int j = 0;
+              j < rawData.values.elementAt(i)['branchNames'].length;
+              j++) {
+            deptTemp.addAll({
+              "dept$j": rawData.values
+                  .elementAt(i)['branchNames']
+                  .values
+                  .elementAt(j)['dept']
+            });
+          }
+          schoolNames.addAll({
+            rawData.values.elementAt(i)['schName']: deptTemp,
+          });
+        }
       }
     } finally {
       setState(() {
@@ -65,39 +79,39 @@ class _AdminDeptDetailsState extends State<AdminDeptDetails> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: branchNames.entries.map((entry) {
-                    if (entry.key == 'arts') {
+                  children: schoolNames.entries.map((entry) {
+                    if (entry.key == 'Engineering & Tech') {
                       return AdminDepartment(
                         firstHead: 'School of',
-                        secondHead: "Humanities & Social Sciences",
+                        secondHead: entry.key,
                         deptNames: entry.value,
                         schName: entry.key,
                       );
-                    } else if (entry.key == 'engineering_tech') {
+                    } else if (entry.key == 'Management & Commerce') {
                       return AdminDepartment(
                         firstHead: 'School of',
-                        secondHead: "Engineering & Technology",
+                        secondHead: entry.key,
                         deptNames: entry.value,
                         schName: entry.key,
                       );
-                    } else if (entry.key == 'mgmnt_comm') {
+                    } else if (entry.key == 'Humanities & Social Science') {
                       return AdminDepartment(
                         firstHead: 'School of',
-                        secondHead: "Management & Commerce",
+                        secondHead: entry.key,
                         deptNames: entry.value,
                         schName: entry.key,
                       );
-                    } else if (entry.key == 'nat_sci') {
+                    } else if (entry.key == 'Natural Sciences') {
                       return AdminDepartment(
                         firstHead: 'School of',
-                        secondHead: "Natural Sciences",
+                        secondHead: entry.key,
                         deptNames: entry.value,
                         schName: entry.key,
                       );
                     } else {
                       return AdminDepartment(
                         firstHead: 'School of',
-                        secondHead: "Pharmaceutical Sciences",
+                        secondHead: entry.key,
                         deptNames: entry.value,
                         schName: entry.key,
                       );
