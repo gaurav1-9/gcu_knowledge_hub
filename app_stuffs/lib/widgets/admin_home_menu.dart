@@ -26,7 +26,7 @@ class AdminHomeMenu extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: AppColor.jonquil,
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -95,7 +95,7 @@ class AdminHomeMenu extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: AppColor.jonquil,
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,

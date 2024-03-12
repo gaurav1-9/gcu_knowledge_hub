@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import './screens/admin_dept_details.dart';
+import './screens/admin_subject_details.dart';
+import './screens/admin_quiz_details.dart';
 import './screens/user_dashboard.dart';
 import './screens/add_quiz_dept.dart';
 import './screens/homescreen.dart';
@@ -47,6 +50,9 @@ class _MyAppState extends State<MyApp> {
         '/schools': (context) => const SchoolOfStudies(),
         '/addQuizDept': (context) => const AddQuizDept(),
         '/adminHome': (context) => const AdminHomepage(),
+        '/admin_dept_details': (context) => const AdminDeptDetails(),
+        '/admin_subject_details': (context) => const AdminSubjectDetails(),
+        '/admin_quiz_details': (context) => const AdminQuizDetails(),
       },
       home: Builder(
         builder: (context) {

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gcu_knowledge_hub/widgets/admin_home_menu.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -106,7 +104,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        print("Dept Details Tapped");
+                        Navigator.of(context).pushNamed('/admin_dept_details');
                       },
                       child: const AdminHomeMenu(
                         primaryText: "Department Details",
@@ -121,7 +119,8 @@ class _AdminHomepageState extends State<AdminHomepage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        print("Subject Details Tapped");
+                        Navigator.of(context)
+                            .pushNamed('/admin_subject_details');
                       },
                       child: const AdminHomeMenu(
                         primaryText: "Subject Details",
@@ -136,7 +135,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        print("Question Details Tapped");
+                        Navigator.of(context).pushNamed('/admin_quiz_details');
                       },
                       child: const AdminHomeMenu(
                         primaryText: "Question Details",
