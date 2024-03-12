@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gcu_knowledge_hub/properties/global_colors.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -7,11 +6,13 @@ class AdminDepartment extends StatelessWidget {
   final String firstHead;
   final String secondHead;
   final Map<String, dynamic> deptNames;
+  final String schName;
   const AdminDepartment({
     super.key,
     required this.firstHead,
     required this.secondHead,
     required this.deptNames,
+    required this.schName,
   });
 
   @override
@@ -77,7 +78,14 @@ class AdminDepartment extends StatelessWidget {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  print("Clicked delete btn of ${e.value}");
+                                  print(
+                                      "Clicked delete btn of ${e.value}, key: ${schName + e.key}");
+                                  _showAlertDialog(
+                                    context,
+                                    e.value,
+                                    e.key,
+                                    schName,
+                                  );
                                 },
                                 icon: const Icon(
                                   LucideIcons.trash2,
@@ -99,6 +107,33 @@ class AdminDepartment extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _showAlertDialog(
+    BuildContext context,
+    String deptName,
+    String deptID,
+    String schName,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // backgroundColor: AppColor.,
+          title: const Text('Are you sure?'),
+          content: Text(
+              'You want to delete $deptName department, $deptID, $schName'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the alert
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

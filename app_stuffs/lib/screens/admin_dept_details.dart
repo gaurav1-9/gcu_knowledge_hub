@@ -71,30 +71,35 @@ class _AdminDeptDetailsState extends State<AdminDeptDetails> {
                         firstHead: 'School of',
                         secondHead: "Humanities & Social Sciences",
                         deptNames: entry.value,
+                        schName: entry.key,
                       );
                     } else if (entry.key == 'engineering_tech') {
                       return AdminDepartment(
                         firstHead: 'School of',
                         secondHead: "Engineering & Technology",
                         deptNames: entry.value,
+                        schName: entry.key,
                       );
                     } else if (entry.key == 'mgmnt_comm') {
                       return AdminDepartment(
                         firstHead: 'School of',
                         secondHead: "Management & Commerce",
                         deptNames: entry.value,
+                        schName: entry.key,
                       );
                     } else if (entry.key == 'nat_sci') {
                       return AdminDepartment(
                         firstHead: 'School of',
                         secondHead: "Natural Sciences",
                         deptNames: entry.value,
+                        schName: entry.key,
                       );
                     } else {
                       return AdminDepartment(
                         firstHead: 'School of',
                         secondHead: "Pharmaceutical Sciences",
                         deptNames: entry.value,
+                        schName: entry.key,
                       );
                     }
                   }).toList(),
