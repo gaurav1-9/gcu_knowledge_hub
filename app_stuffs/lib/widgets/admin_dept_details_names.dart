@@ -11,6 +11,7 @@ enum ShowMsg {
   neutral,
   isEmpty,
   successfull,
+  serverError,
 }
 
 class AdminDepartment extends StatefulWidget {
@@ -89,7 +90,12 @@ class _AdminDepartmentState extends State<AdminDepartment> {
                               children: [
                                 IconButton(
                                   onPressed: () {
-                                    print("Clicked edit btn of ${e.value}");
+                                    bottomSheetEdit(
+                                      schID: widget.schName.split("_")[0],
+                                      branchID: e.key,
+                                      branchName: e.value,
+                                      ctx: context,
+                                    );
                                   },
                                   icon: const Icon(
                                     LucideIcons.edit,
@@ -123,7 +129,7 @@ class _AdminDepartmentState extends State<AdminDepartment> {
                   backgroundColor: AppColor.jonquilLight,
                   child: IconButton(
                     onPressed: () {
-                      bottomSheet(widget.schName.split("_")[0],
+                      bottomSheetAdd(widget.schName.split("_")[0],
                           widget.schName.split("_")[1], context);
                     },
                     icon: const Icon(
@@ -163,7 +169,7 @@ class _AdminDepartmentState extends State<AdminDepartment> {
             ),
           ),
           content: Text(
-            'You want to delete $deptName department, $deptID, ${schName.split("_")[0]}',
+            'You want to delete $deptName department',
             style: const TextStyle(
               color: AppColor.marianBlue,
             ),
@@ -197,7 +203,183 @@ class _AdminDepartmentState extends State<AdminDepartment> {
     );
   }
 
-  void bottomSheet(String schID, String schName, BuildContext ctx) {
+  void bottomSheetEdit({
+    required String schID,
+    required String branchID,
+    required String branchName,
+    required BuildContext ctx,
+  }) {
+    String updatedText = branchName;
+    showBottomSheet(
+      backgroundColor: AppColor.jonquilLight,
+      context: ctx,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              padding: const EdgeInsets.all(16),
+              height: MediaQuery.of(context).size.height * 0.36,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Edit name of department",
+                    style: TextStyle(
+                      color: AppColor.marianBlue,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    branchName,
+                    style: const TextStyle(
+                      color: AppColor.marianBlue,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  TextFormField(
+                    textCapitalization: TextCapitalization.words,
+                    initialValue: updatedText,
+                    onChanged: (value) {
+                      updatedText = value;
+                    },
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 3,
+                        horizontal: 5,
+                      ),
+                      focusColor: AppColor.marianBlue,
+                      hintText: "Edit department name",
+                      prefixIcon: Icon(
+                        LucideIcons.edit3,
+                        color: AppColor.marianBlue,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColor.grey,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColor.marianBlue,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                    style: const TextStyle(
+                      color: AppColor.marianBlue,
+                      fontSize: 20,
+                    ),
+                    cursorColor: AppColor.marianBlue,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      (showMsg == ShowMsg.isEmpty)
+                          ? const Text(
+                              "Department name cannot be empty",
+                              style: TextStyle(
+                                color: AppColor.tomato,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : (showMsg == ShowMsg.successfull)
+                              ? const Text(
+                                  "Department edited",
+                                  style: TextStyle(
+                                    color: AppColor.forestGreen,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : (showMsg == ShowMsg.serverError)
+                                  ? const Text(
+                                      "Oops...could'nt reach the server",
+                                      style: TextStyle(
+                                        color: AppColor.tomato,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  : const Text(""),
+                    ],
+                  ),
+                  AuthLogin(
+                    isLoading: isLoading,
+                    btnType: "Edit Department",
+                    iconType: LucideIcons.clipboardEdit,
+                    navigateTo: () async {
+                      if (updatedText.isEmpty) {
+                        setState(
+                          () {
+                            showMsg = ShowMsg.isEmpty;
+                          },
+                        );
+                        Future.delayed(const Duration(seconds: 3), () {
+                          setState(() {
+                            showMsg = ShowMsg.neutral;
+                          });
+                        });
+                      } else {
+                        setState(() {
+                          isLoading = true;
+                          showMsg = ShowMsg.neutral;
+                        });
+                        try {
+                          String editingURL =
+                              "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID.json";
+                          await http.put(
+                            Uri.parse(editingURL),
+                            body: json.encode({"dept": updatedText}),
+                          );
+                          setState(() {
+                            showMsg = ShowMsg.successfull;
+                          });
+                        } catch (e) {
+                          setState(() {
+                            showMsg = ShowMsg.serverError;
+                          });
+                        } finally {
+                          setState(() {
+                            isLoading = false;
+                          });
+
+                          Future.delayed(const Duration(seconds: 1), () {
+                            if (showMsg != ShowMsg.serverError) {
+                              Navigator.pushReplacementNamed(
+                                  context, '/admin_dept_details');
+                            }
+                            setState(() {
+                              showMsg = ShowMsg.neutral;
+                            });
+                          });
+                        }
+                      }
+                    },
+                    alignment: MainAxisAlignment.center,
+                    width: MediaQuery.of(context).size.width,
+                  )
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void bottomSheetAdd(String schID, String schName, BuildContext ctx) {
     showBottomSheet(
       backgroundColor: AppColor.jonquilLight,
       context: ctx,
@@ -291,7 +473,15 @@ class _AdminDepartmentState extends State<AdminDepartment> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 )
-                              : const Text(""),
+                              : (showMsg == ShowMsg.serverError)
+                                  ? const Text(
+                                      "Oops...could'nt reach the server",
+                                      style: TextStyle(
+                                        color: AppColor.tomato,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  : const Text(""),
                     ],
                   ),
                   AuthLogin(
@@ -302,8 +492,7 @@ class _AdminDepartmentState extends State<AdminDepartment> {
                       if (deptNameController.text.isNotEmpty) {
                         setState(() {
                           isLoading = true;
-                          showMsg = ShowMsg
-                              .neutral; // Reset showMsg when the user clicks the button again
+                          showMsg = ShowMsg.neutral;
                         });
 
                         try {
@@ -320,17 +509,23 @@ class _AdminDepartmentState extends State<AdminDepartment> {
                           setState(() {
                             showMsg = ShowMsg.successfull;
                           });
+                        } catch (e) {
+                          setState(() {
+                            showMsg = ShowMsg.serverError;
+                          });
                         } finally {
                           setState(() {
                             isLoading = false;
                           });
 
                           Future.delayed(const Duration(seconds: 1), () {
+                            if (showMsg != ShowMsg.serverError) {
+                              Navigator.pushReplacementNamed(
+                                  context, '/admin_dept_details');
+                            }
                             setState(() {
                               showMsg = ShowMsg.neutral;
                             });
-                            Navigator.pushReplacementNamed(
-                                context, '/admin_dept_details');
                           });
                         }
                       } else {
@@ -366,8 +561,15 @@ class _AdminDepartmentState extends State<AdminDepartment> {
         "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$deptID.json";
     try {
       await http.delete(Uri.parse(deleteURL));
+    } catch (e) {
+      showMsg = ShowMsg.serverError;
     } finally {
-      Navigator.pushReplacementNamed(context, '/admin_dept_details');
+      if (showMsg == ShowMsg.serverError) {
+        Navigator.of(context).pop();
+        showMsg = ShowMsg.neutral;
+      } else {
+        Navigator.pushReplacementNamed(context, '/admin_dept_details');
+      }
     }
   }
 }
