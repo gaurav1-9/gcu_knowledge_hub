@@ -33,14 +33,16 @@ class _AdminDeptDetailsState extends State<AdminDeptDetails> {
               j < rawData.values.elementAt(i)['branchNames'].length;
               j++) {
             deptTemp.addAll({
-              "dept$j": rawData.values
-                  .elementAt(i)['branchNames']
-                  .values
-                  .elementAt(j)['dept']
+              rawData.values.elementAt(i)['branchNames'].keys.elementAt(j):
+                  rawData.values
+                      .elementAt(i)['branchNames']
+                      .values
+                      .elementAt(j)['dept']
             });
           }
           schoolNames.addAll({
-            rawData.values.elementAt(i)['schName']: deptTemp,
+            "${rawData.keys.elementAt(i)}_${rawData.values.elementAt(i)['schName']}":
+                deptTemp,
           });
         }
       }
@@ -83,35 +85,35 @@ class _AdminDeptDetailsState extends State<AdminDeptDetails> {
                     if (entry.key == 'Engineering & Tech') {
                       return AdminDepartment(
                         firstHead: 'School of',
-                        secondHead: entry.key,
+                        secondHead: entry.key.split("_")[1],
                         deptNames: entry.value,
                         schName: entry.key,
                       );
                     } else if (entry.key == 'Management & Commerce') {
                       return AdminDepartment(
                         firstHead: 'School of',
-                        secondHead: entry.key,
+                        secondHead: entry.key.split("_")[1],
                         deptNames: entry.value,
                         schName: entry.key,
                       );
                     } else if (entry.key == 'Humanities & Social Science') {
                       return AdminDepartment(
                         firstHead: 'School of',
-                        secondHead: entry.key,
+                        secondHead: entry.key.split("_")[1],
                         deptNames: entry.value,
                         schName: entry.key,
                       );
                     } else if (entry.key == 'Natural Sciences') {
                       return AdminDepartment(
                         firstHead: 'School of',
-                        secondHead: entry.key,
+                        secondHead: entry.key.split("_")[1],
                         deptNames: entry.value,
                         schName: entry.key,
                       );
                     } else {
                       return AdminDepartment(
                         firstHead: 'School of',
-                        secondHead: entry.key,
+                        secondHead: entry.key.split("_")[1],
                         deptNames: entry.value,
                         schName: entry.key,
                       );
