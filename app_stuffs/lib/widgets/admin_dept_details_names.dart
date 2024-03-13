@@ -218,7 +218,7 @@ class _AdminDepartmentState extends State<AdminDepartment> {
           builder: (BuildContext context, StateSetter setState) {
             return Container(
               padding: const EdgeInsets.all(16),
-              height: MediaQuery.of(context).size.height * 0.36,
+              height: MediaQuery.of(context).size.height * 0.4,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

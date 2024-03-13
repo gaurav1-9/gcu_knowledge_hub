@@ -82,42 +82,12 @@ class _AdminDeptDetailsState extends State<AdminDeptDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: schoolNames.entries.map((entry) {
-                    if (entry.key == 'Engineering & Tech') {
-                      return AdminDepartment(
-                        firstHead: 'School of',
-                        secondHead: entry.key.split("_")[1],
-                        deptNames: entry.value,
-                        schName: entry.key,
-                      );
-                    } else if (entry.key == 'Management & Commerce') {
-                      return AdminDepartment(
-                        firstHead: 'School of',
-                        secondHead: entry.key.split("_")[1],
-                        deptNames: entry.value,
-                        schName: entry.key,
-                      );
-                    } else if (entry.key == 'Humanities & Social Science') {
-                      return AdminDepartment(
-                        firstHead: 'School of',
-                        secondHead: entry.key.split("_")[1],
-                        deptNames: entry.value,
-                        schName: entry.key,
-                      );
-                    } else if (entry.key == 'Natural Sciences') {
-                      return AdminDepartment(
-                        firstHead: 'School of',
-                        secondHead: entry.key.split("_")[1],
-                        deptNames: entry.value,
-                        schName: entry.key,
-                      );
-                    } else {
-                      return AdminDepartment(
-                        firstHead: 'School of',
-                        secondHead: entry.key.split("_")[1],
-                        deptNames: entry.value,
-                        schName: entry.key,
-                      );
-                    }
+                    return AdminDepartment(
+                      firstHead: 'School of',
+                      secondHead: entry.key.split("_")[1],
+                      deptNames: entry.value,
+                      schName: entry.key,
+                    );
                   }).toList(),
                 ),
               ),

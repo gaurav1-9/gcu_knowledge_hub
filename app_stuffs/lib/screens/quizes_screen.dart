@@ -53,6 +53,10 @@ class _QuizesScreenState extends State<QuizesScreen> {
         for (var i = 0; i < quizQuestions.length; i++) {
           quizAnswers.add(quizQuestions.values.elementAt(i)['ans']);
         }
+      } else {
+        setState(() {
+          isUnderDevelopment = true;
+        });
       }
     } finally {
       setState(() {

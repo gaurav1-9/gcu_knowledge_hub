@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './screens/admin_dept_details.dart';
-import './screens/admin_subject_details.dart';
+import 'screens/admin_subject_details_branch_selection.dart';
 import './screens/admin_quiz_details.dart';
 import './screens/user_dashboard.dart';
 import './screens/add_quiz_dept.dart';
