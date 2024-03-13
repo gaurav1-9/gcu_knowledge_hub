@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:gcu_knowledge_hub/screens/circular_loading_screen.dart';
-import 'package:gcu_knowledge_hub/widgets/admin_dept_details_names.dart';
 import 'package:http/http.dart' as http;
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../properties/global_colors.dart';
+import '../screens/circular_loading_screen.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/buttons/auth_login_btns.dart';
 import '../widgets/gcu.dart';
@@ -64,7 +62,6 @@ class _AdminSubjectSelectionDetailsState
         }
         print(deptSubjects);
       }
-    } catch (e) {
     } finally {
       setState(() {
         isLoading = false;
@@ -170,13 +167,58 @@ class _AdminSubjectSelectionDetailsState
                             ),
                             child: Container(
                               padding: const EdgeInsets.all(10),
-                              child: Text(
-                                deptSubjects.values.elementAt(index),
-                                style: const TextStyle(
-                                  color: AppColor.marianBlue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    deptSubjects.values.elementAt(index),
+                                    style: const TextStyle(
+                                      color: AppColor.marianBlue,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          bottomSheetEdit(
+                                            ctx: context,
+                                            subName: deptSubjects.values
+                                                .elementAt(index),
+                                            subID: deptSubjects.keys
+                                                .elementAt(index),
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          LucideIcons.edit,
+                                          color: AppColor.marianBlue,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          _showAlertDialog(
+                                            context: context,
+                                            deptID: branchID,
+                                            deptName: branchName,
+                                            subName: deptSubjects.values
+                                                .elementAt(index),
+                                            subID: deptSubjects.keys
+                                                .elementAt(index),
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          LucideIcons.trash2,
+                                          color: AppColor.marianBlue,
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
                               ),
                             ),
                           );
@@ -290,7 +332,7 @@ class _AdminSubjectSelectionDetailsState
                     children: [
                       (showMsg == ShowMsg.isEmpty)
                           ? const Text(
-                              "Department name cannot be empty",
+                              "Subject name cannot be empty",
                               style: TextStyle(
                                 color: AppColor.tomato,
                                 fontWeight: FontWeight.bold,
@@ -298,7 +340,7 @@ class _AdminSubjectSelectionDetailsState
                             )
                           : (showMsg == ShowMsg.successfull)
                               ? const Text(
-                                  "Department added",
+                                  "Subject added",
                                   style: TextStyle(
                                     color: AppColor.forestGreen,
                                     fontWeight: FontWeight.bold,
@@ -306,7 +348,7 @@ class _AdminSubjectSelectionDetailsState
                                 )
                               : (showMsg == ShowMsg.serverError)
                                   ? const Text(
-                                      "Oops...could'nt reach the server",
+                                      "Oops...couldn't reach the server",
                                       style: TextStyle(
                                         color: AppColor.tomato,
                                         fontWeight: FontWeight.bold,
@@ -317,7 +359,7 @@ class _AdminSubjectSelectionDetailsState
                   ),
                   AuthLogin(
                     isLoading: isLoading,
-                    btnType: "Add Department",
+                    btnType: "Add Subject",
                     iconType: LucideIcons.filePlus,
                     navigateTo: () async {
                       if (subNameController.text.isNotEmpty) {
@@ -351,15 +393,19 @@ class _AdminSubjectSelectionDetailsState
 
                           Future.delayed(const Duration(seconds: 1), () {
                             if (showMsg != ShowMsg.serverError) {
-                              Navigator.pushReplacement(context,
-                                  MaterialPageRoute(builder: (_) {
-                                return AdminSubjectSelectionDetails(
-                                  branchID: branchID,
-                                  schID: schID,
-                                  schName: schName,
-                                  branchName: branchName,
-                                );
-                              }));
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) {
+                                    return AdminSubjectSelectionDetails(
+                                      branchID: branchID,
+                                      schID: schID,
+                                      schName: schName,
+                                      branchName: branchName,
+                                    );
+                                  },
+                                ),
+                              );
                             }
                             setState(() {
                               showMsg = ShowMsg.neutral;
@@ -375,6 +421,272 @@ class _AdminSubjectSelectionDetailsState
                             showMsg = ShowMsg.neutral;
                           });
                         });
+                      }
+                    },
+                    alignment: MainAxisAlignment.center,
+                    width: MediaQuery.of(context).size.width,
+                  )
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showAlertDialog({
+    required BuildContext context,
+    required String deptName,
+    required String deptID,
+    required String subName,
+    required String subID,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Are you sure?',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+              color: AppColor.marianBlue,
+            ),
+          ),
+          content: Text(
+            'You want to delete $subName from $branchName department',
+            style: const TextStyle(
+              color: AppColor.marianBlue,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'CANCEL',
+                style: TextStyle(
+                  color: AppColor.marianBlue,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                deleteSub(
+                  ctx: context,
+                  subID: subID,
+                  subName: branchName,
+                );
+              },
+              child: const Text(
+                'DELETE',
+                style: TextStyle(
+                  color: AppColor.tomato,
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void deleteSub({
+    required String subName,
+    required String subID,
+    required BuildContext ctx,
+  }) async {
+    String deleteURL =
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects/$subID.json";
+    try {
+      await http.delete(Uri.parse(deleteURL));
+    } catch (e) {
+      showMsg = ShowMsg.serverError;
+    } finally {
+      if (showMsg == ShowMsg.serverError) {
+        Navigator.of(context).pop();
+        showMsg = ShowMsg.neutral;
+      } else {
+        Navigator.pushReplacementNamed(context, "/admin_subject_details");
+      }
+    }
+  }
+
+  void bottomSheetEdit({
+    required BuildContext ctx,
+    required String subName,
+    required String subID,
+  }) {
+    String updatedText = subName;
+    showBottomSheet(
+      backgroundColor: AppColor.jonquilLight,
+      context: ctx,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              padding: const EdgeInsets.all(16),
+              height: MediaQuery.of(context).size.height * 0.4,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Edit name of department",
+                    style: TextStyle(
+                      color: AppColor.marianBlue,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    branchName,
+                    style: const TextStyle(
+                      color: AppColor.marianBlue,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  TextFormField(
+                    textCapitalization: TextCapitalization.words,
+                    initialValue: updatedText,
+                    onChanged: (value) {
+                      updatedText = value;
+                    },
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 3,
+                        horizontal: 5,
+                      ),
+                      focusColor: AppColor.marianBlue,
+                      hintText: "Edit department name",
+                      prefixIcon: Icon(
+                        LucideIcons.edit3,
+                        color: AppColor.marianBlue,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColor.grey,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColor.marianBlue,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                    style: const TextStyle(
+                      color: AppColor.marianBlue,
+                      fontSize: 20,
+                    ),
+                    cursorColor: AppColor.marianBlue,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      (showMsg == ShowMsg.isEmpty)
+                          ? const Text(
+                              "Subject name cannot be empty",
+                              style: TextStyle(
+                                color: AppColor.tomato,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : (showMsg == ShowMsg.successfull)
+                              ? const Text(
+                                  "Subject edited",
+                                  style: TextStyle(
+                                    color: AppColor.forestGreen,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : (showMsg == ShowMsg.serverError)
+                                  ? const Text(
+                                      "Oops...couldn't reach the server",
+                                      style: TextStyle(
+                                        color: AppColor.tomato,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  : const Text(""),
+                    ],
+                  ),
+                  AuthLogin(
+                    isLoading: isLoading,
+                    btnType: "Edit Department",
+                    iconType: LucideIcons.clipboardEdit,
+                    navigateTo: () async {
+                      if (updatedText.isEmpty) {
+                        setState(
+                          () {
+                            showMsg = ShowMsg.isEmpty;
+                          },
+                        );
+                        Future.delayed(const Duration(seconds: 3), () {
+                          setState(() {
+                            showMsg = ShowMsg.neutral;
+                          });
+                        });
+                      } else {
+                        setState(() {
+                          isLoading = true;
+                          showMsg = ShowMsg.neutral;
+                        });
+                        try {
+                          String editingURL =
+                              "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects/$subID.json";
+                          await http.put(
+                            Uri.parse(editingURL),
+                            body: json.encode({"subName": updatedText}),
+                          );
+                          // print(editingURL);
+                          setState(() {
+                            showMsg = ShowMsg.successfull;
+                          });
+                        } catch (e) {
+                          setState(() {
+                            showMsg = ShowMsg.serverError;
+                          });
+                        } finally {
+                          setState(() {
+                            isLoading = false;
+                          });
+
+                          Future.delayed(const Duration(seconds: 1), () {
+                            if (showMsg != ShowMsg.serverError) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) {
+                                    return AdminSubjectSelectionDetails(
+                                      branchID: branchID,
+                                      schID: schID,
+                                      schName: schName,
+                                      branchName: branchName,
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+                            setState(() {
+                              showMsg = ShowMsg.neutral;
+                            });
+                          });
+                        }
                       }
                     },
                     alignment: MainAxisAlignment.center,
