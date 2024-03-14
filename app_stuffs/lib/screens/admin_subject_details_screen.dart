@@ -60,7 +60,6 @@ class _AdminSubjectSelectionDetailsState
                 rawDeptSubjects.values.elementAt(i)['subName']
           });
         }
-        print(deptSubjects);
       }
     } finally {
       setState(() {
@@ -178,7 +177,7 @@ class _AdminSubjectSelectionDetailsState
                                     style: const TextStyle(
                                       color: AppColor.marianBlue,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 15,
+                                      fontSize: 14,
                                     ),
                                   ),
                                   Row(

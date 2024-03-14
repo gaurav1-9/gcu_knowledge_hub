@@ -82,7 +82,7 @@ class _AdminDepartmentState extends State<AdminDepartment> {
                               style: const TextStyle(
                                 color: AppColor.marianBlue,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 17,
+                                fontSize: 15,
                               ),
                             ),
                             Row(

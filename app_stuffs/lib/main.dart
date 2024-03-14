@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import './screens/admin_dept_details.dart';
 import 'screens/admin_subject_details_branch_selection.dart';
-import './screens/admin_quiz_details.dart';
+import 'screens/admin_quiz_details_branch.dart';
 import './screens/user_dashboard.dart';
 import './screens/add_quiz_dept.dart';
 import './screens/homescreen.dart';
@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
         '/adminHome': (context) => const AdminHomepage(),
         '/admin_dept_details': (context) => const AdminDeptDetails(),
         '/admin_subject_details': (context) => const AdminSubjectDetails(),
-        '/admin_quiz_details': (context) => const AdminQuizDetails(),
+        '/admin_quiz_details': (context) => const AdminQuizDetailsBranch(),
       },
       home: Builder(
         builder: (context) {
