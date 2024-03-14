@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:lucide_icons/lucide_icons.dart';
 
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/gcu.dart';
+import 'admin_quiz_details_questions.dart';
 import 'circular_loading_screen.dart';
 
 enum ShowMsg {
@@ -37,7 +39,6 @@ class _AdminQuizDetailsSubjectState extends State<AdminQuizDetailsSubject> {
   bool isLoading = true;
   late String schID;
   late String branchID;
-  late String schName;
   late String branchName;
   Map<String, dynamic> deptSubjects = {};
   TextEditingController subNameController = TextEditingController();
@@ -71,7 +72,6 @@ class _AdminQuizDetailsSubjectState extends State<AdminQuizDetailsSubject> {
     schID = widget.schID;
     branchID = widget.branchID;
     branchName = widget.branchName;
-    schName = widget.schName;
     getDeptSubjects();
   }
 
@@ -165,7 +165,20 @@ class _AdminQuizDetailsSubjectState extends State<AdminQuizDetailsSubject> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                print(deptSubjects.values.elementAt(index));
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) {
+                                      return AdminQuizDetailsQuestions(
+                                        deptID: branchID,
+                                        schID: schID,
+                                        subID:
+                                            deptSubjects.keys.elementAt(index),
+                                        subName: deptSubjects.values
+                                            .elementAt(index),
+                                      );
+                                    },
+                                  ),
+                                );
                               },
                               splashColor:
                                   AppColor.jonquilLight.withOpacity(0.3),
@@ -184,6 +197,31 @@ class _AdminQuizDetailsSubjectState extends State<AdminQuizDetailsSubject> {
                                         fontSize: 14,
                                       ),
                                     ),
+                                    const Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          "Show quizes",
+                                          style: TextStyle(
+                                            color: AppColor.marianBlue,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: 4,
+                                            right: 8,
+                                          ),
+                                          child: Icon(
+                                            LucideIcons.arrowRightCircle,
+                                            size: 18,
+                                            color: AppColor.marianBlue,
+                                          ),
+                                        )
+                                      ],
+                                    )
                                   ],
                                 ),
                               ),
