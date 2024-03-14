@@ -167,6 +167,7 @@ class _AdminSubjectSelectionDetailsState
                             ),
                             child: Container(
                               padding: const EdgeInsets.all(10),
+                              height: 300,
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -177,7 +178,7 @@ class _AdminSubjectSelectionDetailsState
                                     style: const TextStyle(
                                       color: AppColor.marianBlue,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16,
+                                      fontSize: 15,
                                     ),
                                   ),
                                   Row(
@@ -509,7 +510,20 @@ class _AdminSubjectSelectionDetailsState
         Navigator.of(context).pop();
         showMsg = ShowMsg.neutral;
       } else {
-        Navigator.pushReplacementNamed(context, "/admin_subject_details");
+        Navigator.of(context)
+            .popUntil(ModalRoute.withName('/admin_subject_details'));
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) {
+              return AdminSubjectSelectionDetails(
+                branchID: branchID,
+                branchName: branchName,
+                schID: schID,
+                schName: schName,
+              );
+            },
+          ),
+        );
       }
     }
   }

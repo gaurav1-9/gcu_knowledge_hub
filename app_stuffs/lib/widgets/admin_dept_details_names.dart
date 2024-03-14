@@ -568,7 +568,7 @@ class _AdminDepartmentState extends State<AdminDepartment> {
         Navigator.of(context).pop();
         showMsg = ShowMsg.neutral;
       } else {
-        Navigator.pushReplacementNamed(context, '/admin_dept_details');
+        Navigator.of(context).pushReplacementNamed('/admin_dept_details');
       }
     }
   }
