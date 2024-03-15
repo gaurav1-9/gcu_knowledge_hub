@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gcu_knowledge_hub/screens/circular_loading_screen.dart';
@@ -43,29 +42,6 @@ class _QuizesScreenState extends State<QuizesScreen> {
 
   bool isLastQuestion = false;
 
-  // void getQuestions() async {
-  //   String questionURL =
-  //       "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames/${widget.branchID}/subjects/${widget.subID}/questions.json";
-  //   final response = await http.get(Uri.parse(questionURL));
-  //   try {
-  //     if (jsonDecode(response.body) != null) {
-  //       quizQuestions = jsonDecode(response.body);
-  //       selectedOptions = List.filled(quizQuestions.length, '');
-  //       for (var i = 0; i < quizQuestions.length; i++) {
-  //         quizAnswers.add(quizQuestions.values.elementAt(i)['ans']);
-  //       }
-  //     } else {
-  //       setState(() {
-  //         isUnderDevelopment = true;
-  //       });
-  //     }
-  //   } finally {
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //   }
-  // }
-
   void getQuestions() async {
     String questionURL =
         "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames/${widget.branchID}/subjects/${widget.subID}/questions.json";
@@ -77,24 +53,23 @@ class _QuizesScreenState extends State<QuizesScreen> {
           setState(() {
             quizQuestions = Map<String, dynamic>.from(decodedData);
             selectedOptions = List.filled(quizQuestions.length, '');
+            if (quizQuestions.length > 20) {
+              List<String> questionKeys = quizQuestions.keys.toList();
+              questionKeys.shuffle();
+              List<String> selectedQuestionKeys =
+                  questionKeys.take(20).toList();
+
+              quizQuestions = Map.fromEntries(quizQuestions.entries
+                  .where((entry) => selectedQuestionKeys.contains(entry.key)));
+            }
             quizAnswers = List<String>.from(
                 quizQuestions.values.map((question) => question['ans']));
-
-            List<String> questionKeys = quizQuestions.keys.toList();
-            questionKeys.shuffle();
-            List<String> selectedQuestionKeys = questionKeys.take(10).toList();
-
-            quizQuestions = Map.fromEntries(quizQuestions.entries
-                .where((entry) => selectedQuestionKeys.contains(entry.key)));
           });
         } else {
           setState(() {
             isUnderDevelopment = true;
           });
         }
-      } else {
-        // Handle HTTP error response
-        print('Failed to load questions. Status code: ${response.statusCode}');
       }
     } finally {
       setState(() {
