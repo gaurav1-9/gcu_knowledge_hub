@@ -119,23 +119,48 @@ class _AdminQuizDetailsSubjectState extends State<AdminQuizDetailsSubject> {
                   ),
                   (deptSubjects.isEmpty)
                       ? Container(
-                          margin: const EdgeInsets.only(top: 30),
-                          child: const Column(
+                          margin: const EdgeInsets.only(top: 50),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "No subjects present till now",
                                 style: TextStyle(
                                   color: AppColor.marianBlue,
                                   fontSize: 17,
+                                  height: 0.01,
                                 ),
                               ),
-                              Text(
-                                "Go to \"Subject Detaials\" page to add\nmore subjects",
-                                style: TextStyle(
-                                  color: AppColor.marianBlue,
-                                  fontSize: 12,
-                                ),
+                              Row(
+                                children: [
+                                  TextButton(
+                                      style: TextButton.styleFrom(
+                                        padding:
+                                            const EdgeInsets.only(right: 5),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pushNamed(
+                                          '/admin_subject_details',
+                                        );
+                                      },
+                                      child: const Text(
+                                        "Click here",
+                                        style: TextStyle(
+                                          color: AppColor.marianBlue,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )),
+                                  const Text(
+                                    "to add more subjects",
+                                    style: TextStyle(
+                                      color: AppColor.marianBlue,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),

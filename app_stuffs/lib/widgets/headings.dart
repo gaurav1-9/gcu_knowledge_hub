@@ -6,11 +6,13 @@ class Headings extends StatelessWidget {
   final String primaryText;
   final String secondaryText;
   final String secondaryTextFirst;
+  final double secHeight;
   const Headings({
     super.key,
     required this.primaryText,
     this.secondaryText = '',
     this.secondaryTextFirst = '',
+    this.secHeight = 0.7,
   });
 
   @override
@@ -40,9 +42,9 @@ class Headings extends StatelessWidget {
             ),
             Text(
               secondaryText,
-              style: const TextStyle(
+              style: TextStyle(
                 letterSpacing: 2,
-                height: 0.7,
+                height: secHeight,
                 fontSize: 30,
                 fontWeight: FontWeight.w100,
                 color: AppColor.marianBlue,

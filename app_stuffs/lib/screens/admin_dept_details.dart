@@ -7,6 +7,7 @@ import '../screens/circular_loading_screen.dart';
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/gcu.dart';
+import '../widgets/headings.dart';
 
 class AdminDeptDetails extends StatefulWidget {
   const AdminDeptDetails({super.key});
@@ -80,16 +81,28 @@ class _AdminDeptDetailsState extends State<AdminDeptDetails> {
                 margin: const EdgeInsets.symmetric(vertical: 20),
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: schoolNames.entries.map((entry) {
-                    return AdminDepartment(
-                      firstHead: 'School of',
-                      secondHead: entry.key.split("_")[1],
-                      deptNames: entry.value,
-                      schName: entry.key,
-                    );
-                  }).toList(),
-                ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Headings(
+                        primaryText: "Department",
+                        secondaryTextFirst: 'D',
+                        secondaryText: "etails",
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      ...schoolNames.entries.map((entry) {
+                        return AdminDepartment(
+                          firstHead: 'School of',
+                          secondHead: entry.key.split("_")[1],
+                          deptNames: entry.value,
+                          schName: entry.key,
+                        );
+                      }).toList(),
+                    ]),
               ),
             ),
           );
