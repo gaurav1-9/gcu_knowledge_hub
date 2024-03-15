@@ -509,8 +509,8 @@ class _AdminSubjectSelectionDetailsState
         Navigator.of(context).pop();
         showMsg = ShowMsg.neutral;
       } else {
-        Navigator.of(context)
-            .popUntil(ModalRoute.withName('/admin_subject_details'));
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) {
