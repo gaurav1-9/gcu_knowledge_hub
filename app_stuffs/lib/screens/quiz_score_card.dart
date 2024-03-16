@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../widgets/headings.dart';
@@ -8,6 +6,7 @@ import '../widgets/quiz_info.dart';
 import '../properties/global_colors.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/gcu.dart';
+import '../widgets/quiz_score_card_detailed_score.dart';
 
 enum QuestionStatus {
   correct,
@@ -17,8 +16,8 @@ enum QuestionStatus {
 
 class QuizScoreCard extends StatefulWidget {
   final int totalQuestions;
-  final List selectedQuestions;
-  final List correctAnswers;
+  final List<String> selectedQuestions;
+  final List<String> correctAnswers;
   final String subName;
   final Map<String, dynamic> quizQuestions;
 
@@ -44,8 +43,8 @@ class _QuizScoreCardState extends State<QuizScoreCard> {
   late String subName;
   late double percentage;
   late Map<String, dynamic> quizQuestions;
-  late List selectedQuestions;
-  late List correctAnswers;
+  late List<String> selectedQuestions;
+  late List<String> correctAnswers;
   bool showDetailedResult = false;
   QuestionStatus isCorrect = QuestionStatus.unanswered;
 
@@ -72,7 +71,6 @@ class _QuizScoreCardState extends State<QuizScoreCard> {
 
   @override
   Widget build(BuildContext context) {
-    int qNo = 0;
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,
@@ -213,151 +211,10 @@ class _QuizScoreCardState extends State<QuizScoreCard> {
                                 ),
                               ),
                             )
-                          : Column(
-                              children: quizQuestions.entries.map((entry) {
-                                if (selectedQuestions[qNo] ==
-                                    correctAnswers[qNo]) {
-                                  isCorrect = QuestionStatus.correct;
-                                } else if (selectedQuestions[qNo] == "") {
-                                  isCorrect = QuestionStatus.unanswered;
-                                } else {
-                                  isCorrect = QuestionStatus.wrong;
-                                }
-                                qNo++;
-                                return Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        RichText(
-                                          text: TextSpan(
-                                            text: "Question ",
-                                            style: const TextStyle(
-                                              color: AppColor.marianBlue,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20,
-                                            ),
-                                            children: [
-                                              (qNo < 10)
-                                                  ? TextSpan(text: "0$qNo")
-                                                  : TextSpan(text: "$qNo"),
-                                            ],
-                                          ),
-                                        ),
-                                        (isCorrect == QuestionStatus.correct)
-                                            ? const Icon(
-                                                LucideIcons.checkCircle2,
-                                                color: AppColor.forestGreen,
-                                              )
-                                            : (isCorrect ==
-                                                    QuestionStatus.wrong)
-                                                ? const Icon(
-                                                    LucideIcons.xCircle,
-                                                    color: AppColor.tomato,
-                                                  )
-                                                : const Icon(
-                                                    LucideIcons.helpCircle,
-                                                    color: AppColor.jonquil,
-                                                  )
-                                      ],
-                                    ),
-                                    const Divider(),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            entry.value['qName'],
-                                            overflow: TextOverflow.clip,
-                                            style: const TextStyle(
-                                              color: AppColor.marianBlue,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          "Your Option",
-                                          style: TextStyle(
-                                            color: AppColor.marianBlue,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 26,
-                                        ),
-                                        const Text(
-                                          ":",
-                                          style: TextStyle(
-                                            color: AppColor.marianBlue,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        (isCorrect == QuestionStatus.unanswered)
-                                            ? const Text(
-                                                "Unanswered",
-                                                style: TextStyle(
-                                                  color: AppColor.marianBlue,
-                                                ),
-                                              )
-                                            : Expanded(
-                                                child: Text(
-                                                  "(${selectedQuestions[qNo - 1]}) ${entry.value['choice'][selectedQuestions[qNo - 1]]}",
-                                                  style: const TextStyle(
-                                                    color: AppColor.marianBlue,
-                                                    overflow: TextOverflow.clip,
-                                                  ),
-                                                ),
-                                              ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          "Correct Option :",
-                                          style: TextStyle(
-                                            color: AppColor.marianBlue,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            "(${correctAnswers[qNo - 1]}) ${entry.value['choice'][correctAnswers[qNo - 1]]}",
-                                            style: const TextStyle(
-                                              color: AppColor.marianBlue,
-                                              overflow: TextOverflow.clip,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                  ],
-                                );
-                              }).toList(),
+                          : DetailedQuestionAnswer(
+                              correctAnswers: correctAnswers,
+                              quizQuestions: quizQuestions,
+                              selectedQuestions: selectedQuestions,
                             ),
                       const SizedBox(
                         height: 10,
