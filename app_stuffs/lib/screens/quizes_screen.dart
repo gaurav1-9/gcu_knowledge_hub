@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../screens/quiz_score_card.dart';
 import '../widgets/prev_next_btns.dart';
-import '../widgets/question_no_display.dart';
+import '../widgets/question_no_timer_displayer.dart';
 import '../widgets/quiz_info.dart';
 import '../widgets/under_development.dart';
 import '../widgets/subjects_heading.dart';
