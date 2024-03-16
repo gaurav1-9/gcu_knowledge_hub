@@ -9,6 +9,7 @@ import '../widgets/gcu.dart';
 
 class QuizScoreCard extends StatefulWidget {
   final int totalQuestions;
+  final int timeLeft;
   final List selectedQuestions;
   final List correctAnswers;
   final String subName;
@@ -19,6 +20,7 @@ class QuizScoreCard extends StatefulWidget {
     required this.selectedQuestions,
     required this.correctAnswers,
     required this.subName,
+    required this.timeLeft,
   });
 
   @override
