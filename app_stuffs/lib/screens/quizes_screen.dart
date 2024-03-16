@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -40,6 +41,9 @@ class _QuizesScreenState extends State<QuizesScreen> {
   List<String> quizAnswers = [];
   int index = 0;
 
+  late Timer quizTimer;
+  late int countDownTimer;
+
   bool isLastQuestion = false;
 
   void getQuestions() async {
@@ -65,6 +69,7 @@ class _QuizesScreenState extends State<QuizesScreen> {
             quizAnswers = List<String>.from(
                 quizQuestions.values.map((question) => question['ans']));
           });
+          getTimer();
         } else {
           setState(() {
             isUnderDevelopment = true;
@@ -76,6 +81,19 @@ class _QuizesScreenState extends State<QuizesScreen> {
         isLoading = false;
       });
     }
+  }
+
+  void getTimer() {
+    countDownTimer = quizQuestions.length * 30;
+    print("$countDownTimer seconds");
+    quizTimer = Timer.periodic(const Duration(milliseconds: 1), (timer) {
+      setState(() {
+        countDownTimer--;
+      });
+      if (countDownTimer <= 0) {
+        timer.cancel();
+      }
+    });
   }
 
   @override
@@ -176,7 +194,10 @@ class _QuizesScreenState extends State<QuizesScreen> {
                             const SizedBox(
                               height: 20,
                             ),
-                            QuestionNumberDisplayer(qNo: index + 1),
+                            QuestionNumberTimerDisplayer(
+                              qNo: index + 1,
+                              countDownTimer: countDownTimer,
+                            ),
                             Expanded(
                               child: SingleChildScrollView(
                                 child: Container(
