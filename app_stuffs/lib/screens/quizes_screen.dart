@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gcu_knowledge_hub/screens/circular_loading_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:lucide_icons/lucide_icons.dart';
 
 import '../screens/quiz_score_card.dart';
 import '../widgets/prev_next_btns.dart';
@@ -134,7 +133,7 @@ class _QuizesScreenState extends State<QuizesScreen> {
             totalQuestions: quizQuestions.length,
             selectedQuestions: selectedOptions,
             correctAnswers: quizAnswers,
-            timeLeft: countDownTimer,
+            quizQuestions: quizQuestions,
           );
         },
       ),
