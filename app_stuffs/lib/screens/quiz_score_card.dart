@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../widgets/buttons/score_card_text_buttons.dart';
 import '../widgets/headings.dart';
 import '../widgets/quiz_info.dart';
 import '../properties/global_colors.dart';
@@ -181,35 +182,14 @@ class _QuizScoreCardState extends State<QuizScoreCard> {
                         height: 10,
                       ),
                       (!showDetailedResult)
-                          ? TextButton(
-                              onPressed: () {
+                          ? TextButtonScoreCard(
+                              btnFunction: () {
                                 setState(() {
                                   showDetailedResult = true;
                                 });
                               },
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.55,
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      LucideIcons.chevronDown,
-                                      size: 17,
-                                      color: AppColor.marianBlue,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "View detailed result",
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        color: AppColor.marianBlue,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
+                              iconArrow: LucideIcons.chevronDown,
+                              text: "View detailed Result",
                             )
                           : DetailedQuestionAnswer(
                               correctAnswers: correctAnswers,
@@ -220,35 +200,14 @@ class _QuizScoreCardState extends State<QuizScoreCard> {
                         height: 10,
                       ),
                       (showDetailedResult)
-                          ? TextButton(
-                              onPressed: () {
+                          ? TextButtonScoreCard(
+                              btnFunction: () {
                                 setState(() {
                                   showDetailedResult = false;
                                 });
                               },
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.55,
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      LucideIcons.chevronUp,
-                                      size: 17,
-                                      color: AppColor.marianBlue,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "View confined result",
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        color: AppColor.marianBlue,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
+                              iconArrow: LucideIcons.chevronUp,
+                              text: "View Confined Result",
                             )
                           : const SizedBox(
                               height: 0,
