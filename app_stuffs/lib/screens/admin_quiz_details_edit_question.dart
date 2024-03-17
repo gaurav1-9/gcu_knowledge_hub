@@ -428,7 +428,7 @@ class _EditQuizState extends State<EditQuiz> {
                   children: [
                     (isEditQuizSuccess == AddQuizStatus.success)
                         ? const Text(
-                            "Question added successfully",
+                            "Question edited successfully",
                             style: TextStyle(
                               color: AppColor.forestGreen,
                               fontWeight: FontWeight.bold,

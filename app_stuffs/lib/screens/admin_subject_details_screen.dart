@@ -541,7 +541,7 @@ class _AdminSubjectSelectionDetailsState
           builder: (BuildContext context, StateSetter setState) {
             return Container(
               padding: const EdgeInsets.all(16),
-              height: MediaQuery.of(context).size.height * 0.4,
+              height: MediaQuery.of(context).size.height * 0.49,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -661,10 +661,10 @@ class _AdminSubjectSelectionDetailsState
                         });
                         try {
                           String editingURL =
-                              "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects/$subID.json";
+                              "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects/$subID/subName.json";
                           await http.put(
                             Uri.parse(editingURL),
-                            body: json.encode({"subName": updatedText}),
+                            body: jsonEncode(updatedText),
                           );
                           // print(editingURL);
                           setState(() {

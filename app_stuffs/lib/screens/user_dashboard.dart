@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -78,7 +79,8 @@ class _UserDashboardState extends State<UserDashboard> {
           ),
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.only(top: 100),
+          padding:
+              EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
           child: (!isLoading)
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -22,7 +22,7 @@ class AdminHomeMenu extends StatelessWidget {
         children: [
           Expanded(
             child: Container(
-              height: MediaQuery.of(context).size.height * .14,
+              height: MediaQuery.of(context).size.height * .15,
               decoration: const BoxDecoration(
                 color: AppColor.jonquil,
               ),
@@ -53,7 +53,7 @@ class AdminHomeMenu extends StatelessWidget {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * .14,
+            height: MediaQuery.of(context).size.height * .15,
             width: 80,
             decoration: const BoxDecoration(
               color: AppColor.marianBlue,
@@ -74,7 +74,7 @@ class AdminHomeMenu extends StatelessWidget {
       return Row(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * .14,
+            height: MediaQuery.of(context).size.height * .15,
             width: 80,
             decoration: const BoxDecoration(
               color: AppColor.marianBlue,
@@ -91,7 +91,7 @@ class AdminHomeMenu extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              height: MediaQuery.of(context).size.height * .14,
+              height: MediaQuery.of(context).size.height * .15,
               decoration: const BoxDecoration(
                 color: AppColor.jonquil,
               ),

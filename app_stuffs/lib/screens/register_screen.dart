@@ -53,8 +53,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Container(
-          margin: const EdgeInsets.only(
-            top: 80,
+          margin: EdgeInsets.only(
+            top: MediaQuery.of(context).size.height * 0.1,
           ),
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
@@ -85,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textController: _nameController,
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                     InputTextField(
                       hintText: "Username",
@@ -94,7 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textController: _usernameController,
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                     InputTextField(
                       hintText: "Password",
@@ -180,7 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ],
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                   ],
                 ),
