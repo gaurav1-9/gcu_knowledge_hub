@@ -70,7 +70,6 @@ class _EditQuizState extends State<EditQuiz> {
     schID = widget.schID;
     subName = widget.subName;
     questionID = widget.questionID;
-
     correctOption = widget.correctOption;
     questionUpdate = widget.question;
     optionAUpdate = widget.opA;
