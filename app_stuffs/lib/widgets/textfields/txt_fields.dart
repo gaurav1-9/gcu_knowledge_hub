@@ -24,7 +24,6 @@ class InputTextField extends StatelessWidget {
       textCapitalization: textCapitalization,
       controller: textController,
       obscureText: isPassword,
-      keyboardType: TextInputType.visiblePassword,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
           vertical: 3,

@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:http/http.dart' as http;
 
 import '../properties/global_colors.dart';
+import '../widgets/admin_quiz_question_details.dart';
+import '../widgets/admin_quiz_question_heading.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/buttons/auth_login_btns.dart';
 import '../widgets/gcu.dart';
@@ -60,7 +61,6 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
             }),
           );
         }
-        print(quizes);
       }
     } finally {
       setState(() {
@@ -101,28 +101,9 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Quizes of',
-                        style: TextStyle(
-                          color: AppColor.marianBlue,
-                          fontSize: 18,
-                        ),
-                      ),
-                      Text(
-                        subName,
-                        style: const TextStyle(
-                          color: AppColor.marianBlue,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                    ],
+                  AdminQuizHeading(
+                    subName: subName,
+                    totalQuestions: quizes.length.toString(),
                   ),
                   (quizes.isEmpty)
                       ? Container(
@@ -213,8 +194,14 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
                                                 ),
                                                 IconButton(
                                                   onPressed: () {
-                                                    print(
-                                                        "Delete btn of: ${quizes.keys.elementAt(index)}");
+                                                    _showAlertDialog(
+                                                        questionID: quizes.keys
+                                                            .elementAt(index),
+                                                        context: context,
+                                                        deptID: deptID,
+                                                        subID: subID,
+                                                        questionNo:
+                                                            "${index + 1}");
                                                   },
                                                   icon: const Icon(
                                                     LucideIcons.trash2,
@@ -226,174 +213,19 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
                                             )
                                           ],
                                         ),
-                                        const Divider(),
-                                        Text(
-                                          quizes.values
+                                        AdminQuestionInfo(
+                                          question: quizes.values
                                               .elementAt(index)['qName'],
-                                          style: const TextStyle(
-                                            color: AppColor.marianBlue,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                  "A.",
-                                                  style: TextStyle(
-                                                    color: AppColor.marianBlue,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 17,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Expanded(
-                                                  child: Text(
-                                                    quizes.values.elementAt(
-                                                        index)['choice']['A'],
-                                                    overflow: TextOverflow.clip,
-                                                    style: const TextStyle(
-                                                      color:
-                                                          AppColor.marianBlue,
-                                                      fontSize: 17,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                  "B.",
-                                                  style: TextStyle(
-                                                    color: AppColor.marianBlue,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 17,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Expanded(
-                                                  child: Text(
-                                                    quizes.values.elementAt(
-                                                        index)['choice']['B'],
-                                                    overflow: TextOverflow.clip,
-                                                    style: const TextStyle(
-                                                      color:
-                                                          AppColor.marianBlue,
-                                                      fontSize: 17,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                  "C.",
-                                                  style: TextStyle(
-                                                    color: AppColor.marianBlue,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 17,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Expanded(
-                                                  child: Text(
-                                                    quizes.values.elementAt(
-                                                        index)['choice']['C'],
-                                                    overflow: TextOverflow.clip,
-                                                    style: const TextStyle(
-                                                      color:
-                                                          AppColor.marianBlue,
-                                                      fontSize: 17,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                  "D.",
-                                                  style: TextStyle(
-                                                    color: AppColor.marianBlue,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 17,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Expanded(
-                                                  child: Text(
-                                                    quizes.values.elementAt(
-                                                        index)['choice']['D'],
-                                                    overflow: TextOverflow.clip,
-                                                    style: const TextStyle(
-                                                      color:
-                                                          AppColor.marianBlue,
-                                                      fontSize: 17,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                  "Correct Option:",
-                                                  style: TextStyle(
-                                                    color: AppColor.marianBlue,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 17,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Expanded(
-                                                  child: Text(
-                                                    quizes.values.elementAt(
-                                                        index)['ans'],
-                                                    overflow: TextOverflow.clip,
-                                                    style: const TextStyle(
-                                                      color:
-                                                          AppColor.marianBlue,
-                                                      fontSize: 17,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
+                                          optionA: quizes.values
+                                              .elementAt(index)['choice']['A'],
+                                          optionB: quizes.values
+                                              .elementAt(index)['choice']['B'],
+                                          optionC: quizes.values
+                                              .elementAt(index)['choice']['C'],
+                                          optionD: quizes.values
+                                              .elementAt(index)['choice']['D'],
+                                          correctOption: quizes.values
+                                              .elementAt(index)['ans'],
                                         ),
                                       ],
                                     );
@@ -407,5 +239,95 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
               ),
             ),
           );
+  }
+
+  void _showAlertDialog({
+    required BuildContext context,
+    required String deptID,
+    required String subID,
+    required String questionNo,
+    required String questionID,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Are you sure?',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+              color: AppColor.marianBlue,
+            ),
+          ),
+          content: Text(
+            'You want to delete Question $questionNo from $subName',
+            style: const TextStyle(
+              color: AppColor.marianBlue,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'CANCEL',
+                style: TextStyle(
+                  color: AppColor.marianBlue,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                deleteSub(
+                  ctx: context,
+                  subID: subID,
+                  questionID: questionID,
+                  subName: subName,
+                );
+              },
+              child: const Text(
+                'DELETE',
+                style: TextStyle(
+                  color: AppColor.tomato,
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void deleteSub({
+    required String subName,
+    required String subID,
+    required String questionID,
+    required BuildContext ctx,
+  }) async {
+    String deleteURL =
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$deptID/subjects/$subID/questions/$questionID.json";
+    try {
+      await http.delete(Uri.parse(deleteURL));
+    } catch (e) {
+      showMsg = ShowMsg.serverError;
+    } finally {
+      if (showMsg == ShowMsg.serverError) {
+        Navigator.of(context).pop();
+        showMsg = ShowMsg.neutral;
+      } else {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return AdminQuizDetailsQuestions(
+            deptID: deptID,
+            schID: schID,
+            subID: subID,
+            subName: subName,
+          );
+        }));
+      }
+    }
   }
 }
