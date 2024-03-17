@@ -88,6 +88,10 @@ class _QuizesScreenState extends State<QuizesScreen> {
     // countDownTimer = quizQuestions.length * 30;
     countDownTimer = 1 * 30;
     quizTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       setState(() {
         countDownTimer--;
       });

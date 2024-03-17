@@ -59,9 +59,9 @@ class DetailedQuestionAnswer extends StatelessWidget {
                             LucideIcons.xCircle,
                             color: AppColor.tomato,
                           )
-                        : const Icon(
+                        : Icon(
                             LucideIcons.helpCircle,
-                            color: AppColor.jonquil,
+                            color: AppColor.jonquil.withGreen(180),
                           )
               ],
             ),
