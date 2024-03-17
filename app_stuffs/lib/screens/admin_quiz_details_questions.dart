@@ -265,6 +265,8 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
                                                                     .elementAt(
                                                                         index)[
                                                                 'qName'],
+                                                            questionNo:
+                                                                "${index + 1}",
                                                           );
                                                         },
                                                       ),

@@ -20,6 +20,7 @@ class EditQuiz extends StatefulWidget {
   final String schID;
   final String questionID;
   final String question;
+  final String questionNo;
   final String opA;
   final String opB;
   final String opC;
@@ -38,6 +39,7 @@ class EditQuiz extends StatefulWidget {
     required this.opC,
     required this.opD,
     required this.correctOption,
+    required this.questionNo,
   });
 
   @override
@@ -107,32 +109,38 @@ class _EditQuizState extends State<EditQuiz> {
               const SizedBox(
                 height: 40,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Subject Name",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: AppColor.marianBlue,
-                      height: 1,
+              Container(
+                padding: const EdgeInsets.only(right: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Subject Name",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: AppColor.marianBlue,
+                        height: 1,
+                      ),
                     ),
-                  ),
-                  Text(
-                    widget.subName,
-                    style: const TextStyle(
-                      height: 1.3,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 15,
-                      color: AppColor.marianBlue,
+                    Text(
+                      "${widget.subName} (Question ${widget.questionNo})",
+                      style: const TextStyle(
+                        height: 1.3,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15,
+                        color: AppColor.marianBlue,
+                      ),
                     ),
-                  ),
-                  const Divider(
-                    color: AppColor.marianBlue,
-                  ),
-                ],
+                    const SizedBox(
+                      width: 5,
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(
+                color: AppColor.marianBlue,
               ),
               const SizedBox(
                 height: 20,
