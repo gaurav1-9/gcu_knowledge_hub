@@ -306,7 +306,7 @@ class _AdminDepartmentState extends State<AdminDepartment> {
                                 )
                               : (showMsg == ShowMsg.serverError)
                                   ? const Text(
-                                      "Oops...could'nt reach the server",
+                                      "Oops...couldn't reach the server",
                                       style: TextStyle(
                                         color: AppColor.tomato,
                                         fontWeight: FontWeight.bold,
@@ -475,7 +475,7 @@ class _AdminDepartmentState extends State<AdminDepartment> {
                                 )
                               : (showMsg == ShowMsg.serverError)
                                   ? const Text(
-                                      "Oops...could'nt reach the server",
+                                      "Oops...couldn't reach the server",
                                       style: TextStyle(
                                         color: AppColor.tomato,
                                         fontWeight: FontWeight.bold,

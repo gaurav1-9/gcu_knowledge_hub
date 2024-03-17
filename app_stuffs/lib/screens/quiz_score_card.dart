@@ -207,7 +207,7 @@ class _QuizScoreCardState extends State<QuizScoreCard> {
                                 });
                               },
                               iconArrow: LucideIcons.chevronUp,
-                              text: "View Confined Result",
+                              text: "View confined result",
                             )
                           : const SizedBox(
                               height: 0,
@@ -224,38 +224,16 @@ class _QuizScoreCardState extends State<QuizScoreCard> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.transparent,
-        elevation: 0,
-        child: TextButton(
-          onPressed: () {
-            Navigator.of(context)
-                .popUntil((route) => route.settings.name == '/schools');
-          },
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.55,
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  LucideIcons.rotateCcw,
-                  size: 17,
-                  color: AppColor.marianBlue,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  "Take another quiz",
-                  style: TextStyle(
-                    fontSize: 17,
-                    color: AppColor.marianBlue,
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
+          color: Colors.transparent,
+          elevation: 0,
+          child: TextButtonScoreCard(
+            btnFunction: () {
+              Navigator.of(context)
+                  .popUntil((route) => route.settings.name == '/schools');
+            },
+            iconArrow: LucideIcons.rotateCcw,
+            text: "Take another quiz",
+          )),
     );
   }
 }

@@ -18,7 +18,7 @@ class TextButtonScoreCard extends StatelessWidget {
     return TextButton(
       onPressed: btnFunction,
       child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.55,
+        width: MediaQuery.of(context).size.width * 0.60,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
