@@ -225,8 +225,6 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
                                               children: [
                                                 IconButton(
                                                   onPressed: () {
-                                                    print(
-                                                        "Edit btn of: ${quizes.values.elementAt(index)['choice']['A']}");
                                                     Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                         builder: (_) {
