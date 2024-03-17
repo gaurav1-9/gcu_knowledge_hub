@@ -13,6 +13,7 @@ import '../widgets/buttons/auth_login_btns.dart';
 import '../widgets/gcu.dart';
 import './circular_loading_screen.dart';
 import 'add_quiz_screen.dart';
+import 'admin_quiz_details_edit_question.dart';
 
 enum ShowMsg {
   neutral,
@@ -225,7 +226,49 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
                                                 IconButton(
                                                   onPressed: () {
                                                     print(
-                                                        "Edit btn of: ${quizes.keys.elementAt(index)}");
+                                                        "Edit btn of: ${quizes.values.elementAt(index)['choice']['A']}");
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: (_) {
+                                                          return EditQuiz(
+                                                            courseID: deptID,
+                                                            schID: schID,
+                                                            subID: subID,
+                                                            subName: subName,
+                                                            questionID: quizes
+                                                                .keys
+                                                                .elementAt(
+                                                                    index),
+                                                            correctOption: quizes
+                                                                    .values
+                                                                    .elementAt(
+                                                                        index)[
+                                                                'ans'],
+                                                            opA: quizes.values
+                                                                    .elementAt(
+                                                                        index)[
+                                                                'choice']['A'],
+                                                            opB: quizes.values
+                                                                    .elementAt(
+                                                                        index)[
+                                                                'choice']['B'],
+                                                            opC: quizes.values
+                                                                    .elementAt(
+                                                                        index)[
+                                                                'choice']['C'],
+                                                            opD: quizes.values
+                                                                    .elementAt(
+                                                                        index)[
+                                                                'choice']['D'],
+                                                            question: quizes
+                                                                    .values
+                                                                    .elementAt(
+                                                                        index)[
+                                                                'qName'],
+                                                          );
+                                                        },
+                                                      ),
+                                                    );
                                                   },
                                                   icon: const Icon(
                                                     LucideIcons.edit,
