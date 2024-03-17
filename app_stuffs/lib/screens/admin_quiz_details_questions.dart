@@ -7,10 +7,12 @@ import 'package:http/http.dart' as http;
 import '../properties/global_colors.dart';
 import '../widgets/admin_quiz_question_details.dart';
 import '../widgets/admin_quiz_question_heading.dart';
+import '../widgets/admin_subject_details_empty.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/buttons/auth_login_btns.dart';
 import '../widgets/gcu.dart';
 import './circular_loading_screen.dart';
+import 'add_quiz_screen.dart';
 
 enum ShowMsg {
   neutral,
@@ -44,7 +46,7 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
   late String subID;
   late String subName;
   Map<String, dynamic> quizes = {};
-
+  bool isRefresh = false;
   ShowMsg showMsg = ShowMsg.neutral;
 
   void getQuizDetails() async {
@@ -101,47 +103,67 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AdminQuizHeading(
-                    subName: subName,
-                    totalQuestions: quizes.length.toString(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        child: AdminQuizHeading(
+                          subName: subName,
+                          totalQuestions: quizes.length.toString(),
+                        ),
+                      ),
+                      (isRefresh)
+                          ? IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  isRefresh = false;
+                                });
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (_) {
+                                      return AdminQuizDetailsQuestions(
+                                        deptID: deptID,
+                                        schID: schID,
+                                        subID: subID,
+                                        subName: subName,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              icon: const Icon(
+                                LucideIcons.refreshCcw,
+                                color: AppColor.marianBlue,
+                              ),
+                            )
+                          : const SizedBox(
+                              height: 0,
+                              width: 0,
+                            ),
+                    ],
                   ),
                   (quizes.isEmpty)
-                      ? Container(
-                          margin: const EdgeInsets.only(top: 30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "No quiz questions present till now",
-                                style: TextStyle(
-                                  color: AppColor.marianBlue,
-                                  fontSize: 17,
-                                ),
+                      ? AdminNoSubjects(
+                          navigateTo: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) {
+                                  return AddQuiz(
+                                    courseID: deptID,
+                                    schID: schID,
+                                    subID: subID,
+                                    subName: subName,
+                                  );
+                                },
                               ),
-                              const Text(
-                                "Click on the + button to add more quizes",
-                                style: TextStyle(
-                                  color: AppColor.marianBlue,
-                                  fontSize: 12,
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(
-                                  MediaQuery.of(context).size.width * 0.15,
-                                ),
-                                child: IconButton(
-                                  style: IconButton.styleFrom(
-                                      backgroundColor: AppColor.jonquilLight),
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    LucideIcons.plus,
-                                    color: AppColor.marianBlue,
-                                    size: 30,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            );
+                            Future.delayed(const Duration(seconds: 1), () {
+                              setState(() {
+                                isRefresh = true;
+                              });
+                            });
+                          },
                         )
                       : Expanded(
                           child: Column(
@@ -150,7 +172,26 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
                                 alignment: MainAxisAlignment.center,
                                 btnType: "Add quiz",
                                 iconType: LucideIcons.plus,
-                                navigateTo: () {},
+                                navigateTo: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) {
+                                        return AddQuiz(
+                                          courseID: deptID,
+                                          schID: schID,
+                                          subID: subID,
+                                          subName: subName,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                  Future.delayed(const Duration(seconds: 1),
+                                      () {
+                                    setState(() {
+                                      isRefresh = true;
+                                    });
+                                  });
+                                },
                                 width: MediaQuery.of(context).size.width,
                               ),
                               const SizedBox(
