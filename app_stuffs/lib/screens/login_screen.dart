@@ -152,12 +152,8 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Container(
-          margin: const EdgeInsets.only(
-            top: 80,
-          ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
+          margin: const EdgeInsets.only(top: 80),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -169,18 +165,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: AppColor.marianBlue,
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               InputTextField(
                 hintText: 'Username',
                 isPassword: false,
                 fieldType: LucideIcons.user,
                 textController: usernameController,
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               InputTextField(
                 hintText: 'Password',
                 isPassword: true,
