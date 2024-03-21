@@ -39,6 +39,7 @@ dependencies:
   lucide_icons: ^0.257.0
   http: ^1.2.1
   shared_preferences: ^2.2.2
+  firebase_storage: ^11.6.10
 
 dev_dependencies:
   flutter_test:
