@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../properties/global_colors.dart';
 import 'textfields/txt_fields.dart';
 
 class QuizAddQuestionChoice extends StatelessWidget {
@@ -9,13 +10,16 @@ class QuizAddQuestionChoice extends StatelessWidget {
   final TextEditingController optB;
   final TextEditingController optC;
   final TextEditingController optD;
-  const QuizAddQuestionChoice(
-      {super.key,
-      required this.question,
-      required this.optA,
-      required this.optB,
-      required this.optC,
-      required this.optD});
+  final VoidCallback imageFunc;
+  const QuizAddQuestionChoice({
+    super.key,
+    required this.question,
+    required this.optA,
+    required this.optB,
+    required this.optC,
+    required this.optD,
+    required this.imageFunc,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,25 @@ class QuizAddQuestionChoice extends StatelessWidget {
           isPassword: false,
           textCapitalization: TextCapitalization.sentences,
           textController: question,
+        ),
+        Row(
+          children: [
+            IconButton(
+              color: AppColor.marianBlue,
+              icon: const Icon(LucideIcons.imagePlus),
+              onPressed: imageFunc,
+            ),
+            GestureDetector(
+              onTap: imageFunc,
+              child: const Text(
+                "Add illustration to your question",
+                style: TextStyle(
+                  color: AppColor.grey,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ],
         ),
         const SizedBox(
           height: 20,

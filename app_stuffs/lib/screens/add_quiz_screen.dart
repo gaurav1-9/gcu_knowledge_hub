@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:http/http.dart' as http;
@@ -49,6 +51,7 @@ class _AddQuizState extends State<AddQuiz> {
   late String schID;
   late String subName;
   AddQuizStatus isAddQuizSuccess = AddQuizStatus.neutral;
+  File? questionImage;
 
   @override
   void initState() {
@@ -125,6 +128,7 @@ class _AddQuizState extends State<AddQuiz> {
                 optB: _optionBController,
                 optC: _optionCController,
                 optD: _optionDController,
+                imageFunc: popUpImageCaptureDevice,
               ),
               const SizedBox(
                 height: 10,
@@ -293,6 +297,93 @@ class _AddQuizState extends State<AddQuiz> {
     );
   }
 
+  void popUpImageCaptureDevice() {
+    showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return AlertDialog(
+            backgroundColor: AppColor.jonquilLight,
+            title: const Text(
+              "Select your preference",
+              style: TextStyle(
+                fontSize: 35,
+                color: AppColor.marianBlue,
+              ),
+            ),
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    addQuestionImage(ImageSource.camera);
+                  },
+                  icon: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          LucideIcons.camera,
+                          color: AppColor.marianBlue,
+                          size: MediaQuery.of(context).size.height * 0.1,
+                        ),
+                        const Text(
+                          "Camera",
+                          style: TextStyle(
+                            color: AppColor.marianBlue,
+                            fontSize: 16,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    addQuestionImage(ImageSource.gallery);
+                  },
+                  icon: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          LucideIcons.image,
+                          color: AppColor.marianBlue,
+                          size: MediaQuery.of(context).size.height * 0.1,
+                        ),
+                        const Text(
+                          "Gallery",
+                          style: TextStyle(
+                            color: AppColor.marianBlue,
+                            fontSize: 16,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  void addQuestionImage(ImageSource sourceType) async {
+    ImagePicker imagePicker = ImagePicker();
+    final imagePicked = await imagePicker.pickImage(source: sourceType);
+    if (imagePicked != null) {
+      setState(() {
+        questionImage = File(imagePicked.path);
+      });
+      print("Question Image clicked (${sourceType.name})");
+    } else {
+      print("User cancelled the image picker");
+    }
+  }
+
   void addQuizQuestion(
     String question,
     String optionA,
@@ -307,7 +398,7 @@ class _AddQuizState extends State<AddQuiz> {
     String addQuizURL =
         "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$courseID/subjects/$subID/questions.json";
     try {
-      if (question.isNotEmpty &&
+      if ((question.isNotEmpty || questionImage != null) &&
           optionA.isNotEmpty &&
           optionB.isNotEmpty &&
           optionC.isNotEmpty &&
