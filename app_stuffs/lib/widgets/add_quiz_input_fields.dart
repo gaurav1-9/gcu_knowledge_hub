@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -11,6 +13,7 @@ class QuizAddQuestionChoice extends StatelessWidget {
   final TextEditingController optC;
   final TextEditingController optD;
   final VoidCallback imageFunc;
+  final File? questionImage;
   const QuizAddQuestionChoice({
     super.key,
     required this.question,
@@ -19,6 +22,7 @@ class QuizAddQuestionChoice extends StatelessWidget {
     required this.optC,
     required this.optD,
     required this.imageFunc,
+    required this.questionImage,
   });
 
   @override
@@ -51,9 +55,20 @@ class QuizAddQuestionChoice extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(
-          height: 20,
-        ),
+        (questionImage != null)
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image.file(questionImage!),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              )
+            : const SizedBox(
+                height: 0,
+                width: 0,
+              ),
         InputTextField(
           hintText: "Option A",
           fieldType: LucideIcons.circleDot,

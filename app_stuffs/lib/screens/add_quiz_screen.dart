@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -129,6 +130,7 @@ class _AddQuizState extends State<AddQuiz> {
                 optC: _optionCController,
                 optD: _optionDController,
                 imageFunc: popUpImageCaptureDevice,
+                questionImage: questionImage,
               ),
               const SizedBox(
                 height: 10,
@@ -378,9 +380,6 @@ class _AddQuizState extends State<AddQuiz> {
       setState(() {
         questionImage = File(imagePicked.path);
       });
-      print("Question Image clicked (${sourceType.name})");
-    } else {
-      print("User cancelled the image picker");
     }
   }
 
@@ -414,10 +413,15 @@ class _AddQuizState extends State<AddQuiz> {
             "D": optionD,
           }
         };
-        await http.post(
-          Uri.parse(addQuizURL),
-          body: jsonEncode(questionDetails),
-        );
+        // final imgRef = FirebaseStorage.instance
+        //     .ref()
+        //     .child('${schID}_${widget.subName}')
+        //     .child('${courseID}_${widget.subName}');
+
+        // await http.post(
+        //   Uri.parse(addQuizURL),
+        //   body: jsonEncode(questionDetails),
+        // );
         isAddQuizSuccess = AddQuizStatus.success;
         _questionController.text = '';
         _optionAController.text = '';
@@ -425,6 +429,9 @@ class _AddQuizState extends State<AddQuiz> {
         _optionCController.text = '';
         _optionDController.text = '';
         _correctOption = '';
+        setState(() {
+          questionImage = null;
+        });
       } else {
         isAddQuizSuccess = AddQuizStatus.emptyFields;
       }
