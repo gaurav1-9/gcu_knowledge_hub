@@ -98,7 +98,7 @@ class _EditQuizState extends State<EditQuiz> {
           margin: const EdgeInsets.only(top: 30),
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Headings(
                 primaryText: "Edit Quiz",

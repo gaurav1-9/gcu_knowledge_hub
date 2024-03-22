@@ -640,7 +640,7 @@ class _AdminSubjectSelectionDetailsState
                   ),
                   AuthLogin(
                     isLoading: isLoading,
-                    btnType: "Edit Department",
+                    btnType: "Edit Subject",
                     iconType: LucideIcons.clipboardEdit,
                     navigateTo: () async {
                       if (updatedText.isEmpty) {
