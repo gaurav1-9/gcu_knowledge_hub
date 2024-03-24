@@ -2,7 +2,7 @@
 
 GCU Knowledge Hub was developed as my appathon project which was held on 9th March, 2024 at Girijananda Chowdhury University.<br>
 I started my development journey from 18th February,2024.<br>
-This app is developed for the students as well as the teachers of GCU. The students can take the quizes of different departments present in GCU and get a good overview of their knowledge. On the other hand the teachers can add new quiz questions through the user friendly UI of the app which will be stored in the database and will be reflected in the quizes.
+This app was developed for the students as well as the teachers of GCU. The students can take the quizes of different departments present in GCU and get a good overview of their knowledge. On the other hand the teachers can add new quiz questions through the user friendly UI of the app which will be stored in the database and will be reflected in the quizes.
 
 ## Key Features
 - User friendly UI
