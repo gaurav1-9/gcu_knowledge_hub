@@ -21,4 +21,4 @@ This app was developed for the students as well as the teachers of GCU. The stud
 ![add quiz](/app_stuffs/assets/Screenshots/5.png) ![score card](/app_stuffs/assets/Screenshots/3.1.png) ![concise score card](/app_stuffs/assets/Screenshots/4.png)<br>
 
 ## Acknowledgement
-I would like to thank my friends and family who helped me thoughout my develpment journey for succesfully completing the app as part of GCU Appathon,2024.
+I would like to thank my friends and family who helped me throughout my develpment journey for succesfully completing the app as part of GCU Appathon,2024.
