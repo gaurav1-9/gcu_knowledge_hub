@@ -1,4 +1,4 @@
-package com.example.gcu_knowledge_hub
+package com.iicgcu.gcu_knowledge_hub
 
 import io.flutter.embedding.android.FlutterActivity
 
