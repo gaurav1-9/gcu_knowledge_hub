@@ -294,6 +294,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       String selectedOption) async {
     const userAddURL =
         "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/users.json";
+    const secretKeyURL =
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/secretKey.json";
     RegigistrationStatus registrationSuccessValue =
         RegigistrationStatus.neutral;
 
@@ -303,6 +305,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       });
       try {
         final userNameResponse = await http.get(Uri.parse(userAddURL));
+        final secretKeyResponse = await http.get(Uri.parse(secretKeyURL));
 
         if (userNameResponse.statusCode == 200) {
           final Map<String, dynamic> users = jsonDecode(userNameResponse.body);
