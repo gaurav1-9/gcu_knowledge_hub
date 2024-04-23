@@ -17,7 +17,8 @@ enum RegigistrationStatus {
   sameUsernameError,
   neutral,
   emptyFields,
-  securityKeyError
+  securityKeyError,
+  securityKeyEmpty
 }
 
 class RegisterScreen extends StatefulWidget {
@@ -33,6 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _securityKeyController = TextEditingController();
   String _selectedOption = 'student';
   bool isLoading = false;
   RegigistrationStatus isRegistrationSuccess = RegigistrationStatus.neutral;
@@ -180,6 +182,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ],
                     ),
+                    (_selectedOption == 'teacher')
+                        ? Column(
+                            children: [
+                              InputTextField(
+                                hintText: "Security Key",
+                                fieldType: LucideIcons.keyRound,
+                                isPassword: false,
+                                textController: _securityKeyController,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                            ],
+                          )
+                        : const SizedBox(
+                            height: 0,
+                          ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -244,44 +263,68 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   )
                                 : (isRegistrationSuccess ==
-                                        RegigistrationStatus.sameUsernameError)
+                                        RegigistrationStatus.securityKeyEmpty)
                                     ? const Text(
-                                        "Username already taken",
+                                        "Security key cannot be empty",
                                         style: TextStyle(
                                           color: AppColor.tomato,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       )
                                     : (isRegistrationSuccess ==
-                                            RegigistrationStatus.serverError)
-                                        ? const Column(
-                                            children: [
-                                              Text(
-                                                "Oops...couldn't reach the server",
-                                                style: TextStyle(
-                                                  color: AppColor.tomato,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              Text(
-                                                "Check your network connectivity",
-                                                style: TextStyle(
-                                                  fontSize: 11,
-                                                  color: AppColor.tomato,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                              ),
-                                            ],
+                                            RegigistrationStatus
+                                                .sameUsernameError)
+                                        ? const Text(
+                                            "Username already taken",
+                                            style: TextStyle(
+                                              color: AppColor.tomato,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           )
-                                        : const Text(''),
+                                        : (isRegistrationSuccess ==
+                                                RegigistrationStatus
+                                                    .serverError)
+                                            ? const Column(
+                                                children: [
+                                                  Text(
+                                                    "Oops...couldn't reach the server",
+                                                    style: TextStyle(
+                                                      color: AppColor.tomato,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "Check your network connectivity",
+                                                    style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: AppColor.tomato,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : const Text(''),
                     AuthLogin(
                       btnType: "REGISTER",
                       iconType: LucideIcons.userPlus,
-                      navigateTo: () => addUser(
-                          _usernameController.text,
-                          _nameController.text,
-                          _passwordController.text,
-                          _selectedOption),
+                      navigateTo: () {
+                        (_selectedOption == 'student')
+                            ? addUser(
+                                username: _usernameController.text,
+                                name: _nameController.text,
+                                password: _passwordController.text,
+                                selectedOption: _selectedOption,
+                              )
+                            : addUser(
+                                username: _usernameController.text,
+                                name: _nameController.text,
+                                password: _passwordController.text,
+                                selectedOption: _selectedOption,
+                                teacherKey: _securityKeyController.text,
+                              );
+                      },
                       isLoading: isLoading,
                       alignment: MainAxisAlignment.center,
                     ),
@@ -300,9 +343,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void addUser(
-      String username, String name, String password, String selectedOption,
-      [String? teacherKey]) async {
+  void addUser({
+    required String username,
+    required String name,
+    required String password,
+    required String selectedOption,
+    String? teacherKey,
+  }) async {
     const userAddURL =
         "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/users.json";
     const secretKeyURL =
@@ -348,11 +395,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 });
               });
             } else {
-              if (teacherKey == secretKeyValue['teachKey']) {
+              if (teacherKey! == secretKeyValue['teachKey'].toString()) {
                 print(teacherKey);
               } else {
-                registrationSuccessValue =
-                    RegigistrationStatus.securityKeyError;
+                if (teacherKey.isNotEmpty) {
+                  registrationSuccessValue =
+                      RegigistrationStatus.securityKeyError;
+                } else {
+                  registrationSuccessValue =
+                      RegigistrationStatus.securityKeyEmpty;
+                }
               }
             }
           }
