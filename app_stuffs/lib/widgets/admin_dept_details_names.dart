@@ -338,7 +338,7 @@ class _AdminDepartmentState extends State<AdminDepartment> {
                         });
                         try {
                           String editingURL =
-                              "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/dept.json";
+                              "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/dept.json";
                           await http.put(
                             Uri.parse(editingURL),
                             body: json.encode(updatedText),
@@ -499,7 +499,7 @@ class _AdminDepartmentState extends State<AdminDepartment> {
                           String newDeptName = deptNameController.text;
                           deptNameController.text = '';
                           String addDeptURL =
-                              "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames.json";
+                              "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/$schID/branchNames.json";
 
                           await http.post(
                             Uri.parse(addDeptURL),
@@ -558,7 +558,7 @@ class _AdminDepartmentState extends State<AdminDepartment> {
     BuildContext ctx,
   ) async {
     String deleteURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$deptID.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/$schID/branchNames/$deptID.json";
     try {
       await http.delete(Uri.parse(deleteURL));
     } catch (e) {

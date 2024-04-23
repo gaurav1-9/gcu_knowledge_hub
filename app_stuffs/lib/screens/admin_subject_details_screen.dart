@@ -49,7 +49,7 @@ class _AdminSubjectSelectionDetailsState
 
   void getDeptSubjects() async {
     String deptSubjectsURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects.json";
     final response = await http.get(Uri.parse(deptSubjectsURL));
     try {
       if (jsonDecode(response.body) != null) {
@@ -372,7 +372,7 @@ class _AdminSubjectSelectionDetailsState
                           String newDeptName = subNameController.text;
                           subNameController.text = '';
                           String addSubURL =
-                              "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects.json";
+                              "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects.json";
 
                           await http.post(
                             Uri.parse(addSubURL),
@@ -499,7 +499,7 @@ class _AdminSubjectSelectionDetailsState
     required BuildContext ctx,
   }) async {
     String deleteURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects/$subID.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects/$subID.json";
     try {
       await http.delete(Uri.parse(deleteURL));
     } catch (e) {
@@ -661,7 +661,7 @@ class _AdminSubjectSelectionDetailsState
                         });
                         try {
                           String editingURL =
-                              "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects/$subID/subName.json";
+                              "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects/$subID/subName.json";
                           await http.put(
                             Uri.parse(editingURL),
                             body: jsonEncode(updatedText),

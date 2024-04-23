@@ -352,11 +352,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String? teacherKey,
   }) async {
     DateTime now = DateTime.now();
-    print(DateFormat('dd-MM-yyyy (HH:mm:ss)').format(now));
     const userAddURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/users.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/users.json";
     const secretKeyURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/teachPass.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/teachPass.json";
     RegigistrationStatus registrationSuccessValue =
         RegigistrationStatus.neutral;
 

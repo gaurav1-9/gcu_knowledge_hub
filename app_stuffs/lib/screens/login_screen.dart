@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> checkCredentials(ctx, username, password) async {
     const loginURL =
-        'https://gcu-knowledge-hub-default-rtdb.firebaseio.com/users.json';
+        'https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/users.json';
     if (username.isNotEmpty && password.isNotEmpty) {
       setState(() {
         isLoading = true;

@@ -38,7 +38,7 @@ class _AddQuizSubjectsState extends State<AddQuizSubjects> {
 
   void getSubjects() async {
     String questionsURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames/${widget.deptID}/subjects.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames/${widget.deptID}/subjects.json";
     final response = await http.get(Uri.parse(questionsURL));
     try {
       Map<String, dynamic> apiQuestionData = jsonDecode(response.body);

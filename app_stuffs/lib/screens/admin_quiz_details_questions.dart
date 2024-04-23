@@ -52,7 +52,7 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
 
   void getQuizDetails() async {
     String subQuizesURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$deptID/subjects/$subID/questions.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/$schID/branchNames/$deptID/subjects/$subID/questions.json";
     final response = await http.get(Uri.parse(subQuizesURL));
     try {
       if (jsonDecode(response.body) != null) {
@@ -391,7 +391,7 @@ class _AdminQuizDetailsQuestionsState extends State<AdminQuizDetailsQuestions> {
     required BuildContext ctx,
   }) async {
     String deleteURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$deptID/subjects/$subID/questions/$questionID.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/$schID/branchNames/$deptID/subjects/$subID/questions/$questionID.json";
     try {
       await http.delete(Uri.parse(deleteURL));
     } catch (e) {

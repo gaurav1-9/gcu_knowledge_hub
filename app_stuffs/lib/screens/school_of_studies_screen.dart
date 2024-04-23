@@ -24,7 +24,7 @@ class _SchoolOfStudiesState extends State<SchoolOfStudies> {
 
   void getSchools() async {
     const schoolURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools.json";
     final response = await http.get(Uri.parse(schoolURL));
     try {
       data = jsonDecode(response.body);

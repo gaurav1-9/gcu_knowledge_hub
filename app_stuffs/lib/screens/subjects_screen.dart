@@ -35,7 +35,7 @@ class _SubjectsState extends State<Subjects> {
 
   void getSubjects() async {
     String subjectsURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames/${widget.branchID}/subjects.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames/${widget.branchID}/subjects.json";
     final response = await http.get(Uri.parse(subjectsURL));
     try {
       if (jsonDecode(response.body) != null) {

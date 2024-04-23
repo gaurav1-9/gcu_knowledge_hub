@@ -305,7 +305,7 @@ class _AddQuizState extends State<AddQuiz> {
       isLoading = true;
     });
     String addQuizURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$courseID/subjects/$subID/questions.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/$schID/branchNames/$courseID/subjects/$subID/questions.json";
     try {
       if (question.isNotEmpty &&
           optionA.isNotEmpty &&

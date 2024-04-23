@@ -23,7 +23,7 @@ class _AdminQuizDetailsBranchState extends State<AdminQuizDetailsBranch> {
 
   void getAllBranch() async {
     String branchURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools.json";
     final response = await http.get(Uri.parse(branchURL));
 
     try {

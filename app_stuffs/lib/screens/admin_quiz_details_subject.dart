@@ -47,7 +47,7 @@ class _AdminQuizDetailsSubjectState extends State<AdminQuizDetailsSubject> {
 
   void getDeptSubjects() async {
     String deptSubjectsURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/$schID/branchNames/$branchID/subjects.json";
     final response = await http.get(Uri.parse(deptSubjectsURL));
     try {
       if (jsonDecode(response.body) != null) {

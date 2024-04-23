@@ -26,7 +26,7 @@ class _BranchSchoolState extends State<BranchSchool> {
 
   void getBranch() async {
     String branchURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames.json";
     final response = await http.get(Uri.parse(branchURL));
     try {
       if (jsonDecode(response.body) != null) {

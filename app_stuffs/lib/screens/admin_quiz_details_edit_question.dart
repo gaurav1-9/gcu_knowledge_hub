@@ -542,7 +542,7 @@ class _EditQuizState extends State<EditQuiz> {
       isLoading = true;
     });
     String editQuizURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/$schID/branchNames/$courseID/subjects/$subID/questions/$questionID.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/$schID/branchNames/$courseID/subjects/$subID/questions/$questionID.json";
     try {
       if (question.isNotEmpty &&
           optionA.isNotEmpty &&

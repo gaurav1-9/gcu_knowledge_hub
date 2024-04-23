@@ -49,7 +49,7 @@ class _QuizesScreenState extends State<QuizesScreen> {
 
   void getQuestions() async {
     String questionURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames/${widget.branchID}/subjects/${widget.subID}/questions.json";
+        "https://gcu-knowledge-hub-1a7b9-default-rtdb.firebaseio.com/schools/${widget.schID}/branchNames/${widget.branchID}/subjects/${widget.subID}/questions.json";
     final response = await http.get(Uri.parse(questionURL));
     try {
       if (response.statusCode == 200) {
