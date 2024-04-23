@@ -390,13 +390,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 _usernameController.text = '';
                 _passwordController.text = '';
                 registrationSuccessValue = RegigistrationStatus.success;
-                Future.delayed(const Duration(seconds: 2), () {
+                Future.delayed(const Duration(seconds: 3), () {
                   Navigator.of(context).pushReplacementNamed('/login');
                 });
               });
             } else {
               if (teacherKey! == secretKeyValue['teachKey'].toString()) {
-                print(teacherKey);
+                await http
+                    .post(
+                  Uri.parse(userAddURL),
+                  body: json.encode({
+                    "name": name,
+                    "password": password,
+                    "username": username,
+                    "userType": selectedOption,
+                  }),
+                )
+                    .then((value) {
+                  _nameController.text = '';
+                  _usernameController.text = '';
+                  _passwordController.text = '';
+                  _securityKeyController.text = '';
+                  registrationSuccessValue = RegigistrationStatus.success;
+                  Future.delayed(const Duration(seconds: 3), () {
+                    Navigator.of(context).pushReplacementNamed('/login');
+                  });
+                });
               } else {
                 if (teacherKey.isNotEmpty) {
                   registrationSuccessValue =
