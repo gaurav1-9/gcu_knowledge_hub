@@ -17,6 +17,7 @@ enum RegigistrationStatus {
   sameUsernameError,
   neutral,
   emptyFields,
+  securityKeyError
 }
 
 class RegisterScreen extends StatefulWidget {
@@ -234,36 +235,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               )
                             : (isRegistrationSuccess ==
-                                    RegigistrationStatus.sameUsernameError)
+                                    RegigistrationStatus.securityKeyError)
                                 ? const Text(
-                                    "Username already taken",
+                                    "Incorrect security key",
                                     style: TextStyle(
                                       color: AppColor.tomato,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   )
                                 : (isRegistrationSuccess ==
-                                        RegigistrationStatus.serverError)
-                                    ? const Column(
-                                        children: [
-                                          Text(
-                                            "Oops...couldn't reach the server",
-                                            style: TextStyle(
-                                              color: AppColor.tomato,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            "Check your network connectivity",
-                                            style: TextStyle(
-                                              fontSize: 11,
-                                              color: AppColor.tomato,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
+                                        RegigistrationStatus.sameUsernameError)
+                                    ? const Text(
+                                        "Username already taken",
+                                        style: TextStyle(
+                                          color: AppColor.tomato,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       )
-                                    : const Text(''),
+                                    : (isRegistrationSuccess ==
+                                            RegigistrationStatus.serverError)
+                                        ? const Column(
+                                            children: [
+                                              Text(
+                                                "Oops...couldn't reach the server",
+                                                style: TextStyle(
+                                                  color: AppColor.tomato,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                "Check your network connectivity",
+                                                style: TextStyle(
+                                                  fontSize: 11,
+                                                  color: AppColor.tomato,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : const Text(''),
                     AuthLogin(
                       btnType: "REGISTER",
                       iconType: LucideIcons.userPlus,
@@ -290,12 +300,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void addUser(String username, String name, String password,
-      String selectedOption) async {
+  void addUser(
+      String username, String name, String password, String selectedOption,
+      [String? teacherKey]) async {
     const userAddURL =
         "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/users.json";
     const secretKeyURL =
-        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/secretKey.json";
+        "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/teachPass.json";
     RegigistrationStatus registrationSuccessValue =
         RegigistrationStatus.neutral;
 
@@ -309,31 +320,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
         if (userNameResponse.statusCode == 200) {
           final Map<String, dynamic> users = jsonDecode(userNameResponse.body);
+          final Map<String, dynamic> secretKeyValue =
+              jsonDecode(secretKeyResponse.body);
           bool isDuplicateUsername =
               users.values.any((user) => user['username'] == username);
-
           if (isDuplicateUsername) {
             registrationSuccessValue = RegigistrationStatus.sameUsernameError;
           } else {
-            await http
-                .post(
-              Uri.parse(userAddURL),
-              body: json.encode({
-                "name": name,
-                "password": password,
-                "username": username,
-                "userType": selectedOption,
-              }),
-            )
-                .then((value) {
-              _nameController.text = '';
-              _usernameController.text = '';
-              _passwordController.text = '';
-              registrationSuccessValue = RegigistrationStatus.success;
-              Future.delayed(const Duration(seconds: 3), () {
-                Navigator.of(context).pushReplacementNamed('/login');
+            if (selectedOption == 'student') {
+              await http
+                  .post(
+                Uri.parse(userAddURL),
+                body: json.encode({
+                  "name": name,
+                  "password": password,
+                  "username": username,
+                  "userType": selectedOption,
+                }),
+              )
+                  .then((value) {
+                _nameController.text = '';
+                _usernameController.text = '';
+                _passwordController.text = '';
+                registrationSuccessValue = RegigistrationStatus.success;
+                Future.delayed(const Duration(seconds: 2), () {
+                  Navigator.of(context).pushReplacementNamed('/login');
+                });
               });
-            });
+            } else {
+              if (teacherKey == secretKeyValue['teachKey']) {
+                print(teacherKey);
+              } else {
+                registrationSuccessValue =
+                    RegigistrationStatus.securityKeyError;
+              }
+            }
           }
         }
         setState(() {
@@ -345,6 +366,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           });
         });
       } catch (e) {
+        print(e);
         setState(() {
           isRegistrationSuccess = RegigistrationStatus.serverError;
         });
