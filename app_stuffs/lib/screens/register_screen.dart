@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:gcu_knowledge_hub/widgets/textfields/txt_fields.dart';
+import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:http/http.dart' as http;
 
 import '../properties/global_colors.dart';
+import '../widgets/textfields/txt_fields.dart';
 import '../widgets/buttons/app_bar_back_btn.dart';
 import '../widgets/auth_text.dart';
 import '../widgets/buttons/auth_login_btns.dart';
@@ -350,6 +351,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     required String selectedOption,
     String? teacherKey,
   }) async {
+    DateTime now = DateTime.now();
+    print(DateFormat('dd-MM-yyyy (HH:mm:ss)').format(now));
     const userAddURL =
         "https://gcu-knowledge-hub-default-rtdb.firebaseio.com/users.json";
     const secretKeyURL =
@@ -383,6 +386,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   "password": password,
                   "username": username,
                   "userType": selectedOption,
+                  "registeredDate":
+                      DateFormat('dd-MM-yyyy (HH:mm:ss)').format(now)
                 }),
               )
                   .then((value) {
@@ -404,6 +409,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     "password": password,
                     "username": username,
                     "userType": selectedOption,
+                    "registeredDate":
+                        DateFormat('dd-MM-yyyy (HH:mm:ss)').format(now)
                   }),
                 )
                     .then((value) {
