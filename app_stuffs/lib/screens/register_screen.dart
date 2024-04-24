@@ -443,7 +443,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           });
         });
       } catch (e) {
-        print(e);
         setState(() {
           isRegistrationSuccess = RegigistrationStatus.serverError;
         });
